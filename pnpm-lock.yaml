@@ -24,6 +24,9 @@ importers:
       '@tsconfig/strictest':
         specifier: 2.0.5
         version: 2.0.5
+      typescript:
+        specifier: 5.7.3
+        version: 5.7.3
       wrangler:
         specifier: 3.109.2
         version: 3.109.2(@cloudflare/workers-types@4.20250109.0)
@@ -530,6 +533,11 @@ packages:
     resolution: {integrity: sha512-Qxi0ioQCxMRUCcHKHZkTnYH8e7XCpNfg9QiJcyfWIc+ZXeaCjzV5rCGlbQlTXMAtI8qgfP8fZADv3CFtPwqdPQ==}
     hasBin: true
 
+  typescript@5.7.3:
+    resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   ufo@1.5.4:
     resolution: {integrity: sha512-UsUk3byDzKd04EyoZ7U4DOlxQaD14JUKQl6/P7wiX4FNvUfm3XL246n9W5AmqwW5RSFJ27NAuM0iLscAOYUiGQ==}
 
@@ -993,6 +1001,8 @@ snapshots:
       turbo-linux-arm64: 2.4.2
       turbo-windows-64: 2.4.2
       turbo-windows-arm64: 2.4.2
+
+  typescript@5.7.3: {}
 
   ufo@1.5.4: {}
 
