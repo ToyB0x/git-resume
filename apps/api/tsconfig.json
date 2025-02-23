@@ -1,18 +1,14 @@
 {
+  "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "strict": true,
-    "skipLibCheck": true,
-    "noUncheckedIndexedAccess": true,
     "lib": [
       "ESNext"
     ],
     "types": [
       "@cloudflare/workers-types/2023-07-01"
     ],
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
   },
 }

@@ -21,6 +21,9 @@ importers:
       '@cloudflare/workers-types':
         specifier: 4.20250109.0
         version: 4.20250109.0
+      '@tsconfig/strictest':
+        specifier: 2.0.5
+        version: 2.0.5
       wrangler:
         specifier: 3.109.2
         version: 3.109.2(@cloudflare/workers-types@4.20250109.0)
@@ -331,6 +334,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+
+  '@tsconfig/strictest@2.0.5':
+    resolution: {integrity: sha512-ec4tjL2Rr0pkZ5hww65c+EEPYwxOi4Ryv+0MtjeaSQRJyq322Q27eOQiFbuNgw2hpL4hB1/W/HBGk3VKS43osg==}
 
   acorn-walk@8.3.2:
     resolution: {integrity: sha512-cjkyv4OtNCIeqhHrfS81QWXoCBPExR/J62oyEqepVw8WaQeSqpW2uhuLPh1m9eWhDuOo/jUXVTlifvesOWp/4A==}
@@ -760,6 +766,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@tsconfig/strictest@2.0.5': {}
 
   acorn-walk@8.3.2: {}
 
