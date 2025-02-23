@@ -1,0 +1,46 @@
+name: monorepo
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read # for checkout repository
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Enable corepack for pnpm
+        run: npm install -g corepack@latest && corepack enable pnpm
+
+      - name: Setup & Restore Node cache
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
+        with:
+          cache: 'pnpm'
+          node-version-file: 'package.json'
+
+      - name: Install all packages
+        run: pnpm install --frozen-lockfile
+
+      - name: Restore turbo cache
+        uses: actions/cache@0c907a75c2c80ebcb7f088228285e798b750cf8f # v4
+        with:
+          path: .turbo/cache
+          key:
+            turbo/${{ github.job }}/${{ github.ref_name }}/${{ github.sha }}
+          restore-keys: |
+            turbo/${{ github.job }}/${{ github.ref_name }}/
+            turbo/${{ github.job }}/
+
+#      - name: Lint / Format check
+#        run: pnpm format-and-lint
+
+      - name: Type check
+        run: pnpm typecheck
+
+#      - name: Build check
+#        run: pnpm build
