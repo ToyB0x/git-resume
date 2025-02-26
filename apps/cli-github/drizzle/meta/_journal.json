@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1740608434829,
+      "tag": "0000_luxuriant_doctor_spectrum",
+      "breakpoints": true
+    }
+  ]
+}
