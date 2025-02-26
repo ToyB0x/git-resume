@@ -1,0 +1,20 @@
+{
+  "name": "@survive/cli-github",
+  "type": "module",
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.40.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.5",
+    "@tsconfig/strictest": "2.0.5",
+    "drizzle-kit": "0.30.5",
+    "typescript": "5.7.3"
+  }
+}
