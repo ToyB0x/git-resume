@@ -1,6 +1,6 @@
-import { isBefore, subDays } from "date-fns";
 import { getDbClient, octokitApp } from "@/clients";
 import { searchIssuesAndPRsTbl } from "@/db";
+import { isBefore, subDays } from "date-fns";
 
 export const aggregate = async (userName: string) => {
   // ref: https://docs.github.com/ja/search-github/searching-on-github/searching-issues-and-pull-requests#search-by-author
