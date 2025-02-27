@@ -42,9 +42,15 @@ importers:
       '@octokit/plugin-throttling':
         specifier: 9.4.0
         version: 9.4.0(@octokit/core@6.1.4)
+      '@supercharge/promise-pool':
+        specifier: 3.2.0
+        version: 3.2.0
       commander:
         specifier: 13.1.0
         version: 13.1.0
+      date-fns:
+        specifier: 4.1.0
+        version: 4.1.0
       dotenv-cli:
         specifier: 8.0.0
         version: 8.0.0
@@ -1101,6 +1107,10 @@ packages:
   '@petamoriken/float16@3.9.1':
     resolution: {integrity: sha512-j+ejhYwY6PeB+v1kn7lZFACUIG97u90WxMuGosILFsl9d4Ovi0sjk0GlPfoEcx+FzvXZDAfioD+NGnnPamXgMA==}
 
+  '@supercharge/promise-pool@3.2.0':
+    resolution: {integrity: sha512-pj0cAALblTZBPtMltWOlZTQSLT07jIaFNeM8TWoJD1cQMgDB9mcMlVMoetiB35OzNJpqQ2b+QEtwiR9f20mADg==}
+    engines: {node: '>=8'}
+
   '@tsconfig/strictest@2.0.5':
     resolution: {integrity: sha512-ec4tjL2Rr0pkZ5hww65c+EEPYwxOi4Ryv+0MtjeaSQRJyq322Q27eOQiFbuNgw2hpL4hB1/W/HBGk3VKS43osg==}
 
@@ -1211,6 +1221,9 @@ packages:
   data-urls@5.0.0:
     resolution: {integrity: sha512-ZYP5VBHshaDAiVZxjbRVcFJpc+4xGgT0bK3vzy1HLN8jTO975HEbuYzZJcHoQEY5K1a0z8YayJkyVETa08eNTg==}
     engines: {node: '>=18'}
+
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
 
   dateformat@4.6.3:
     resolution: {integrity: sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA==}
@@ -2615,6 +2628,8 @@ snapshots:
 
   '@petamoriken/float16@3.9.1': {}
 
+  '@supercharge/promise-pool@3.2.0': {}
+
   '@tsconfig/strictest@2.0.5': {}
 
   '@types/aws-lambda@8.10.147': {}
@@ -2715,6 +2730,8 @@ snapshots:
     dependencies:
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.1.1
+
+  date-fns@4.1.0: {}
 
   dateformat@4.6.3: {}
 
