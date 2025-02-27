@@ -1,7 +1,5 @@
 import { Command } from "commander";
-import {
-  newAggregateCommand,
-} from "./commands";
+import { newAggregateCommand } from "./commands";
 
 const main = async () => {
   const program = new Command();
