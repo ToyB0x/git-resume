@@ -27,6 +27,8 @@ CREATE TABLE `repository` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
 	`owner` text NOT NULL,
+	`is_private` integer NOT NULL,
+	`is_org_repo` integer NOT NULL,
 	`createdAt` integer NOT NULL,
 	`updatedAt` integer NOT NULL,
 	`createdAtGithub` integer,
@@ -53,22 +55,15 @@ CREATE TABLE `reviewComment` (
 	FOREIGN KEY (`repository_id`) REFERENCES `repository`(`id`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE TABLE `timeline` (
+CREATE TABLE `search_issues_and_prs` (
 	`id` integer PRIMARY KEY NOT NULL,
-	`pr_id` integer NOT NULL,
-	`actor_id` integer NOT NULL,
-	`requested_reviewer_id` integer,
-	`event_type` text NOT NULL,
+	`number` integer NOT NULL,
+	`repository_url` text NOT NULL,
+	`state` text,
+	`title` text,
+	`body` text,
 	`createdAt` integer NOT NULL,
-	`repository_id` integer NOT NULL,
-	FOREIGN KEY (`repository_id`) REFERENCES `repository`(`id`) ON UPDATE cascade ON DELETE cascade
-);
---> statement-breakpoint
-CREATE TABLE `user` (
-	`id` integer PRIMARY KEY NOT NULL,
-	`login` text NOT NULL,
-	`name` text,
-	`blog` text,
-	`avatar_url` text NOT NULL,
-	`updatedAt` integer NOT NULL
+	`updatedAt` integer NOT NULL,
+	`closedAt` integer,
+	`author_id` integer NOT NULL
 );

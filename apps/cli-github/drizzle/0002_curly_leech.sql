@@ -1,1 +1,0 @@
-ALTER TABLE `repository` ADD `is_org_repo` integer NOT NULL;

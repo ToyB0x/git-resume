@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "ca65a030-2771-4a68-8e83-59e591237f47",
+  "id": "bcbb01f2-85f4-495a-99ac-e3b05595753d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "pr": {
@@ -195,6 +195,20 @@
           "notNull": true,
           "autoincrement": false
         },
+        "is_private": {
+          "name": "is_private",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "is_org_repo": {
+          "name": "is_org_repo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "createdAt": {
           "name": "createdAt",
           "type": "integer",
@@ -362,8 +376,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "timeline": {
-      "name": "timeline",
+    "search_issues_and_prs": {
+      "name": "search_issues_and_prs",
       "columns": {
         "id": {
           "name": "id",
@@ -372,32 +386,39 @@
           "notNull": true,
           "autoincrement": false
         },
-        "pr_id": {
-          "name": "pr_id",
+        "number": {
+          "name": "number",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "actor_id": {
-          "name": "actor_id",
-          "type": "integer",
+        "repository_url": {
+          "name": "repository_url",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "requested_reviewer_id": {
-          "name": "requested_reviewer_id",
-          "type": "integer",
+        "state": {
+          "name": "state",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "event_type": {
-          "name": "event_type",
+        "title": {
+          "name": "title",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "createdAt": {
@@ -407,74 +428,22 @@
           "notNull": true,
           "autoincrement": false
         },
-        "repository_id": {
-          "name": "repository_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "timeline_repository_id_repository_id_fk": {
-          "name": "timeline_repository_id_repository_id_fk",
-          "tableFrom": "timeline",
-          "tableTo": "repository",
-          "columnsFrom": [
-            "repository_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "user": {
-      "name": "user",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "login": {
-          "name": "login",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "blog": {
-          "name": "blog",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "avatar_url": {
-          "name": "avatar_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "updatedAt": {
           "name": "updatedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "closedAt": {
+          "name": "closedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author_id": {
+          "name": "author_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,

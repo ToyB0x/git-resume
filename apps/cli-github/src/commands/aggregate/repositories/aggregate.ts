@@ -1,4 +1,4 @@
-import { dbClient, octokitApp } from "@/clients";
+import { getDbClient, octokitApp } from "@/clients";
 import { repositoryTbl } from "@/db";
 
 export const aggregate = async (userName: string) => {
@@ -31,7 +31,7 @@ export const aggregate = async (userName: string) => {
   for (const repo of repos) {
     const now = new Date();
 
-    await dbClient
+    await getDbClient(userName)
       .insert(repositoryTbl)
       .values({
         id: repo.id,

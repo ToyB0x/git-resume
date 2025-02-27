@@ -1,10 +1,8 @@
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 
-const getDbClient = () => {
-  const filePath = "sqlite/github.db";
+export const getDbClient = (userName: string) => {
+  const filePath = `sqlite/github-${userName}.db`;
   const sqliteClient = createClient({ url: `file:${filePath}` });
   return drizzle({ client: sqliteClient });
 };
-
-export const dbClient = getDbClient();
