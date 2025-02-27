@@ -1,0 +1,1 @@
+ALTER TABLE `repository` ADD `is_private` integer NOT NULL;

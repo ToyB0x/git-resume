@@ -2,20 +2,27 @@
   "name": "@survive/cli-github",
   "type": "module",
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup",
+    "jobs": "dotenv -e ../../.env -- tsx src/index.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@libsql/client": "0.14.0",
-    "drizzle-orm": "0.40.0"
+    "@octokit/plugin-throttling": "9.4.0",
+    "commander": "13.1.0",
+    "dotenv-cli": "8.0.0",
+    "drizzle-orm": "0.40.0",
+    "octokit": "4.1.2",
+    "pino": "9.6.0",
+    "pino-pretty": "13.0.0",
+    "valibot": "1.0.0-rc.2"
   },
   "devDependencies": {
     "@tsconfig/strictest": "2.0.5",
     "@types/node": "22.13.5",
     "drizzle-kit": "0.30.5",
+    "tsx": "4.19.3",
     "typescript": "5.7.3"
   }
 }
