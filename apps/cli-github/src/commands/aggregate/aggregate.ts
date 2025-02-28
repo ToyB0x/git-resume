@@ -1,6 +1,7 @@
 import { step } from "@/utils";
 // import { aggregate as aggregateRepositories } from "./repositories";
-import { aggregate as agegateSearchIssuesAndPRs } from "./searchIssuesAndPRs";
+import { aggregate as aggregateSearchIssuesAndPRs } from "./searchIssuesAndPRs";
+import { aggregate as aggregateUserDetail } from "./user";
 
 export const aggregateUser = async (userName: string): Promise<void> => {
   // await step({
@@ -9,7 +10,12 @@ export const aggregateUser = async (userName: string): Promise<void> => {
   // });
 
   await step({
+    stepName: "aggregate:user",
+    callback: aggregateUserDetail(userName),
+  });
+
+  await step({
     stepName: "aggregate:searchIssuesAndPRs",
-    callback: agegateSearchIssuesAndPRs(userName),
+    callback: aggregateSearchIssuesAndPRs(userName),
   });
 };

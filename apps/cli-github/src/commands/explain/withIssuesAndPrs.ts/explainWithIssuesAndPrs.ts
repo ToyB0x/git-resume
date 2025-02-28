@@ -1,10 +1,21 @@
-import { getDbClient } from "@/clients";
-import { searchIssuesAndPRsTbl } from "@/db";
+import { dbClient } from "@/clients";
+import { searchIssuesAndPRsTbl, userTbl } from "@/db";
+import { eq } from "drizzle-orm";
 
 export const explainWithIssuesAndPrs = async (
   userName: string,
 ): Promise<void> => {
-  const all = await getDbClient(userName).select().from(searchIssuesAndPRsTbl);
+  const userId = await dbClient
+    .select()
+    .from(userTbl)
+    .where(eq(userTbl.login, userName))
+    .get();
+  if (!userId) throw new Error("User not found");
+
+  const all = await dbClient
+    .select()
+    .from(searchIssuesAndPRsTbl)
+    .where(eq(searchIssuesAndPRsTbl.authorId, userId.id));
 
   const allJsonText = JSON.stringify(all);
   console.log(allJsonText);
