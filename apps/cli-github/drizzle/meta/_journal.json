@@ -22,6 +22,13 @@
       "when": 1740701295913,
       "tag": "0002_mature_black_tom",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1740710469007,
+      "tag": "0003_striped_bug",
+      "breakpoints": true
     }
   ]
 }

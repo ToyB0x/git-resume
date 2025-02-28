@@ -3,12 +3,17 @@ import { searchIssuesAndPRsTbl } from "@/db";
 import { isBefore, subDays } from "date-fns";
 
 export const aggregate = async (userName: string) => {
+  await _aggregate(userName, "issue");
+  await _aggregate(userName, "pr");
+};
+
+export const _aggregate = async (userName: string, type: "pr" | "issue") => {
   // ref: https://docs.github.com/ja/search-github/searching-on-github/searching-issues-and-pull-requests#search-by-author
   const issuesAndPrs = await octokitApp.paginate(
     octokitApp.rest.search.issuesAndPullRequests,
     {
       // q: `is:pr is:public author:${userName}`,
-      q: `author:${userName}`,
+      q: `author:${userName} type:${type}`,
       sort: "created",
       order: "desc",
       per_page: 100,
@@ -34,6 +39,7 @@ export const aggregate = async (userName: string) => {
       .values({
         id: issueOrPr.id,
         number: issueOrPr.number,
+        type: type,
         state: issueOrPr.state,
         title: issueOrPr.title,
         body: issueOrPr.body,
