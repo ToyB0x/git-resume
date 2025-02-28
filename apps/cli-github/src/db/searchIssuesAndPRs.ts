@@ -4,7 +4,7 @@ export const searchIssuesAndPRsTbl = sqliteTable("search_issues_and_prs", {
   id: int().primaryKey(), // github issue or pr id
   number: int("number").notNull(), // github issue or pr number (eg: #123)
   repositoryUrl: text("repository_url").notNull(), // github issue or pr number (eg: #123)
-  type: text("type").notNull(),
+  type: text("type", { enum: ["issue", "pr"] }).notNull(),
   state: text("state").notNull(),
   title: text("title").notNull(),
   body: text("body"),
