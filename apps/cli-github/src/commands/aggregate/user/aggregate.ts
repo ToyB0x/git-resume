@@ -2,7 +2,7 @@ import { dbClient, octokitApp } from "@/clients";
 import { userTbl } from "@/db";
 
 export const aggregate = async (userName: string) => {
-  const res = await octokitApp.request("GET /user/{username}", {
+  const res = await octokitApp.request("GET /users/{username}", {
     username: userName,
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
@@ -12,11 +12,11 @@ export const aggregate = async (userName: string) => {
   const user = res.data;
 
   // TODO: refactor (validate response and typing data)
-  const userId = user.data.id as number;
-  const avatar_url = user.data.avatar_url as string;
-  const name = user.data.name as string | null;
-  const blog = user.data.blog as string | null;
-  const updated_at = user.data.updated_at as string;
+  const userId = user.id as number;
+  const avatar_url = user.avatar_url as string;
+  const name = user.name as string | null;
+  const blog = user.blog as string | null;
+  const updated_at = user.updated_at as string;
 
   if (!avatar_url || !updated_at) return;
 
