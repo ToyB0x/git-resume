@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { aggregateUser } from "./aggregate";
+import { aggregateUser } from "./user/aggregateUser";
 
 export const newAggregateCommand = () => {
   const aggregate = new Command("aggregate");
