@@ -1,4 +1,4 @@
-import { getDbClient, octokitApp } from "@/clients";
+import { dbClient, octokitApp } from "@/clients";
 import { searchIssuesAndPRsTbl } from "@/db";
 import { isBefore, subDays } from "date-fns";
 
@@ -29,7 +29,7 @@ export const aggregate = async (userName: string) => {
     const authorId = issueOrPr.user?.id;
     if (!authorId) throw Error("no author id");
 
-    await getDbClient(userName)
+    await dbClient
       .insert(searchIssuesAndPRsTbl)
       .values({
         id: issueOrPr.id,
