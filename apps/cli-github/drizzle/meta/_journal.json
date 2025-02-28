@@ -15,6 +15,13 @@
       "when": 1740698316178,
       "tag": "0001_slippery_bug",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1740701295913,
+      "tag": "0002_mature_black_tom",
+      "breakpoints": true
     }
   ]
 }
