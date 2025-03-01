@@ -1,16 +1,14 @@
 CREATE TABLE `pr` (
 	`id` integer PRIMARY KEY NOT NULL,
-	`title` text,
 	`number` integer NOT NULL,
-	`additions` integer NOT NULL,
-	`deletions` integer NOT NULL,
-	`changed_files` integer NOT NULL,
-	`merged_at` integer,
+	`repository_url` text NOT NULL,
+	`title` text NOT NULL,
+	`body` text,
+	`author_id` integer NOT NULL,
 	`createdAt` integer NOT NULL,
 	`updatedAt` integer NOT NULL,
-	`author_id` integer NOT NULL,
-	`repository_id` integer NOT NULL,
-	FOREIGN KEY (`repository_id`) REFERENCES `repository`(`id`) ON UPDATE cascade ON DELETE cascade
+	`closedAt` integer,
+	`diff` text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `pr_commit` (
@@ -59,11 +57,21 @@ CREATE TABLE `search_issues_and_prs` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`number` integer NOT NULL,
 	`repository_url` text NOT NULL,
-	`state` text,
-	`title` text,
+	`type` text NOT NULL,
+	`state` text NOT NULL,
+	`title` text NOT NULL,
 	`body` text,
 	`createdAt` integer NOT NULL,
 	`updatedAt` integer NOT NULL,
 	`closedAt` integer,
 	`author_id` integer NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE `user` (
+	`id` integer PRIMARY KEY NOT NULL,
+	`login` text NOT NULL,
+	`name` text,
+	`blog` text,
+	`avatar_url` text NOT NULL,
+	`updatedAt` integer NOT NULL
 );
