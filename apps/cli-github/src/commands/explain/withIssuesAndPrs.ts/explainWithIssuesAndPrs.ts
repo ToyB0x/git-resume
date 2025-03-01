@@ -1,6 +1,7 @@
 import { dbClient } from "@/clients";
 import { searchIssuesAndPRsTbl, userTbl } from "@/db";
 import { eq } from "drizzle-orm";
+import { get_encoding } from "tiktoken";
 
 export const explainWithIssuesAndPrs = async (
   userName: string,
@@ -20,4 +21,8 @@ export const explainWithIssuesAndPrs = async (
   const allJsonText = JSON.stringify(all);
   console.log(allJsonText);
   console.log("total size", allJsonText.length);
+
+  const enc = get_encoding("gpt2");
+  console.log("total tokens", enc.encode(allJsonText).length);
+  enc.free();
 };
