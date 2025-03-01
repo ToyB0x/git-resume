@@ -1,1 +1,0 @@
-ALTER TABLE `search_issues_and_prs` ADD `type` text NOT NULL;
