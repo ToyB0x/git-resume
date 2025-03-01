@@ -67,7 +67,7 @@ importers:
         specifier: 13.0.0
         version: 13.0.0
       tiktoken:
-        specifier: latest
+        specifier: 1.0.20
         version: 1.0.20
       valibot:
         specifier: 1.0.0-rc.2
