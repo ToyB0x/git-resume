@@ -12,6 +12,9 @@ export const searchIssuesAndPRsTbl = sqliteTable("search_issues_and_prs", {
   updatedAt: int({ mode: "timestamp_ms" }).notNull(),
   closedAt: int({ mode: "timestamp_ms" }),
   authorId: int("author_id").notNull(),
+  repoVisibility: text("repo_visibility", {
+    enum: ["public", "private"],
+  }).notNull(),
   // repositoryId: int("repository_id")
   //   .notNull()
   //   .references(() => repositoryTbl.id, {

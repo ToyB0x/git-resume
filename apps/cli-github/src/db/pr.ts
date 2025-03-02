@@ -11,4 +11,7 @@ export const prTbl = sqliteTable("pr", {
   updatedAt: int({ mode: "timestamp_ms" }).notNull(),
   closedAt: int({ mode: "timestamp_ms" }),
   diff: text("diff").notNull(),
+  repoVisibility: text("repo_visibility", {
+    enum: ["public", "private"],
+  }).notNull(),
 });

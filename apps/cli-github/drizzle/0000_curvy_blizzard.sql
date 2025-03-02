@@ -1,3 +1,11 @@
+CREATE TABLE `default_branch_commit` (
+	`sha` text PRIMARY KEY NOT NULL,
+	`repository_url` text NOT NULL,
+	`user_login` text NOT NULL,
+	`diff` text NOT NULL,
+	`repo_visibility` text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `pr` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`number` integer NOT NULL,
@@ -8,7 +16,8 @@ CREATE TABLE `pr` (
 	`createdAt` integer NOT NULL,
 	`updatedAt` integer NOT NULL,
 	`closedAt` integer,
-	`diff` text NOT NULL
+	`diff` text NOT NULL,
+	`repo_visibility` text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `pr_commit` (
@@ -64,7 +73,8 @@ CREATE TABLE `search_issues_and_prs` (
 	`createdAt` integer NOT NULL,
 	`updatedAt` integer NOT NULL,
 	`closedAt` integer,
-	`author_id` integer NOT NULL
+	`author_id` integer NOT NULL,
+	`repo_visibility` text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `user` (

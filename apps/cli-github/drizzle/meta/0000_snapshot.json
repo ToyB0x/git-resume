@@ -1,9 +1,54 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "8cd9fa23-7d69-45c5-bc09-8f64fdded904",
+  "id": "d5e79354-0c8f-4eb2-9944-145fac4e9a65",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "default_branch_commit": {
+      "name": "default_branch_commit",
+      "columns": {
+        "sha": {
+          "name": "sha",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "repository_url": {
+          "name": "repository_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_login": {
+          "name": "user_login",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "diff": {
+          "name": "diff",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "repo_visibility": {
+          "name": "repo_visibility",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "pr": {
       "name": "pr",
       "columns": {
@@ -72,6 +117,13 @@
         },
         "diff": {
           "name": "diff",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "repo_visibility": {
+          "name": "repo_visibility",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -431,6 +483,13 @@
         "author_id": {
           "name": "author_id",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "repo_visibility": {
+          "name": "repo_visibility",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
