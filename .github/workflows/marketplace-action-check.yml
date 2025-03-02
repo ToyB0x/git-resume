@@ -1,0 +1,24 @@
+name: marketplace
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read # for checkout repository
+  actions: read # for read marketplace action
+
+jobs:
+  test-marketplace-action:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: run marketplace action
+        uses: './' # Uses an action in the root directory
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RESUME_USERNAME: ToyB0x
+          RESUME_GEMINI_API_KEY: xxxxxxxxxxxxxxx
+          RESUME_ENV: test
