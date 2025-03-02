@@ -1,5 +1,6 @@
 import { step } from "@/utils";
 import { aggregate as aggregatePrDiff } from "./pr";
+import { aggregate as aggregateSearchCommits } from "./searchCommits";
 import { aggregate as aggregateSearchIssuesAndPRs } from "./searchIssuesAndPRs";
 import { aggregate as aggregateUserDetail } from "./userDetail";
 // import { aggregate as aggregateRepositories } from "./repositories";
@@ -23,5 +24,10 @@ export const aggregateUser = async (userName: string): Promise<void> => {
   await step({
     stepName: "aggregate:pr-diff",
     callback: aggregatePrDiff(userName),
+  });
+
+  await step({
+    stepName: "aggregate:searchCommits",
+    callback: aggregateSearchCommits(userName),
   });
 };

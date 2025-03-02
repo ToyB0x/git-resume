@@ -1,5 +1,5 @@
 import { dbClient } from "@/clients";
-import { prTbl, userTbl } from "@/db";
+import { defaultBranchCommitTbl, prTbl, userTbl } from "@/db";
 import { eq } from "drizzle-orm";
 
 export const explainWithPrDiffs = async (userName: string): Promise<void> => {
@@ -10,17 +10,24 @@ export const explainWithPrDiffs = async (userName: string): Promise<void> => {
     .get();
   if (!userId) throw new Error("User not found");
 
-  const all = await dbClient
+  const prCommits = await dbClient
     .select()
     .from(prTbl)
     .where(eq(prTbl.authorId, userId.id));
 
-  const allJsonText = all
-    .filter((pr) =>
-      pr.repositoryUrl.includes(`https://api.github.com/repos/${userName}`),
+  const defaultBranchCommits = await dbClient
+    .select()
+    .from(defaultBranchCommitTbl)
+    .where(eq(defaultBranchCommitTbl.userLogin, userName));
+
+  const allCommits = [...prCommits, ...defaultBranchCommits];
+
+  const allJsonText = allCommits
+    .filter((commit) =>
+      commit.repositoryUrl.includes(`https://api.github.com/repos/${userName}`),
     )
     .filter((diff) => !diff.diff.includes("yarn.lock"))
-    .filter((diff) => diff.diff.length < 50 * 1000)
+    .filter((diff) => diff.diff.length < 10 * 1000) // 10KB, ユーザにより調整が必要
     .map((diff) => diff.diff)
     .join("\n");
 
