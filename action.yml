@@ -1,4 +1,4 @@
-name: 'git-resume'
+name: 'Git Resume'
 author: 'ToyB0x'
 description: 'Auto generate / maintain resume from git activity with LLM'
 branding:
