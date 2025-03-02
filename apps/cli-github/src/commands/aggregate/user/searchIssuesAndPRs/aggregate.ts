@@ -2,18 +2,24 @@ import { dbClient, octokitApp } from "@/clients";
 import { searchIssuesAndPRsTbl } from "@/db";
 import { isBefore, subDays } from "date-fns";
 
-export const aggregate = async (userName: string) => {
-  await _aggregate(userName, "issue");
-  await _aggregate(userName, "pr");
+export const aggregate = async (
+  userName: string,
+  repoVisibility: "public" | "private",
+) => {
+  await _aggregate(userName, "issue", repoVisibility);
+  await _aggregate(userName, "pr", repoVisibility);
 };
 
-export const _aggregate = async (userName: string, type: "pr" | "issue") => {
+export const _aggregate = async (
+  userName: string,
+  type: "pr" | "issue",
+  repoVisibility: "public" | "private",
+) => {
   // ref: https://docs.github.com/ja/search-github/searching-on-github/searching-issues-and-pull-requests#search-by-author
   const issuesAndPrs = await octokitApp.paginate(
     octokitApp.rest.search.issuesAndPullRequests,
     {
-      // q: `is:pr is:public author:${userName}`,
-      q: `author:${userName} type:${type}`,
+      q: `author:${userName} type:${type} is:${repoVisibility}`,
       sort: "created",
       order: "desc",
       per_page: 100,
@@ -48,6 +54,7 @@ export const _aggregate = async (userName: string, type: "pr" | "issue") => {
         closedAt: issueOrPr.closed_at ? new Date(issueOrPr.closed_at) : null,
         authorId: authorId,
         repositoryUrl: issueOrPr.repository_url,
+        repoVisibility,
       })
       .onConflictDoUpdate({
         target: searchIssuesAndPRsTbl.id,
@@ -57,6 +64,7 @@ export const _aggregate = async (userName: string, type: "pr" | "issue") => {
           body: issueOrPr.body,
           updatedAt: new Date(issueOrPr.updated_at),
           closedAt: issueOrPr.closed_at ? new Date(issueOrPr.closed_at) : null,
+          repoVisibility,
         },
       });
   }

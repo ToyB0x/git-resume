@@ -5,7 +5,10 @@ import { aggregate as aggregateSearchIssuesAndPRs } from "./searchIssuesAndPRs";
 import { aggregate as aggregateUserDetail } from "./userDetail";
 // import { aggregate as aggregateRepositories } from "./repositories";
 
-export const aggregateUser = async (userName: string): Promise<void> => {
+export const aggregateUser = async (
+  userName: string,
+  repoVisibility: "public" | "private",
+): Promise<void> => {
   // await step({
   //   stepName: "aggregate:repository",
   //   callback: aggregateRepositories(userName),
@@ -18,16 +21,16 @@ export const aggregateUser = async (userName: string): Promise<void> => {
 
   await step({
     stepName: "aggregate:searchIssuesAndPRs",
-    callback: aggregateSearchIssuesAndPRs(userName),
+    callback: aggregateSearchIssuesAndPRs(userName, repoVisibility),
   });
 
   await step({
     stepName: "aggregate:pr-diff",
-    callback: aggregatePrDiff(userName),
+    callback: aggregatePrDiff(userName, repoVisibility),
   });
 
   await step({
     stepName: "aggregate:searchCommits",
-    callback: aggregateSearchCommits(userName),
+    callback: aggregateSearchCommits(userName, repoVisibility),
   });
 };

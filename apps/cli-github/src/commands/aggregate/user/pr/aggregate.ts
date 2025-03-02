@@ -4,7 +4,10 @@ import { logger } from "@/utils";
 import { PromisePool } from "@supercharge/promise-pool";
 import { and, eq } from "drizzle-orm";
 
-export const aggregate = async (userName: string) => {
+export const aggregate = async (
+  userName: string,
+  repoVisibility: "public" | "private",
+) => {
   const user = await dbClient
     .select()
     .from(userTbl)
@@ -20,6 +23,7 @@ export const aggregate = async (userName: string) => {
       and(
         eq(searchIssuesAndPRsTbl.type, "pr"),
         eq(searchIssuesAndPRsTbl.authorId, user.id),
+        eq(searchIssuesAndPRsTbl.repoVisibility, repoVisibility),
       ),
     );
 
@@ -61,6 +65,7 @@ export const aggregate = async (userName: string) => {
           updatedAt: pr.updatedAt,
           closedAt: pr.closedAt,
           diff: diffString,
+          repoVisibility,
         })
         .onConflictDoUpdate({
           target: prTbl.id,
@@ -71,6 +76,7 @@ export const aggregate = async (userName: string) => {
             updatedAt: pr.updatedAt,
             closedAt: pr.closedAt,
             diff: diffString,
+            repoVisibility,
           },
         });
     });
