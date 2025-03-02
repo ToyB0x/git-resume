@@ -1,0 +1,55 @@
+name: 'git-resume'
+author: 'ToyB0x'
+description: 'Auto generate / maintain resume from git activity with LLM'
+branding:
+  color: 'blue'
+  icon: 'activity'
+inputs:
+  RESUME_USERNAME:
+    description: "GitHub username to generate resume"
+    required: true
+  RESUME_GEMINI_API_KEY:
+    description: "API Key for Gemini LLM"
+    required: true
+  RESUME_ENV:
+    description: "git-resume environment (normally prd)"
+    required: false
+    default: "prd"
+  GITHUB_TOKEN:
+    description: "Required if you want to use GitHub API to generate resume"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Check out
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      with:
+        repository: 'ToyB0x/git-resume'
+
+    - name: Enable corepack for pnpm
+      run: npm install -g corepack@latest && corepack enable pnpm
+      shell: bash
+
+    - name: Setup & Restore Node cache
+      uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
+      with:
+        cache: 'pnpm'
+        node-version-file: 'package.json'
+
+    - name: Install all packages
+      run: pnpm install --frozen-lockfile
+      shell: bash
+
+    - name: Build all packages
+      run: pnpm turbo build
+      shell: bash
+
+    - name: Show Help
+      run: pnpm jobs -h
+      shell: bash
+      working-directory: apps/cli-github
+      env:
+        RESUME_USERNAME: ${{ inputs.RESUME_USERNAME }}
+        RESUME_GEMINI_API_KEY: ${{ inputs.RESUME_GEMINI_API_KEY }}
+        RESUME_ENV: ${{ inputs.RESUME_ENV }}
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
