@@ -1,3 +1,4 @@
+export * from "./defaultBranchCommit";
 export * from "./pr";
 export * from "./prCommit";
 export * from "./repository";
