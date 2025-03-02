@@ -5,4 +5,7 @@ export const defaultBranchCommitTbl = sqliteTable("default_branch_commit", {
   repositoryUrl: text("repository_url").notNull(),
   userLogin: text("user_login").notNull(),
   diff: text("diff").notNull(),
+  repoVisibility: text("repo_visibility", {
+    enum: ["public", "private"],
+  }).notNull(),
 });

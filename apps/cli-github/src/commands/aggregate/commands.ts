@@ -9,9 +9,18 @@ export const newAggregateCommand = () => {
     .command("user")
     .description("aggregate specific user activity")
     .argument("<userName>", "userName to aggregate")
-    .action(async (userName) => {
+    .argument(
+      "<repoVisibility>",
+      "repository type to aggregate (public/private)",
+    )
+    .action(async (userName, repoVisibility) => {
       if (typeof userName !== "string") throw Error("userName must be string");
-      await aggregateUser(userName);
+      if (typeof repoVisibility !== "string")
+        throw Error("repoVisibility must be string");
+      if (repoVisibility !== "public" && repoVisibility !== "private")
+        throw Error("repoVisibility must be public or private");
+
+      await aggregateUser(userName, repoVisibility);
     });
 
   return aggregate;
