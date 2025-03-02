@@ -1,7 +1,7 @@
 import { step } from "@/utils";
-import { aggregate as aggregatePrDiff } from "./pr";
+// import { aggregate as aggregatePrDiff } from "./pr";
 import { aggregate as aggregateSearchCommits } from "./searchCommits";
-import { aggregate as aggregateSearchIssuesAndPRs } from "./searchIssuesAndPRs";
+// import { aggregate as aggregateSearchIssuesAndPRs } from "./searchIssuesAndPRs";
 import { aggregate as aggregateUserDetail } from "./userDetail";
 // import { aggregate as aggregateRepositories } from "./repositories";
 
@@ -19,15 +19,15 @@ export const aggregateUser = async (
     callback: aggregateUserDetail(userName),
   });
 
-  await step({
-    stepName: "aggregate:searchIssuesAndPRs",
-    callback: aggregateSearchIssuesAndPRs(userName, repoVisibility),
-  });
-
-  await step({
-    stepName: "aggregate:pr-diff",
-    callback: aggregatePrDiff(userName, repoVisibility),
-  });
+  // await step({
+  //   stepName: "aggregate:searchIssuesAndPRs",
+  //   callback: aggregateSearchIssuesAndPRs(userName, repoVisibility),
+  // });
+  //
+  // await step({
+  //   stepName: "aggregate:pr-diff",
+  //   callback: aggregatePrDiff(userName, repoVisibility),
+  // });
 
   await step({
     stepName: "aggregate:searchCommits",
