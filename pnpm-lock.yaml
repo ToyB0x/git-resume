@@ -56,7 +56,7 @@ importers:
         version: 8.0.0
       drizzle-orm:
         specifier: 0.40.0
-        version: 0.40.0(@cloudflare/workers-types@4.20250109.0)(@libsql/client@0.14.0)(gel@2.0.0)
+        version: 0.40.0(@cloudflare/workers-types@4.20250109.0)(@libsql/client@0.14.0)(@opentelemetry/api@1.9.0)(gel@2.0.0)
       octokit:
         specifier: 4.1.2
         version: 4.1.2
@@ -66,9 +66,6 @@ importers:
       pino-pretty:
         specifier: 13.0.0
         version: 13.0.0
-      tiktoken:
-        specifier: 1.0.20
-        version: 1.0.20
       valibot:
         specifier: 1.0.0-rc.2
         version: 1.0.0-rc.2(typescript@5.7.3)
@@ -1107,6 +1104,10 @@ packages:
     resolution: {integrity: sha512-f386XyLTieQbgKPKS6ZMlH4dq8eLsxNddwofiKRZCq0bZ2gikoFwMD99K6l1oAwqe/KZNzrEziGicRgnzplplQ==}
     engines: {node: '>= 18'}
 
+  '@opentelemetry/api@1.9.0':
+    resolution: {integrity: sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==}
+    engines: {node: '>=8.0.0'}
+
   '@petamoriken/float16@3.9.1':
     resolution: {integrity: sha512-j+ejhYwY6PeB+v1kn7lZFACUIG97u90WxMuGosILFsl9d4Ovi0sjk0GlPfoEcx+FzvXZDAfioD+NGnnPamXgMA==}
 
@@ -1767,9 +1768,6 @@ packages:
 
   thread-stream@3.1.0:
     resolution: {integrity: sha512-OqyPZ9u96VohAyMfJykzmivOrY2wfMSf3C5TtFJVgN+Hm6aj+voFhlK+kZEIv2FBh1X6Xp3DlnCOfEQ3B2J86A==}
-
-  tiktoken@1.0.20:
-    resolution: {integrity: sha512-zVIpXp84kth/Ni2me1uYlJgl2RZ2EjxwDaWLeDY/s6fZiyO9n1QoTOM5P7ZSYfToPvAvwYNMbg5LETVYVKyzfQ==}
 
   tldts-core@6.1.78:
     resolution: {integrity: sha512-jS0svNsB99jR6AJBmfmEWuKIgz91Haya91Z43PATaeHJ24BkMoNRb/jlaD37VYjb0mYf6gRL/HOnvS1zEnYBiw==}
@@ -2632,6 +2630,9 @@ snapshots:
       '@octokit/request-error': 6.1.7
       '@octokit/webhooks-methods': 5.1.1
 
+  '@opentelemetry/api@1.9.0':
+    optional: true
+
   '@petamoriken/float16@3.9.1': {}
 
   '@supercharge/promise-pool@3.2.0': {}
@@ -2777,10 +2778,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.40.0(@cloudflare/workers-types@4.20250109.0)(@libsql/client@0.14.0)(gel@2.0.0):
+  drizzle-orm@0.40.0(@cloudflare/workers-types@4.20250109.0)(@libsql/client@0.14.0)(@opentelemetry/api@1.9.0)(gel@2.0.0):
     optionalDependencies:
       '@cloudflare/workers-types': 4.20250109.0
       '@libsql/client': 0.14.0
+      '@opentelemetry/api': 1.9.0
       gel: 2.0.0
 
   dunder-proto@1.0.1:
@@ -3337,8 +3339,6 @@ snapshots:
   thread-stream@3.1.0:
     dependencies:
       real-require: 0.2.0
-
-  tiktoken@1.0.20: {}
 
   tldts-core@6.1.78: {}
 

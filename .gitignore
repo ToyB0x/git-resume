@@ -39,4 +39,5 @@ yarn-error.log*
 .idea
 
 # temp memo
+temp
 MEMO.md
