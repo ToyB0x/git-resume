@@ -1,5 +1,6 @@
 import { Command } from "commander";
-import { explainWithIssuesAndPrs } from "./withIssuesAndPrs.ts";
+import { explainWithIssuesAndPrs } from "./withIssuesAndPrs";
+import { explainWithPrDiffs } from "./withPrDiffs";
 
 export const newExplainCommand = () => {
   const explain = new Command("explain");
