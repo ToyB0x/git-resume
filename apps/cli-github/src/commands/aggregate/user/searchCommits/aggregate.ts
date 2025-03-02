@@ -20,20 +20,20 @@ export const aggregate = async (
     .process(async (commit, i) => {
       logger.info(`Start aggregate:commit (${i + 1}/${commits.length})`);
 
+      // NOTE: temporary disable get diff via API
       // https://docs.github.com/ja/rest/commits/commits?apiVersion=2022-11-28#get-a-commit
-      const { data: diff } = await octokitApp.rest.repos.getCommit({
-        owner: commit.repository.owner.login,
-        repo: commit.repository.name,
-        ref: commit.sha,
-        mediaType: {
-          format: "diff",
-        },
-      });
-
+      // const { data: diff } = await octokitApp.rest.repos.getCommit({
+      //   owner: commit.repository.owner.login,
+      //   repo: commit.repository.name,
+      //   ref: commit.sha,
+      //   mediaType: {
+      //     format: "diff",
+      //   },
+      // });
       // NOTE: octotik.rest.pulls.get returns diff as not `string` but actually `string`
-      const diffString = diff as never as string;
-      if (typeof diffString !== "string")
-        throw Error("diffString is required as text");
+      // const diffString = diff as never as string;
+      // if (typeof diffString !== "string")
+      //   throw Error("diffString is required as text");
 
       await dbClient
         .insert(defaultBranchCommitTbl)
@@ -45,7 +45,8 @@ export const aggregate = async (
           // authorId: commit.author?.id,
           // TODO: get DATE
           // createdAt: commit.author?.date,
-          diff: diffString,
+          // diff: diffString,
+          diff: "",
           repoVisibility,
         })
         .onConflictDoUpdate({
@@ -53,7 +54,8 @@ export const aggregate = async (
           set: {
             repositoryUrl: commit.repository.url,
             userLogin: userName,
-            diff: diffString,
+            // diff: diffString,
+            diff: "",
             repoVisibility,
           },
         });
