@@ -15,7 +15,7 @@ jobs:
       - name: Check out
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - name: run marketplace action test as SINGLE_REPOSITORY MODE
+      - name: run marketplace action
         uses: './' # Uses an action in the root directory
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
