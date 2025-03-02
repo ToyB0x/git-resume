@@ -9,7 +9,7 @@ export const aggregate = async (
 ) => {
   // https://docs.github.com/ja/rest/search/search?apiVersion=2022-11-28#search-commits
   const commits = await octokitApp.paginate(octokitApp.rest.search.commits, {
-    q: `author:${userName} is:${repoVisibility} author-date:>2024-01-01`,
+    q: `author:${userName} is:${repoVisibility} author-date:>2023-01-01`,
     sort: "author-date",
     order: "desc",
     per_page: 100,

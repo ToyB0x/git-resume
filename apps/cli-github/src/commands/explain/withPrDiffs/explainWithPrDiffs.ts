@@ -23,11 +23,11 @@ export const explainWithPrDiffs = async (userName: string): Promise<void> => {
   const allCommits = [...prCommits, ...defaultBranchCommits];
 
   const allJsonText = allCommits
-    .filter((commit) =>
-      commit.repositoryUrl.includes(`https://api.github.com/repos/${userName}`),
-    )
+    // .filter((commit) =>
+    //   commit.repositoryUrl.includes(`https://api.github.com/repos/${userName}`),
+    // )
     .filter((diff) => !diff.diff.includes("yarn.lock"))
-    .filter((diff) => diff.diff.length < 10 * 1000) // 10KB, ユーザにより調整が必要
+    .filter((diff) => diff.diff.length < 5 * 1000) // 5KB, ユーザにより調整が必要
     .map((diff) => diff.diff)
     .join("\n");
 
