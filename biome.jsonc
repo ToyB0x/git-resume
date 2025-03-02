@@ -12,6 +12,7 @@
       "**/build/**",
       "**/dist/**",
       "**/drizzle/**",
+      "**/.react-router/**",
       "**/.turbo/**"
     ]
   },
