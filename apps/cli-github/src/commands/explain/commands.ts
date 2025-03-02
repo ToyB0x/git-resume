@@ -15,5 +15,14 @@ export const newExplainCommand = () => {
       await explainWithIssuesAndPrs(userName);
     });
 
+  explain
+    .command("pr-diff")
+    .description("explain user by pr diffs")
+    .argument("<userName>", "userName to explain")
+    .action(async (userName) => {
+      if (typeof userName !== "string") throw Error("userName must be string");
+      await explainWithPrDiffs(userName);
+    });
+
   return explain;
 };
