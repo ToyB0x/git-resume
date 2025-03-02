@@ -31,4 +31,4 @@ const getOctokit = (githubToken: string) => {
   });
 };
 
-export const octokitApp = getOctokit(env.GITHUB_PERSONAL_ACCESS_TOKEN);
+export const octokitApp = getOctokit(env.GITHUB_TOKEN);
