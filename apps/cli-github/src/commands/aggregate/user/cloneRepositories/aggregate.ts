@@ -27,7 +27,7 @@ export const aggregate = async (
     name: repositoryUrl.split("/")[5],
   }));
 
-  const { errors } = await PromisePool.for(repositories.slice(1))
+  const { errors } = await PromisePool.for(repositories)
     .withConcurrency(10)
     .process(async (repo, i) => {
       logger.info(
