@@ -29,18 +29,32 @@ export const explainWithPrDiffs = async (userName: string): Promise<void> => {
   }));
 
   for (const repo of repositories) {
-    console.log("repo", repo);
     const targetDir = `./git/${repo.owner}/${repo.name}`;
     const gitClient = simpleGit(targetDir);
     const logs = await gitClient.log([`--author=${userName}`]);
-    for (const log of logs.all) {
-      // show log summary properties
+    const recentLogs = logs.all.filter(
+      (log) => new Date(log.date) > new Date("2022-01-01"),
+    );
+    for (const log of recentLogs) {
+      // NOTE: if you want to see all logs, uncomment below
       // console.log(log);
 
-      const show = await gitClient.show(log.hash);
+      const show = await gitClient.show([log.hash, "--unified=0"]);
+      const showByLines = show.split("\n");
 
-      if (show.length < 1 * 1000) {
-        console.log("diff", show);
+      // NOTE: if you want to see all lines, uncomment below
+      // console.log(showByLines);
+
+      const addedLines = showByLines.filter((line) => line.startsWith("+"));
+
+      // 500行未満の変更のみに絞る
+      if (addedLines.length < 500) {
+        const addedStrings = addedLines.join("\n");
+
+        // 10KB未満の変更のみに絞る
+        if (addedStrings.length < 10 * 1000) {
+          console.log("diff", addedStrings);
+        }
       }
     }
   }
