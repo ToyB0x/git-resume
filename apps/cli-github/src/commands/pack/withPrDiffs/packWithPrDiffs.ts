@@ -3,7 +3,7 @@ import { defaultBranchCommitTbl, userTbl } from "@/db";
 import { eq } from "drizzle-orm";
 import { simpleGit } from "simple-git";
 
-export const explainWithPrDiffs = async (userName: string): Promise<void> => {
+export const packWithPrDiffs = async (userName: string): Promise<void> => {
   const userId = await dbClient
     .select()
     .from(userTbl)

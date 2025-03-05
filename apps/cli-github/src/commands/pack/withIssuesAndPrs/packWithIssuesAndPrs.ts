@@ -2,9 +2,7 @@ import { dbClient } from "@/clients";
 import { searchIssuesAndPRsTbl, userTbl } from "@/db";
 import { eq } from "drizzle-orm";
 
-export const explainWithIssuesAndPrs = async (
-  userName: string,
-): Promise<void> => {
+export const packWithIssuesAndPrs = async (userName: string): Promise<void> => {
   const userId = await dbClient
     .select()
     .from(userTbl)

@@ -1,10 +1,10 @@
 import { Command } from "commander";
-import { newAggregateCommand, newExplainCommand } from "./commands";
+import { newAggregateCommand, newPackCommand } from "./commands";
 
 const main = async () => {
   const program = new Command();
   program.addCommand(newAggregateCommand());
-  program.addCommand(newExplainCommand());
+  program.addCommand(newPackCommand());
 
   try {
     await program.parseAsync();
