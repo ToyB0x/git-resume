@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from "@/utils/env";
 import { throttling } from "@octokit/plugin-throttling";
 import { Octokit } from "octokit";
 
