@@ -1,5 +1,9 @@
 import { Command } from "commander";
-import {newAggregateCommand, newGenerateCommand, newPackCommand} from "./commands";
+import {
+  newAggregateCommand,
+  newGenerateCommand,
+  newPackCommand,
+} from "./commands";
 
 const main = async () => {
   const program = new Command();
