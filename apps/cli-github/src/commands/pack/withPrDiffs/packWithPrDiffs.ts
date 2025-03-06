@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { dbClient } from "@/clients";
 import { defaultBranchCommitTbl, userTbl } from "@/db";
 import { eq } from "drizzle-orm";
@@ -21,6 +22,7 @@ export const packWithPrDiffs = async (userName: string): Promise<void> => {
     .from(defaultBranchCommitTbl)
     .where(eq(defaultBranchCommitTbl.userLogin, userName));
 
+  // TODO: fileに書き出す必要はないかも？という部分を検討
   const repositories = [
     ...new Set(defaultBranchCommits.map((commit) => commit.repositoryUrl)),
   ].map((repositoryUrl) => ({
@@ -28,36 +30,64 @@ export const packWithPrDiffs = async (userName: string): Promise<void> => {
     name: repositoryUrl.split("/")[5],
   }));
 
-  for (const repo of repositories) {
-    const targetDir = `./git/${repo.owner}/${repo.name}`;
-    const gitClient = simpleGit(targetDir);
-    const logs = await gitClient.log([`--author=${userName}`]);
-    const recentLogs = logs.all.filter(
-      (log) => new Date(log.date) > new Date("2022-01-01"),
-    );
-    for (const log of recentLogs) {
-      // NOTE: if you want to see all logs, uncomment below
-      // console.log(log);
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 5 }, (_, i) => currentYear - 4 + i);
 
-      const show = await gitClient.show([log.hash, "--unified=0"]);
-      const showByLines = show.split("\n");
+  for (const year of years) {
+    for (const repo of repositories) {
+      const targetDir = `./git/${repo.owner}/${repo.name}`;
+      const gitClient = simpleGit(targetDir);
+      const logs = await gitClient.log([`--author=${userName}`]);
+      const recentLogs = logs.all.filter(
+        (log) =>
+          new Date(log.date) > new Date(`${year}-01-01 `) &&
+          new Date(log.date) < new Date(`${year + 1}-01-01 `),
+      );
 
-      // NOTE: if you want to see all lines, uncomment below
-      // console.log(showByLines);
+      const lines: string[] = [];
+      for (const log of recentLogs) {
+        // NOTE: if you want to see all logs, uncomment below
+        // console.log(log);
 
-      const addedLines = showByLines.filter((line) => line.startsWith("+"));
+        const show = await gitClient.show([log.hash, "--unified=0"]);
+        if (show.length > 3000) continue; // 変更が大きすぎるDiffはLockファイルなどを含む可能性があるためSkip
 
-      // 500行未満の変更のみに絞る
-      if (addedLines.length < 500) {
-        const addedStrings = addedLines.join("\n");
+        const showByLines = show.split("\n");
+        const filterLargeLines = showByLines.filter(
+          (line) => line.length <= 150,
+        ); // 1行が長すぎる場合はSVGなどの可能性があるため除外
 
-        // 10KB未満の変更のみに絞る
-        if (addedStrings.length < 10 * 1000) {
-          console.log("diff", addedStrings);
-        }
+        lines.push(...filterLargeLines);
+
+        // NOTE: if you want to see all lines, uncomment below
+        // console.log(showByLines);
+        //
+        // const addedLines = showByLines.filter((line) => line.startsWith("+"));
+        //
+        // // 500行未満の変更のみに絞る
+        // if (addedLines.length < 500) {
+        //   const addedStrings = addedLines.join("\n");
+        //
+        //   // 10KB未満の変更のみに絞る
+        //   if (addedStrings.length < 5 * 1000) {
+        //     // console.log("diff", addedStrings);
+        //     lines.push(addedStrings);
+        //   }
+        // }
+      }
+
+      if (lines.length > 0) {
+        const dir = `pack/${userName}/${repo.owner}/${repo.name}/`;
+        fs.mkdirSync(dir, { recursive: true });
+        fs.writeFileSync(`${dir}/${year}.txt`, lines.join("\n"));
       }
     }
   }
+
+  // console.log(lines.join("\n"));
+
+  // const linesWithoutLockfile = removeYarnLockChanges(lines);
+  // console.log(linesWithoutLockfile.join("\n"));
 
   // const allCommits = [...prCommits, ...defaultBranchCommits];
   //
@@ -73,3 +103,31 @@ export const packWithPrDiffs = async (userName: string): Promise<void> => {
   // console.log(allJsonText);
   // console.log(allJsonText.length);
 };
+
+// const removeYarnLockChanges = (lines: string[]): string[] => {
+//   let inYarnLock = false;
+//   const filteredLines = [];
+//
+//   for (const line of lines) {
+//     // +++ b/packages/xxx/yarn.lock
+//     if (line.startsWith("+++") && line.includes("/yarn.lock")) {
+//       inYarnLock = true;
+//       continue; // Skip the diff header line
+//     }
+//     if (inYarnLock && line.startsWith("+")) {
+//       continue;
+//     }
+//
+//     if (inYarnLock && !line.startsWith("+")) {
+//       inYarnLock = false;
+//     }
+//
+//     if (!inYarnLock) {
+//       filteredLines.push(line);
+//     }
+//   }
+//
+//   return filteredLines;
+// };
+//
+// export { removeYarnLockChanges };
