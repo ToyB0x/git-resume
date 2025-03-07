@@ -1,15 +1,13 @@
-import type { Repository, Summary } from "@/models";
+import { create } from "./create";
 
 interface SummaryService {
-  create: (userName: string, repository: Repository) => Promise<Summary>;
-  update: (userName: string, repository: Repository) => Promise<Summary>;
+  create: (userName: string, gitDir: string) => Promise<void>;
+  // update: (userName: string, repository: Repository) => Promise<Summary>;
 }
 
-export const resumeService: SummaryService = {
-  create: async (userName: string, repository: Repository) => {
-    throw Error("not implemented: " + userName);
-  },
-  update: async (userName: string, repository: Repository) => {
-    throw Error("not implemented: " + userName);
-  },
+export const summaryService: SummaryService = {
+  create: create,
+  // update: async (userName: string, repository: Repository) => {
+  //   throw Error("not implemented: " + userName);
+  // },
 };
