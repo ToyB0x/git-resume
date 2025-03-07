@@ -1,15 +1,14 @@
 import fs from "node:fs";
-import path from "node:path";
-import { summaryService } from "@/services/summary/interfaces";
+import { packService } from "@/services/pack/interfaces";
 
 export const create = async (userName: string) => {
-  const gitDirs: string[] = fs
-    .readdirSync("./generated/git")
-    .filter((found) => {
-      return fs.statSync(path.join(process.cwd(), found)).isDirectory();
-    });
+  const dir = "./generated/git";
+  const orgDirs: string[] = fs.readdirSync(dir);
 
-  for (const gitDir of gitDirs) {
-    await summaryService.create(userName, gitDir);
+  for (const orgDir of orgDirs) {
+    const repoDirs: string[] = fs.readdirSync(`${dir}/${orgDir}`);
+    for (const repoDir of repoDirs) {
+      await packService.create(userName, `${dir}/${orgDir}/${repoDir}`);
+    }
   }
 };

@@ -9,7 +9,7 @@ const transports = pino.transport({
     {
       level: "trace",
       target: "pino/file",
-      options: { destination: `logs/${Date.now()}.log`, mkdir: true },
+      options: { destination: `generated/logs/${Date.now()}.log`, mkdir: true },
     },
   ],
 });
