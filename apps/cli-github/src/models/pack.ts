@@ -1,7 +1,7 @@
 export type Pack = {
   meta: {
-    organization: string;
-    repository: string;
+    owner: string;
+    repo: string;
   };
   body: string;
 };

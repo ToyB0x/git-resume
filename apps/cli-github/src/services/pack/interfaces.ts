@@ -1,14 +1,13 @@
 import type { Pack } from "@/models";
 import { create } from "./create";
+import { load } from "./load";
 
 interface PackService {
   create: (userName: string, gitDir: string) => Promise<void>;
-  load: (userName: string) => Promise<Pack[]>;
+  load: (userName: string) => Pack[];
 }
 
 export const packService: PackService = {
   create: create,
-  load: async (userName: string) => {
-    throw Error("not implemented: " + userName);
-  },
+  load: load,
 };
