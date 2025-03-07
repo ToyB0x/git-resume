@@ -1,15 +1,14 @@
-import type { Resume } from "@/models";
+import type { Summary } from "@/models";
+import { create } from "./create";
 
 interface ResumeService {
-  create: (userName: string) => Promise<Resume>;
-  update: (userName: string) => Promise<Resume>;
+  create: (userName: string, summaries: Summary[]) => Promise<void>;
+  // update: (userName: string) => Promise<Resume>;
 }
 
 export const resumeService: ResumeService = {
-  create: async (userName: string) => {
-    throw Error("not implemented: " + userName);
-  },
-  update: async (userName: string) => {
-    throw Error("not implemented: " + userName);
-  },
+  create: create,
+  // update: async (userName: string) => {
+  //   throw Error("not implemented: " + userName);
+  // },
 };

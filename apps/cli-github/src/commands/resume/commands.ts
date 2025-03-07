@@ -1,18 +1,18 @@
 import { Command } from "commander";
-import { generateResume } from "./resume";
+import { create } from "./create";
 
-export const newGenerateCommand = () => {
-  const generate = new Command("generate");
-  generate.description("generate related commands.");
+export const newResumeCommand = () => {
+  const resumeCmd = new Command("resume");
+  resumeCmd.description("resume related commands.");
 
-  generate
-    .command("resume")
-    .description("generate user resume")
-    .argument("<userName>", "userName to generate resume")
+  resumeCmd
+    .command("create")
+    .description("Create user resume.")
+    .argument("<userName>", "userName to create resume")
     .action(async (userName) => {
       if (typeof userName !== "string") throw Error("userName must be string");
-      await generateResume(userName);
+      await create(userName);
     });
 
-  return generate;
+  return resumeCmd;
 };
