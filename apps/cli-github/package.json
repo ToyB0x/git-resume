@@ -2,7 +2,7 @@
   "name": "@survive/cli-github",
   "type": "module",
   "scripts": {
-    "jobs": "dotenv -e ../../.env -- tsx src/index.ts",
+    "jobs": "dotenv -e ../../.env -- tsx src/commands/index.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "typecheck": "tsc --noEmit"
