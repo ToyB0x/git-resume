@@ -8,7 +8,8 @@ export const create = async (userName: string) => {
   for (const orgDir of orgDirs) {
     const repoDirs: string[] = fs.readdirSync(`${dir}/${orgDir}`);
     for (const repoDir of repoDirs) {
-      await packService.create(userName, `${dir}/${orgDir}/${repoDir}`);
+      const gitRepoDir = `${dir}/${orgDir}/${repoDir}`;
+      await packService.create(userName, gitRepoDir);
     }
   }
 };

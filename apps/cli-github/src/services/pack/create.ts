@@ -1,12 +1,12 @@
 import fs from "node:fs";
 import { simpleGit } from "simple-git";
 
-export const create = async (userName: string, gitDir: string) => {
+export const create = async (userName: string, gitRepoDir: string) => {
   // const currentYear = new Date().getFullYear();
   // const years = Array.from({ length: 5 }, (_, i) => currentYear - 4 + i);
   // for (const year of years) {
 
-  const gitClient = simpleGit(gitDir);
+  const gitClient = simpleGit(gitRepoDir);
 
   const logs = await gitClient.log([`--author=${userName}`]);
   // const recentLogs = logs.all.filter(
@@ -27,17 +27,14 @@ export const create = async (userName: string, gitDir: string) => {
   }
 
   if (lines.length > 0) {
-    const repoOwner = gitDir.split("/").slice(-2)[0];
-    const repoName = gitDir.split("/").slice(-1)[0];
+    const repoOwner = gitRepoDir.split("/").slice(-2)[0];
+    const repoName = gitRepoDir.split("/").slice(-1)[0];
     if (!repoOwner || !repoName) {
       throw new Error("Invalid gitDir");
     }
 
-    const packUserDir = `generated/pack/${userName}/`;
-    fs.mkdirSync(packUserDir, { recursive: true });
-    fs.writeFileSync(
-      `${packUserDir}/${repoOwner}-${repoName}.txt`,
-      lines.join("\n"),
-    );
+    const packDir = `generated/pack/${userName}/${repoOwner}/`;
+    fs.mkdirSync(packDir, { recursive: true });
+    fs.writeFileSync(`${packDir}/${repoName}.txt`, lines.join("\n"));
   }
 };
