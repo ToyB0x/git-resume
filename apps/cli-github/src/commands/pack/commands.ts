@@ -1,11 +1,11 @@
 import { Command } from "commander";
 import { create } from "./create";
 
-export const newSummaryCommand = () => {
-  const summaryCmd = new Command("summary");
-  summaryCmd.description("summary related commands.");
+export const newPackCommand = () => {
+  const packCmd = new Command("pack");
+  packCmd.description("pack related commands.");
 
-  summaryCmd
+  packCmd
     .command("create")
     .description("Create user summaries.")
     .argument("<userName>", "userName to summarize")
@@ -14,5 +14,5 @@ export const newSummaryCommand = () => {
       await create(userName);
     });
 
-  return summaryCmd;
+  return packCmd;
 };
