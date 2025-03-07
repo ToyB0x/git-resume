@@ -11,7 +11,7 @@ export const clone = async (userName: string, withGhCommand: boolean) => {
     .withConcurrency(10)
     .process(async (repo, i) => {
       logger.info(
-        `Start aggregate:repository ${repo.owner}/${repo.name} (${i + 1}/${repositories.length})`,
+        `Cloning ${repo.owner}/${repo.name} (${i + 1} / ${repositories.length})`,
       );
 
       if (withGhCommand) {

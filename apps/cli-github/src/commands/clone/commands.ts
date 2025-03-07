@@ -12,7 +12,7 @@ export const newCloneCommand = () => {
     )
     .argument("<userName>", "userName to clone related repositories")
     .option(
-      "-gh, --with-gh-command",
+      "--gh, --with-gh-command",
       "use gh clone command instead of git clone in case of git auth config not configured",
     )
     .action(async (userName, options) => {
