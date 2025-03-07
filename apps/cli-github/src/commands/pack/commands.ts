@@ -7,8 +7,8 @@ export const newPackCommand = () => {
 
   packCmd
     .command("create")
-    .description("Create user summaries.")
-    .argument("<userName>", "userName to summarize")
+    .description("Create user packs.")
+    .argument("<userName>", "userName to packing")
     .action(async (userName) => {
       if (typeof userName !== "string") throw Error("userName must be string");
       await create(userName);
