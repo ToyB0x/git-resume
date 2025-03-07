@@ -1,6 +1,8 @@
 import { packService } from "@/services/pack/interfaces";
+import { summaryService } from "@/services/summary/interfaces";
 
 export const create = async (userName: string) => {
   const packs = packService.load(userName);
-  console.log(packs);
+
+  await summaryService.create(userName, packs);
 };
