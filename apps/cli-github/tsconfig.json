@@ -7,5 +7,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "exclude": ["node_modules", "dist", "git"]
+  "exclude": ["node_modules", "dist", "generated"]
 }
