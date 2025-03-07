@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { generateResume } from "./resume";
+import { generateResume } from "./generate";
 
 export const newGenerateCommand = () => {
   const generate = new Command("generate");

@@ -2,6 +2,7 @@ import { Command } from "commander";
 import { newCloneCommand } from "./clone";
 // import { newGenerateCommand } from "./generate";
 import { newPackCommand } from "./pack";
+import { newResumeCommand } from "./resume";
 import { newSummaryCommand } from "./summary";
 
 const main = async () => {
@@ -10,6 +11,7 @@ const main = async () => {
   program.addCommand(newCloneCommand());
   program.addCommand(newPackCommand());
   program.addCommand(newSummaryCommand());
+  program.addCommand(newResumeCommand());
 
   try {
     await program.parseAsync();
