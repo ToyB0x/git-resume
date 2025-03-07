@@ -2,21 +2,17 @@
   "name": "@survive/cli-github",
   "type": "module",
   "scripts": {
-    "jobs": "dotenv -e ../../.env -- tsx src/index.ts",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
+    "jobs": "dotenv -e ../../.env -- tsx src/commands/index.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@genkit-ai/googleai": "^1.0.5",
     "@inquirer/confirm": "^5.1.6",
-    "@libsql/client": "0.14.0",
     "@octokit/plugin-throttling": "9.4.0",
     "@supercharge/promise-pool": "3.2.0",
     "commander": "13.1.0",
     "date-fns": "4.1.0",
     "dotenv-cli": "8.0.0",
-    "drizzle-orm": "0.40.0",
     "genkit": "^1.0.5",
     "octokit": "4.1.2",
     "pino": "9.6.0",
@@ -27,7 +23,6 @@
   "devDependencies": {
     "@tsconfig/strictest": "2.0.5",
     "@types/node": "22.13.5",
-    "drizzle-kit": "0.30.5",
     "tsx": "4.19.3",
     "typescript": "5.7.3"
   }
