@@ -45,7 +45,7 @@ runs:
       shell: bash
 
     - name: Show Help
-      run: pnpm db:generate && pnpm db:migrate && pnpm jobs -h
+      run: pnpm jobs -h
       shell: bash
       working-directory: apps/cli-github
       env:
