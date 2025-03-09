@@ -36,7 +36,7 @@ runs:
       with:
         cache: 'pnpm'
         node-version-file: 'package.json'
-      working-directory: git-resume
+        cache-dependency-path: git-resume/pnpm-lock.yaml
 
     - name: Install all packages
       run: pnpm install --frozen-lockfile
