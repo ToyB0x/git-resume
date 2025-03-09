@@ -25,6 +25,7 @@ runs:
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       with:
         repository: 'ToyB0x/git-resume'
+        path: 'git-resume'
 
     - name: Enable corepack for pnpm
       run: npm install -g corepack@latest && corepack enable pnpm
@@ -35,19 +36,22 @@ runs:
       with:
         cache: 'pnpm'
         node-version-file: 'package.json'
+        cache-dependency-path: git-resume/pnpm-lock.yaml
 
     - name: Install all packages
       run: pnpm install --frozen-lockfile
       shell: bash
+      working-directory: git-resume
 
     - name: Build all packages
       run: pnpm turbo build
       shell: bash
+      working-directory: git-resume
 
     - name: Show Help
       run: pnpm jobs -h
       shell: bash
-      working-directory: apps/cli-github
+      working-directory: git-resume/apps/cli-github
       env:
         RESUME_USERNAME: ${{ inputs.RESUME_USERNAME }}
         RESUME_GEMINI_API_KEY: ${{ inputs.RESUME_GEMINI_API_KEY }}
