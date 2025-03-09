@@ -8,6 +8,9 @@ inputs:
   RESUME_USERNAME:
     description: "GitHub username to generate resume"
     required: true
+  RESUME_COMMAND:
+    description: "command to run (e.g. generate, update, etc.)"
+    required: true
   RESUME_GEMINI_API_KEY:
     description: "API Key for Gemini LLM"
     required: true
@@ -49,7 +52,7 @@ runs:
       working-directory: git-resume
 
     - name: Show Help
-      run: pnpm jobs -h
+      run: pnpm jobs ${{ inputs.RESUME_COMMAND }}
       shell: bash
       working-directory: git-resume/apps/cli-github
       env:

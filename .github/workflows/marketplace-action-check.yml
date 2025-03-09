@@ -18,6 +18,7 @@ jobs:
       - name: run marketplace action
         uses: './' # Uses an action in the root directory
         with:
+          RESUME_COMMAND: '-h'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RESUME_USERNAME: ToyB0x
           RESUME_GEMINI_API_KEY: xxxxxxxxxxxxxxx
