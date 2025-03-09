@@ -14,6 +14,6 @@ export const gitHubService: GithubService = {
   getUserCommitedRepositories: getUserCommitedRepositories,
   // instead of git commands (for case not setup git ssh config, like in CI)
   cloneOrPullRepositories: async (repository: Repository) => {
-    throw Error("not implemented: " + repository.name);
+    throw Error(`not·implemented:·${repository.name}`);
   },
 };
