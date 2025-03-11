@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { hClient } from "~/clients";
 import type { Route } from "./+types/github.$userId";
 
@@ -15,70 +14,21 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
   const userResponse = await hClient.api.github[":userName"].$get({
     param: {
-      userName: userId || "test1",
+      userName: userId,
     },
   });
 
   if (!userResponse.ok) throw Error("Failed to fetch user data");
 
-  const user = await userResponse.json();
+  const { markdown } = await userResponse.json();
 
   // In a real implementation, we would fetch the actual resume markdown here
 
   return {
-    user,
     userId,
+    markdown,
   };
 }
-
-// Mock markdown resume data
-const mockResumeMarkdown = `# Yuki Hattori
-
-> Full-stack engineer passionate about open source development
-
-## Overview
-
-Experienced software engineer with 8+ years of expertise in web development and cloud infrastructure. Passionate about creating high-performance applications and contributing to open source projects.
-
-## Skills
-
-- **Languages**: JavaScript (9/10), TypeScript (8/10), Python (7/10), Go (6/10)
-- **Frontend**: React, Vue.js, Angular, HTML5, CSS3, Tailwind CSS
-- **Backend**: Node.js, Express, Hono, Django, FastAPI
-- **DevOps**: Docker, Kubernetes, GitHub Actions, CircleCI
-- **Cloud**: AWS, GCP, Firebase, Cloudflare
-
-## Project Experience
-
-### survive
-
-**Role**: Maintainer
-
-A GitHub resume generator that analyzes repositories to create professional profiles. Built with TypeScript, React, and Hono.
-
-### web-app
-
-**Role**: Contributor
-
-Modern web application with cutting-edge features built using React, GraphQL, and Tailwind CSS.
-
-### open-source-library
-
-**Role**: Creator
-
-Popular utility library that simplifies common development tasks with zero dependencies.
-
-## Key Strengths
-
-- Strong problem-solving skills with a focus on clean, maintainable code
-- Consistent contributions to open-source projects
-- Cross-functional team collaboration
-- Rapid prototyping and MVP development
-- Data-driven approach to performance optimization
-
----
-
-Generated with GitHub data and AI analysis.`;
 
 // Function to render markdown content with simple styling
 function renderMarkdown(markdown: string) {
@@ -143,18 +93,7 @@ function renderMarkdown(markdown: string) {
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { userId } = loaderData;
-  const [markdownContent, setMarkdownContent] = useState(mockResumeMarkdown);
-
-  // In a real implementation, we would fetch the actual markdown resume data here
-  useEffect(() => {
-    // Update resume data with the user ID - in reality, this would be an API call
-    const updatedMarkdown = mockResumeMarkdown.replace(
-      "Yuki Hattori",
-      userId || "GitHub User",
-    );
-    setMarkdownContent(updatedMarkdown);
-  }, [userId]);
+  const { markdown } = loaderData;
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950 relative overflow-hidden p-4">
@@ -173,7 +112,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           <div
             // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
             dangerouslySetInnerHTML={{
-              __html: renderMarkdown(markdownContent),
+              __html: renderMarkdown(markdown),
             }}
             className="prose prose-invert max-w-none prose-headings:text-gray-100 prose-p:text-gray-300 prose-li:text-gray-300 prose-strong:text-white"
           />
