@@ -73,19 +73,25 @@ export default function Page({ loaderData }: Route.ComponentProps) {
               components={{
                 h1: ({ node, ...props }) => (
                   <h1
-                    className="text-3xl font-bold text-white mb-4"
+                    className="text-3xl font-bold text-white mt-10 mb-6"
                     {...props}
                   />
                 ),
                 h2: ({ node, ...props }) => (
                   <h2
-                    className="text-2xl font-semibold text-gray-100 mt-6 mb-3 border-b border-gray-700 pb-2"
+                    className="text-2xl font-semibold text-gray-100 mt-10 mb-5 border-b border-gray-700 pb-4"
                     {...props}
                   />
                 ),
                 h3: ({ node, ...props }) => (
                   <h3
-                    className="text-xl font-semibold text-gray-200 mt-4 mb-2"
+                    className="text-xl font-semibold text-gray-200 mt-7 mb-4"
+                    {...props}
+                  />
+                ),
+                h4: ({ node, ...props }) => (
+                  <h4
+                    className="text-lg font-semibold text-gray-300 mt-5 mb-3"
                     {...props}
                   />
                 ),
