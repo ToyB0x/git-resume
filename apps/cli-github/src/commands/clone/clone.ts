@@ -3,10 +3,16 @@ import { gitHubService } from "@/services/github/interfaces";
 import { logger } from "@/utils";
 import { PromisePool } from "@supercharge/promise-pool";
 
-export const clone = async (userName: string, withGhCommand: boolean) => {
+export const clone = async (
+  userName: string,
+  publicOnly: boolean,
+  withGhCommand: boolean,
+) => {
   logger.info("searching repositories...");
-  const repositories =
-    await gitHubService.getUserCommitedRepositories(userName);
+  const repositories = await gitHubService.getUserCommitedRepositories(
+    userName,
+    publicOnly,
+  );
 
   const { errors } = await PromisePool.for(repositories)
     .withConcurrency(10)
