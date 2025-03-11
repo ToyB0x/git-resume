@@ -30,6 +30,14 @@ runs:
         repository: 'ToyB0x/git-resume'
         path: 'git-resume'
 
+    # Note: Uncomment the following step if you want to throw an error if the repository is not private
+    #    - name: Throw error if repository is not private
+    #      run: |
+    #        if [ "github.event.repository.private" != "true" ]; then
+    #          echo "This action only works with private repositories"
+    #          exit 1
+    #        fi
+
     - name: Enable corepack for pnpm
       run: npm install -g corepack@latest && corepack enable pnpm
       shell: bash
