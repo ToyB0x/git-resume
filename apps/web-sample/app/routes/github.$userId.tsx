@@ -1,9 +1,9 @@
-import { hClient } from "~/clients";
-import type { Route } from "./+types/github.$userId";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
+import remarkGfm from "remark-gfm";
+import { hClient } from "~/clients";
+import type { Route } from "./+types/github.$userId";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
 export function meta({}: Route.MetaArgs) {
@@ -20,12 +20,12 @@ function stripFrontmatter(text: string): string {
   // followed by two or more hyphens on their own line
   const frontmatterRegex = /^\s*---\s*\n([\s\S]*?)\n\s*---\s*\n/;
   const match = text.match(frontmatterRegex);
-  
+
   if (match) {
     // Return everything after the frontmatter block
     return text.substring(match[0].length).trim();
   }
-  
+
   return text;
 }
 
@@ -71,23 +71,81 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           <div className="prose prose-invert max-w-none text-gray-200">
             <ReactMarkdown
               components={{
-                h1: ({node, ...props}) => <h1 className="text-3xl font-bold text-white mb-4" {...props} />,
-                h2: ({node, ...props}) => <h2 className="text-2xl font-semibold text-gray-100 mt-6 mb-3 border-b border-gray-700 pb-2" {...props} />,
-                h3: ({node, ...props}) => <h3 className="text-xl font-semibold text-gray-200 mt-4 mb-2" {...props} />,
-                p: ({node, ...props}) => <p className="text-gray-300 my-3" {...props} />,
-                ul: ({node, ...props}) => <ul className="text-gray-300 list-disc pl-5 my-3" {...props} />,
-                ol: ({node, ...props}) => <ol className="text-gray-300 list-decimal pl-5 my-3" {...props} />,
-                li: ({node, ...props}) => <li className="text-gray-300 ml-2 my-1" {...props} />,
-                a: ({node, ...props}) => <a className="text-blue-400 hover:text-blue-300 underline" {...props} />,
-                blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-purple-500 pl-4 italic text-gray-300 my-4" {...props} />,
-                code: ({node, inline, ...props}) => 
-                  inline 
-                    ? <code className="bg-gray-800 text-yellow-200 px-1 rounded text-sm" {...props} />
-                    : <code className="block bg-gray-900 text-gray-200 p-3 rounded text-sm overflow-x-auto my-4" {...props} />,
-                strong: ({node, ...props}) => <strong className="text-white font-bold" {...props} />,
-                table: ({node, ...props}) => <table className="border-collapse table-auto w-full text-sm my-4" {...props} />,
-                th: ({node, ...props}) => <th className="border-b border-gray-600 p-2 text-left text-gray-200 font-medium" {...props} />,
-                td: ({node, ...props}) => <td className="border-b border-gray-700 p-2 text-gray-300" {...props} />
+                h1: ({ node, ...props }) => (
+                  <h1
+                    className="text-3xl font-bold text-white mb-4"
+                    {...props}
+                  />
+                ),
+                h2: ({ node, ...props }) => (
+                  <h2
+                    className="text-2xl font-semibold text-gray-100 mt-6 mb-3 border-b border-gray-700 pb-2"
+                    {...props}
+                  />
+                ),
+                h3: ({ node, ...props }) => (
+                  <h3
+                    className="text-xl font-semibold text-gray-200 mt-4 mb-2"
+                    {...props}
+                  />
+                ),
+                p: ({ node, ...props }) => (
+                  <p className="text-gray-300 my-3" {...props} />
+                ),
+                ul: ({ node, ...props }) => (
+                  <ul
+                    className="text-gray-300 list-disc pl-5 my-3"
+                    {...props}
+                  />
+                ),
+                ol: ({ node, ...props }) => (
+                  <ol
+                    className="text-gray-300 list-decimal pl-5 my-3"
+                    {...props}
+                  />
+                ),
+                li: ({ node, ...props }) => (
+                  <li className="text-gray-300 ml-2 my-1" {...props} />
+                ),
+                a: ({ node, ...props }) => (
+                  <a
+                    className="text-blue-400 hover:text-blue-300 underline"
+                    {...props}
+                  />
+                ),
+                blockquote: ({ node, ...props }) => (
+                  <blockquote
+                    className="border-l-4 border-purple-500 pl-4 italic text-gray-300 my-4"
+                    {...props}
+                  />
+                ),
+                code: ({ node, ...props }) => (
+                  <code
+                    className="block bg-gray-900 text-gray-200 p-3 rounded text-sm overflow-x-auto my-4"
+                    {...props}
+                  />
+                ),
+                strong: ({ node, ...props }) => (
+                  <strong className="text-white font-bold" {...props} />
+                ),
+                table: ({ node, ...props }) => (
+                  <table
+                    className="border-collapse table-auto w-full text-sm my-4"
+                    {...props}
+                  />
+                ),
+                th: ({ node, ...props }) => (
+                  <th
+                    className="border-b border-gray-600 p-2 text-left text-gray-200 font-medium"
+                    {...props}
+                  />
+                ),
+                td: ({ node, ...props }) => (
+                  <td
+                    className="border-b border-gray-700 p-2 text-gray-300"
+                    {...props}
+                  />
+                ),
               }}
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw, rehypeSanitize]}
