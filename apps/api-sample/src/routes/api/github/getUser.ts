@@ -1,6 +1,7 @@
 import { vValidator } from "@hono/valibot-validator";
 import { createFactory } from "hono/factory";
 import * as v from "valibot";
+import { mockResumeMarkdown } from "./mock";
 
 const factory = createFactory();
 
@@ -12,9 +13,12 @@ const validator = vValidator(
 );
 
 const handlers = factory.createHandlers(validator, async (c) => {
-  const validatedUsername = c.req.valid("param");
+  const { userName } = c.req.valid("param");
+  if (userName === "demo") {
+    return c.json({ markdown: mockResumeMarkdown });
+  }
 
-  return c.json({ validatedUsername });
+  return c.json({ markdown: mockResumeMarkdown });
 });
 
 export const getUserHandler = handlers;
