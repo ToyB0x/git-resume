@@ -4,8 +4,8 @@ import type { Route } from "./+types/home";
 // biome-ignore lint/correctness/noEmptyPattern: template default
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "GitHub Vibe" },
+    { name: "description", content: "Explore GitHub profiles" },
   ];
 }
 
