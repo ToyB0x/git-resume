@@ -13,46 +13,20 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-// Simple frontmatter parser that works in browser environment
-function parseFrontmatter(text: string) {
-  const frontmatterRegex = /^---\s*([\s\S]*?)\s*---/;
+// Strip frontmatter from markdown content
+function stripFrontmatter(text: string): string {
+  // Frontmatter must start at the very beginning of the document
+  // This regex specifically matches frontmatter at the start of the document
+  // followed by two or more hyphens on their own line
+  const frontmatterRegex = /^\s*---\s*\n([\s\S]*?)\n\s*---\s*\n/;
   const match = text.match(frontmatterRegex);
   
-  if (!match) {
-    return { content: text, data: {} };
+  if (match) {
+    // Return everything after the frontmatter block
+    return text.substring(match[0].length).trim();
   }
-
-  const frontmatterBlock = match[1];
-  const content = text.replace(match[0], '').trim();
-  const data: Record<string, any> = {};
-
-  // Parse the frontmatter block
-  frontmatterBlock.split('\n').forEach(line => {
-    const colonIndex = line.indexOf(':');
-    if (colonIndex !== -1) {
-      const key = line.slice(0, colonIndex).trim();
-      let value = line.slice(colonIndex + 1).trim();
-      
-      // Handle quoted strings
-      if (value.startsWith('"') && value.endsWith('"')) {
-        value = value.slice(1, -1);
-      }
-      
-      // Convert "true" and "false" strings to booleans
-      if (value === 'true') value = true;
-      if (value === 'false') value = false;
-      
-      // Try to convert to number if applicable
-      const num = Number(value);
-      if (!isNaN(num) && value !== '') {
-        value = num;
-      }
-      
-      data[key] = value;
-    }
-  });
-
-  return { content, data };
+  
+  return text;
 }
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
@@ -68,39 +42,53 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
   const { markdown } = await userResponse.json();
 
-  // Parse frontmatter if present using browser-compatible function
-  const { data: frontmatter, content } = parseFrontmatter(markdown);
+  // Strip frontmatter if present
+  const content = stripFrontmatter(markdown);
 
   return {
     userId,
     markdown: content,
-    frontmatter,
   };
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { markdown, frontmatter } = loaderData;
-  
-  // Get title from frontmatter if available, or use default
-  const title = frontmatter?.title ? frontmatter.title : "GitHub Resume";
-  const description = frontmatter?.description ? frontmatter.description : "Profile generated from GitHub activity";
+  const { markdown } = loaderData;
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950 relative overflow-hidden p-4">
       <div className="relative bg-black/60 backdrop-blur-sm border border-gray-800 rounded-lg shadow-xl max-w-4xl w-full p-8 z-10">
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-            {title}
+            GitHub Resume
           </h1>
           <p className="text-gray-300 mt-3">
-            {description}
+            Profile generated from GitHub activity
           </p>
         </header>
 
         {/* Resume Content (Markdown) */}
         <div className="markdown-content bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
-          <div className="prose prose-invert max-w-none prose-headings:text-gray-100 prose-p:text-gray-300 prose-li:text-gray-300 prose-strong:text-white">
+          <div className="prose prose-invert max-w-none text-gray-200">
             <ReactMarkdown
+              components={{
+                h1: ({node, ...props}) => <h1 className="text-3xl font-bold text-white mb-4" {...props} />,
+                h2: ({node, ...props}) => <h2 className="text-2xl font-semibold text-gray-100 mt-6 mb-3 border-b border-gray-700 pb-2" {...props} />,
+                h3: ({node, ...props}) => <h3 className="text-xl font-semibold text-gray-200 mt-4 mb-2" {...props} />,
+                p: ({node, ...props}) => <p className="text-gray-300 my-3" {...props} />,
+                ul: ({node, ...props}) => <ul className="text-gray-300 list-disc pl-5 my-3" {...props} />,
+                ol: ({node, ...props}) => <ol className="text-gray-300 list-decimal pl-5 my-3" {...props} />,
+                li: ({node, ...props}) => <li className="text-gray-300 ml-2 my-1" {...props} />,
+                a: ({node, ...props}) => <a className="text-blue-400 hover:text-blue-300 underline" {...props} />,
+                blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-purple-500 pl-4 italic text-gray-300 my-4" {...props} />,
+                code: ({node, inline, ...props}) => 
+                  inline 
+                    ? <code className="bg-gray-800 text-yellow-200 px-1 rounded text-sm" {...props} />
+                    : <code className="block bg-gray-900 text-gray-200 p-3 rounded text-sm overflow-x-auto my-4" {...props} />,
+                strong: ({node, ...props}) => <strong className="text-white font-bold" {...props} />,
+                table: ({node, ...props}) => <table className="border-collapse table-auto w-full text-sm my-4" {...props} />,
+                th: ({node, ...props}) => <th className="border-b border-gray-600 p-2 text-left text-gray-200 font-medium" {...props} />,
+                td: ({node, ...props}) => <td className="border-b border-gray-700 p-2 text-gray-300" {...props} />
+              }}
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw, rehypeSanitize]}
             >
@@ -109,23 +97,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           </div>
         </div>
 
-        {/* Display additional frontmatter data if available */}
-        {frontmatter && Object.keys(frontmatter).length > 0 && 
-          frontmatter.showMetadata !== false && (
-          <div className="mt-8 bg-black/30 p-4 rounded-lg border border-gray-800">
-            <h3 className="text-gray-300 text-sm font-semibold mb-2">Profile Metadata</h3>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              {Object.entries(frontmatter)
-                .filter(([key]) => !['title', 'description', 'showMetadata'].includes(key))
-                .map(([key, value]) => (
-                  <div key={key} className="flex">
-                    <span className="text-gray-400 mr-2">{key}:</span>
-                    <span className="text-gray-200">{String(value)}</span>
-                  </div>
-                ))}
-            </div>
-          </div>
-        )}
+        {/* Frontmatter data is no longer displayed */}
 
         <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mt-10 rounded-full" />
 
