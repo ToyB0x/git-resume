@@ -24,7 +24,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const user = await userResponse.json();
 
   // In a real implementation, we would fetch the actual resume markdown here
-  
+
   return {
     user,
     userId,
@@ -84,48 +84,75 @@ Generated with GitHub data and AI analysis.`;
 function renderMarkdown(markdown: string) {
   // Simple markdown transformer for basic elements
   // Note: In a real app, you would use a proper markdown library
-  
+
   // Process headers
   let html = markdown
-    .replace(/^### (.*$)/gim, '<h3 class="text-xl font-semibold text-gray-200 mt-6 mb-2">$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2 class="text-2xl font-semibold text-gray-100 mt-8 mb-3 border-b border-gray-700 pb-2">$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold text-white mb-2">$1</h1>');
-  
+    .replace(
+      /^### (.*$)/gim,
+      '<h3 class="text-xl font-semibold text-gray-200 mt-6 mb-2">$1</h3>',
+    )
+    .replace(
+      /^## (.*$)/gim,
+      '<h2 class="text-2xl font-semibold text-gray-100 mt-8 mb-3 border-b border-gray-700 pb-2">$1</h2>',
+    )
+    .replace(
+      /^# (.*$)/gim,
+      '<h1 class="text-3xl font-bold text-white mb-2">$1</h1>',
+    );
+
   // Process blockquotes
-  html = html.replace(/^\> (.+$)/gim, '<blockquote class="border-l-4 border-purple-500 pl-4 italic text-gray-300 my-4">$1</blockquote>');
-  
+  html = html.replace(
+    /^\> (.+$)/gim,
+    '<blockquote class="border-l-4 border-purple-500 pl-4 italic text-gray-300 my-4">$1</blockquote>',
+  );
+
   // Process lists
-  html = html.replace(/^\- (.+$)/gim, '<li class="ml-6 text-gray-300 list-disc">$1</li>');
-  
+  html = html.replace(
+    /^\- (.+$)/gim,
+    '<li class="ml-6 text-gray-300 list-disc">$1</li>',
+  );
+
   // Fix list grouping
-  html = html.replace(/<\/li>\n<li/g, '</li><li');
-  html = html.replace(/<li class="ml-6 text-gray-300 list-disc">/g, '<ul class="my-3"><li class="ml-6 text-gray-300 list-disc">');
-  html = html.replace(/<\/li>\n\n/g, '</li></ul>\n\n');
-  html = html.replace(/<\/li>(\s+)<h/g, '</li></ul>\n<h');
-  
+  html = html.replace(/<\/li>\n<li/g, "</li><li");
+  html = html.replace(
+    /<li class="ml-6 text-gray-300 list-disc">/g,
+    '<ul class="my-3"><li class="ml-6 text-gray-300 list-disc">',
+  );
+  html = html.replace(/<\/li>\n\n/g, "</li></ul>\n\n");
+  html = html.replace(/<\/li>(\s+)<h/g, "</li></ul>\n<h");
+
   // Process bold text
-  html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>');
-  
+  html = html.replace(
+    /\*\*(.*?)\*\*/g,
+    '<strong class="text-white">$1</strong>',
+  );
+
   // Process horizontal rules
   html = html.replace(/^\-\-\-+/gim, '<hr class="my-6 border-gray-700">');
-  
+
   // Process paragraphs (needs to come last)
-  html = html.replace(/^([^<].*)\n$/gim, '<p class="my-3 text-gray-300 leading-relaxed">$1</p>');
-  
+  html = html.replace(
+    /^([^<].*)\n$/gim,
+    '<p class="my-3 text-gray-300 leading-relaxed">$1</p>',
+  );
+
   // Handle multiple newlines
-  html = html.replace(/\n\n/g, '\n');
-  
+  html = html.replace(/\n\n/g, "\n");
+
   return html;
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { userId } = loaderData;
   const [markdownContent, setMarkdownContent] = useState(mockResumeMarkdown);
-  
+
   // In a real implementation, we would fetch the actual markdown resume data here
   useEffect(() => {
     // Update resume data with the user ID - in reality, this would be an API call
-    const updatedMarkdown = mockResumeMarkdown.replace("Yuki Hattori", userId || "GitHub User");
+    const updatedMarkdown = mockResumeMarkdown.replace(
+      "Yuki Hattori",
+      userId || "GitHub User",
+    );
     setMarkdownContent(updatedMarkdown);
   }, [userId]);
 
@@ -143,8 +170,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
         {/* Resume Content (Markdown) */}
         <div className="markdown-content bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
-          <div 
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(markdownContent) }} 
+          <div
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+            dangerouslySetInnerHTML={{
+              __html: renderMarkdown(markdownContent),
+            }}
             className="prose prose-invert max-w-none prose-headings:text-gray-100 prose-p:text-gray-300 prose-li:text-gray-300 prose-strong:text-white"
           />
         </div>
