@@ -5,7 +5,7 @@ import type { Route } from "./+types/home";
 // biome-ignore lint/correctness/noEmptyPattern: template default
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "GitHub Vibe" },
+    { title: "GitHub Check" },
     { name: "description", content: "Explore GitHub profiles" },
   ];
 }
@@ -27,6 +27,6 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   };
 }
 
-export default function Home() {
+export default function Page() {
   return <Welcome />;
 }
