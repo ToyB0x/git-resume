@@ -34,6 +34,8 @@ importers:
         specifier: 3.109.2
         version: 3.109.2(@cloudflare/workers-types@4.20250109.0)
 
+  apps/api-vibe-coding: {}
+
   apps/cli-github:
     dependencies:
       '@genkit-ai/googleai':
@@ -168,6 +170,8 @@ importers:
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.7.3)(vite@5.4.14(@types/node@20.17.22)(lightningcss@1.29.1))
+
+  apps/web-vibe-coding: {}
 
 packages:
 
