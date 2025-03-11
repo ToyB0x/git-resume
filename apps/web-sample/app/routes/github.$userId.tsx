@@ -1,5 +1,9 @@
 import { hClient } from "~/clients";
 import type { Route } from "./+types/github.$userId";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
 export function meta({}: Route.MetaArgs) {
@@ -7,6 +11,48 @@ export function meta({}: Route.MetaArgs) {
     { title: "GitHub Resume" },
     { name: "description", content: "View GitHub user resume" },
   ];
+}
+
+// Simple frontmatter parser that works in browser environment
+function parseFrontmatter(text: string) {
+  const frontmatterRegex = /^---\s*([\s\S]*?)\s*---/;
+  const match = text.match(frontmatterRegex);
+  
+  if (!match) {
+    return { content: text, data: {} };
+  }
+
+  const frontmatterBlock = match[1];
+  const content = text.replace(match[0], '').trim();
+  const data: Record<string, any> = {};
+
+  // Parse the frontmatter block
+  frontmatterBlock.split('\n').forEach(line => {
+    const colonIndex = line.indexOf(':');
+    if (colonIndex !== -1) {
+      const key = line.slice(0, colonIndex).trim();
+      let value = line.slice(colonIndex + 1).trim();
+      
+      // Handle quoted strings
+      if (value.startsWith('"') && value.endsWith('"')) {
+        value = value.slice(1, -1);
+      }
+      
+      // Convert "true" and "false" strings to booleans
+      if (value === 'true') value = true;
+      if (value === 'false') value = false;
+      
+      // Try to convert to number if applicable
+      const num = Number(value);
+      if (!isNaN(num) && value !== '') {
+        value = num;
+      }
+      
+      data[key] = value;
+    }
+  });
+
+  return { content, data };
 }
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
@@ -22,101 +68,64 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
   const { markdown } = await userResponse.json();
 
-  // In a real implementation, we would fetch the actual resume markdown here
+  // Parse frontmatter if present using browser-compatible function
+  const { data: frontmatter, content } = parseFrontmatter(markdown);
 
   return {
     userId,
-    markdown,
+    markdown: content,
+    frontmatter,
   };
 }
 
-// Function to render markdown content with simple styling
-function renderMarkdown(markdown: string) {
-  // Simple markdown transformer for basic elements
-  // Note: In a real app, you would use a proper markdown library
-
-  // Process headers
-  let html = markdown
-    .replace(
-      /^### (.*$)/gim,
-      '<h3 class="text-xl font-semibold text-gray-200 mt-6 mb-2">$1</h3>',
-    )
-    .replace(
-      /^## (.*$)/gim,
-      '<h2 class="text-2xl font-semibold text-gray-100 mt-8 mb-3 border-b border-gray-700 pb-2">$1</h2>',
-    )
-    .replace(
-      /^# (.*$)/gim,
-      '<h1 class="text-3xl font-bold text-white mb-2">$1</h1>',
-    );
-
-  // Process blockquotes
-  html = html.replace(
-    /^\> (.+$)/gim,
-    '<blockquote class="border-l-4 border-purple-500 pl-4 italic text-gray-300 my-4">$1</blockquote>',
-  );
-
-  // Process lists
-  html = html.replace(
-    /^\- (.+$)/gim,
-    '<li class="ml-6 text-gray-300 list-disc">$1</li>',
-  );
-
-  // Fix list grouping
-  html = html.replace(/<\/li>\n<li/g, "</li><li");
-  html = html.replace(
-    /<li class="ml-6 text-gray-300 list-disc">/g,
-    '<ul class="my-3"><li class="ml-6 text-gray-300 list-disc">',
-  );
-  html = html.replace(/<\/li>\n\n/g, "</li></ul>\n\n");
-  html = html.replace(/<\/li>(\s+)<h/g, "</li></ul>\n<h");
-
-  // Process bold text
-  html = html.replace(
-    /\*\*(.*?)\*\*/g,
-    '<strong class="text-white">$1</strong>',
-  );
-
-  // Process horizontal rules
-  html = html.replace(/^\-\-\-+/gim, '<hr class="my-6 border-gray-700">');
-
-  // Process paragraphs (needs to come last)
-  html = html.replace(
-    /^([^<].*)\n$/gim,
-    '<p class="my-3 text-gray-300 leading-relaxed">$1</p>',
-  );
-
-  // Handle multiple newlines
-  html = html.replace(/\n\n/g, "\n");
-
-  return html;
-}
-
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { markdown } = loaderData;
+  const { markdown, frontmatter } = loaderData;
+  
+  // Get title from frontmatter if available, or use default
+  const title = frontmatter?.title ? frontmatter.title : "GitHub Resume";
+  const description = frontmatter?.description ? frontmatter.description : "Profile generated from GitHub activity";
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950 relative overflow-hidden p-4">
       <div className="relative bg-black/60 backdrop-blur-sm border border-gray-800 rounded-lg shadow-xl max-w-4xl w-full p-8 z-10">
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-            GitHub <span className="font-extrabold">Resume</span>
+            {title}
           </h1>
           <p className="text-gray-300 mt-3">
-            Profile generated from GitHub activity
+            {description}
           </p>
         </header>
 
         {/* Resume Content (Markdown) */}
         <div className="markdown-content bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
-          <div
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-            dangerouslySetInnerHTML={{
-              __html: renderMarkdown(markdown),
-            }}
-            className="prose prose-invert max-w-none prose-headings:text-gray-100 prose-p:text-gray-300 prose-li:text-gray-300 prose-strong:text-white"
-          />
+          <div className="prose prose-invert max-w-none prose-headings:text-gray-100 prose-p:text-gray-300 prose-li:text-gray-300 prose-strong:text-white">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw, rehypeSanitize]}
+            >
+              {markdown}
+            </ReactMarkdown>
+          </div>
         </div>
+
+        {/* Display additional frontmatter data if available */}
+        {frontmatter && Object.keys(frontmatter).length > 0 && 
+          frontmatter.showMetadata !== false && (
+          <div className="mt-8 bg-black/30 p-4 rounded-lg border border-gray-800">
+            <h3 className="text-gray-300 text-sm font-semibold mb-2">Profile Metadata</h3>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              {Object.entries(frontmatter)
+                .filter(([key]) => !['title', 'description', 'showMetadata'].includes(key))
+                .map(([key, value]) => (
+                  <div key={key} className="flex">
+                    <span className="text-gray-400 mr-2">{key}:</span>
+                    <span className="text-gray-200">{String(value)}</span>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
 
         <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mt-10 rounded-full" />
 
