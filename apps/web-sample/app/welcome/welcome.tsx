@@ -6,7 +6,7 @@ export function Welcome() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Here you would handle the GitHub username search
-    console.log("Searching for:", username);
+    alert(`Searching for: ${username}`);
   };
 
   return (
@@ -14,7 +14,7 @@ export function Welcome() {
       <div className="relative bg-black/60 backdrop-blur-sm border border-gray-800 rounded-lg shadow-xl max-w-md w-full p-8 z-10">
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            GitHub <span className="font-extrabold">Vibe</span>
+            GitHub <span className="font-extrabold">Check</span>
           </h1>
           <p className="text-gray-300 mt-3">
             Enter a GitHub username to explore their profile
@@ -65,7 +65,7 @@ export function Welcome() {
         <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 mt-10 rounded-full" />
 
         <footer className="text-center text-gray-400 text-xs mt-6">
-          Built with React, TypeScript and Remix
+          Built with Gemini Flash 2.0
         </footer>
       </div>
     </main>
