@@ -9,9 +9,10 @@ export const newResumeCommand = () => {
     .command("create")
     .description("Create user resume.")
     .argument("<userName>", "userName to create resume")
-    .action(async (userName) => {
+    .option("-y, --skip-confirm", "skip confirmation")
+    .action(async (userName, options) => {
       if (typeof userName !== "string") throw Error("userName must be string");
-      await create(userName);
+      await create(userName, options.skipConfirm);
     });
 
   return resumeCmd;

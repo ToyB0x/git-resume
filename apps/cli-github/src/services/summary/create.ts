@@ -14,17 +14,23 @@ const ai = genkit({
   model: gemini20Flash,
 });
 
-export const create = async (userName: string, packs: Pack[]) => {
+export const create = async (
+  userName: string,
+  packs: Pack[],
+  skipConfirm: boolean,
+) => {
   for (const pack of packs) {
-    const answer = await confirm({
-      message: `${pack.meta.owner}/${pack.meta.repo}: raw text size is ${pack.body.length} (about ${Math.floor(pack.body.length / 4)} token)
+    if (!skipConfirm) {
+      const answer = await confirm({
+        message: `${pack.meta.owner}/${pack.meta.repo}: raw text size is ${pack.body.length} (about ${Math.floor(pack.body.length / 4)} token)
 Continue?`,
-    });
+      });
 
-    console.log(answer);
-    if (!answer) {
-      console.log("Skipped");
-      continue;
+      console.log(answer);
+      if (!answer) {
+        console.log("Skipped");
+        continue;
+      }
     }
 
     const prevSummaryFilePath = `generated/summaries/${userName}/${pack.meta.owner}/${pack.meta.repo}.md`;
