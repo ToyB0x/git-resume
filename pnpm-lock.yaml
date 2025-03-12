@@ -67,12 +67,12 @@ importers:
       '@inquirer/confirm':
         specifier: ^5.1.6
         version: 5.1.6(@types/node@22.13.5)
-      '@octokit/plugin-throttling':
-        specifier: 9.4.0
-        version: 9.4.0(@octokit/core@6.1.4)
       '@resume/models':
         specifier: workspace:*
         version: link:../../packages/models
+      '@resume/services':
+        specifier: workspace:*
+        version: link:../../packages/services
       '@supercharge/promise-pool':
         specifier: 3.2.0
         version: 3.2.0
@@ -88,18 +88,12 @@ importers:
       genkit:
         specifier: ^1.0.5
         version: 1.0.5
-      octokit:
-        specifier: 4.1.2
-        version: 4.1.2
       pino:
         specifier: 9.6.0
         version: 9.6.0
       pino-pretty:
         specifier: 13.0.0
         version: 13.0.0
-      simple-git:
-        specifier: ^3.27.0
-        version: 3.27.0
       valibot:
         specifier: 1.0.0-rc.2
         version: 1.0.0-rc.2(typescript@5.7.3)
@@ -289,6 +283,28 @@ importers:
         version: 5.7.3
 
   packages/models:
+    devDependencies:
+      '@tsconfig/strictest':
+        specifier: 2.0.5
+        version: 2.0.5
+      typescript:
+        specifier: 5.7.3
+        version: 5.7.3
+
+  packages/services:
+    dependencies:
+      '@octokit/plugin-throttling':
+        specifier: 9.4.0
+        version: 9.4.0(@octokit/core@6.1.4)
+      '@resume/models':
+        specifier: workspace:*
+        version: link:../models
+      octokit:
+        specifier: 4.1.2
+        version: 4.1.2
+      simple-git:
+        specifier: ^3.27.0
+        version: 3.27.0
     devDependencies:
       '@tsconfig/strictest':
         specifier: 2.0.5
