@@ -1,6 +1,5 @@
-import { gitService } from "@/services/git/interfaces";
-import { gitHubService } from "@/services/github/interfaces";
-import { logger } from "@/utils";
+import { env, logger } from "@/utils";
+import { gitHubService, gitService } from "@resume/services";
 import { PromisePool } from "@supercharge/promise-pool";
 
 export const clone = async (
@@ -12,6 +11,7 @@ export const clone = async (
   const repositories = await gitHubService.getUserCommitedRepositories(
     userName,
     publicOnly,
+    env.GITHUB_TOKEN,
   );
 
   const { errors } = await PromisePool.for(repositories)

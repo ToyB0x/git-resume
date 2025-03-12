@@ -1,0 +1,7 @@
+{
+  "extends": "@tsconfig/strictest/tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2024",
+    "moduleResolution": "Bundler"
+  }
+}

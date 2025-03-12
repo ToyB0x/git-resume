@@ -2,28 +2,25 @@
   "name": "@resume/cli-github",
   "type": "module",
   "scripts": {
-    "jobs": "dotenv -e ../../.env -- tsx src/commands/index.ts",
+    "build": "tsup",
+    "jobs": "tsup && dotenv -e ../../.env -- node dist/index.cjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@genkit-ai/googleai": "^1.0.5",
+    "@resume/models": "workspace:*",
+    "@resume/services": "workspace:*",
     "@inquirer/confirm": "^5.1.6",
-    "@octokit/plugin-throttling": "9.4.0",
     "@supercharge/promise-pool": "3.2.0",
     "commander": "13.1.0",
-    "date-fns": "4.1.0",
     "dotenv-cli": "8.0.0",
-    "genkit": "^1.0.5",
-    "octokit": "4.1.2",
     "pino": "9.6.0",
     "pino-pretty": "13.0.0",
-    "simple-git": "^3.27.0",
     "valibot": "1.0.0-rc.2"
   },
   "devDependencies": {
     "@tsconfig/strictest": "2.0.5",
     "@types/node": "22.13.5",
-    "tsx": "4.19.3",
+    "tsup": "8.4.0",
     "typescript": "5.7.3"
   }
 }

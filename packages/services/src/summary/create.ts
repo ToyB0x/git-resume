@@ -1,45 +1,29 @@
 import fs from "node:fs";
-import type { Pack } from "@/models";
-import { env } from "@/utils/env";
 import { gemini20Flash, googleAI } from "@genkit-ai/googleai";
-import confirm from "@inquirer/confirm";
+import type { Pack } from "@resume/models";
 import { genkit } from "genkit";
-
-const ai = genkit({
-  plugins: [
-    googleAI({
-      apiKey: env.RESUME_GEMINI_API_KEY,
-    }),
-  ],
-  model: gemini20Flash,
-});
 
 export const create = async (
   userName: string,
-  packs: Pack[],
-  skipConfirm: boolean,
+  pack: Pack,
+  RESUME_GEMINI_API_KEY: string,
 ) => {
-  for (const pack of packs) {
-    if (!skipConfirm) {
-      const answer = await confirm({
-        message: `${pack.meta.owner}/${pack.meta.repo}: raw text size is ${pack.body.length} (about ${Math.floor(pack.body.length / 4)} token)
-Continue?`,
-      });
+  const ai = genkit({
+    plugins: [
+      googleAI({
+        apiKey: RESUME_GEMINI_API_KEY,
+      }),
+    ],
+    model: gemini20Flash,
+  });
 
-      console.log(answer);
-      if (!answer) {
-        console.log("Skipped");
-        continue;
-      }
-    }
+  const prevSummaryFilePath = `generated/summaries/${userName}/${pack.meta.owner}/${pack.meta.repo}.md`;
+  const prevSummaryFile = fs.existsSync(prevSummaryFilePath)
+    ? fs.readFileSync(prevSummaryFilePath, "utf-8")
+    : null;
 
-    const prevSummaryFilePath = `generated/summaries/${userName}/${pack.meta.owner}/${pack.meta.repo}.md`;
-    const prevSummaryFile = fs.existsSync(prevSummaryFilePath)
-      ? fs.readFileSync(prevSummaryFilePath, "utf-8")
-      : null;
-
-    const { text } = await ai.generate({
-      system: `以下の 2 Step で git のログからエンジニアのResumeを生成しようとしています。
+  const { text } = await ai.generate({
+    system: `以下の 2 Step で git のログからエンジニアのResumeを生成しようとしています。
 - STEP1: リポジトリごとに対象エンジニアの git log と git show の結果を分析し、そのリポジトリについてのエンジニアのサマリを作成する(複数のリポジトリで一気に分析を行うとLLMのトークン制限に引っかかるため、リポジトリごとに分けて分析を行う)
 - STEP2: STEP1で作成したリポジトリごとのサマリを元に、エンジニアのResumeを作成する
 
@@ -69,23 +53,22 @@ ${prevSummaryFile.toString()}
  `
  }
   `,
-      prompt: `以下の git show の結果からSTEP1の資料を作成しマークダウン形式で出力してください。
+    prompt: `以下の git show の結果からSTEP1の資料を作成しマークダウン形式で出力してください。
 
   -----
 
   ${pack.body}
   `,
-    });
+  });
 
-    const summaryDir = `./generated/summaries/${userName}/${pack.meta.owner}`;
-    fs.mkdirSync(summaryDir, { recursive: true });
-    fs.writeFileSync(
-      `${summaryDir}/${pack.meta.repo}.md`,
-      text
-        .replace("```markdown", "")
-        .replace("```", "") // マークダウン用のコードブロックで全体が括られる場合があるので削除
-        .trim(),
-      "utf8",
-    );
-  }
+  const summaryDir = `./generated/summaries/${userName}/${pack.meta.owner}`;
+  fs.mkdirSync(summaryDir, { recursive: true });
+  fs.writeFileSync(
+    `${summaryDir}/${pack.meta.repo}.md`,
+    text
+      .replace("```markdown", "")
+      .replace("```", "") // マークダウン用のコードブロックで全体が括られる場合があるので削除
+      .trim(),
+    "utf8",
+  );
 };

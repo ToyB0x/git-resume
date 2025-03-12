@@ -1,7 +1,12 @@
-import type { User } from "@/models";
-import { octokitApp } from "./client";
+import type { User } from "@resume/models";
+import { getOctokit } from "./client";
 
-export const getUserDetail = async (userName: string): Promise<User> => {
+export const getUserDetail = async (
+  userName: string,
+  githubToken: string,
+): Promise<User> => {
+  const octokitApp = getOctokit(githubToken);
+
   const res = await octokitApp.rest.users.getByUsername({
     username: userName,
   });

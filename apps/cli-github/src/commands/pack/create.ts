@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { packService } from "@/services/pack/interfaces";
+import { packService } from "@resume/services";
 
 export const create = async (userName: string) => {
   const dir = "./generated/git";

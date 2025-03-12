@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import type { Summary } from "@/models";
+import type { Summary } from "@resume/models";
 
 export const load = (userName: string): Summary[] => {
   const userSummaryDir = `./generated/summaries/${userName}`;

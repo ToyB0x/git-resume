@@ -1,35 +1,21 @@
 import fs from "node:fs";
-import type { Summary } from "@/models";
-import { env } from "@/utils/env";
 import { gemini20Flash, googleAI } from "@genkit-ai/googleai";
-import confirm from "@inquirer/confirm";
+import type { Summary } from "@resume/models";
 import { genkit } from "genkit";
-
-const ai = genkit({
-  plugins: [
-    googleAI({
-      apiKey: env.RESUME_GEMINI_API_KEY,
-    }),
-  ],
-  model: gemini20Flash,
-});
 
 export const create = async (
   userName: string,
   summaries: Summary[],
-  skipConfirm: boolean,
+  RESUME_GEMINI_API_KEY: string,
 ) => {
-  if (!skipConfirm) {
-    const answer = await confirm({
-      message: `all summary text size is ${summaries.toString().length} (about ${Math.floor(summaries.toString().length / 4)} token)
-Continue?`,
-    });
-
-    console.log(answer);
-    if (!answer) {
-      process.exit(1);
-    }
-  }
+  const ai = genkit({
+    plugins: [
+      googleAI({
+        apiKey: RESUME_GEMINI_API_KEY,
+      }),
+    ],
+    model: gemini20Flash,
+  });
 
   const { text } = await ai.generate({
     system: `以下の 2 Step で git のログからエンジニアのResumeを生成しようとしています。
