@@ -1,5 +1,5 @@
 {
-  "name": "@survive/root",
+  "name": "@resume/root",
   "private": true,
   "scripts": {
     "build": "turbo run build",

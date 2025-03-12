@@ -1,5 +1,5 @@
 {
-  "name": "@survive/cli-github",
+  "name": "@resume/cli-github",
   "type": "module",
   "scripts": {
     "jobs": "dotenv -e ../../.env -- tsx src/commands/index.ts",
