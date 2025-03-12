@@ -1,4 +1,4 @@
-import type { Summary } from "@/models";
+import type { Summary } from "@resume/models";
 import { create } from "./create";
 
 interface ResumeService {

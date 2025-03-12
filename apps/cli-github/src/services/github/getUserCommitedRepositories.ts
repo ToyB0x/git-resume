@@ -1,4 +1,4 @@
-import type { Repository } from "@/models";
+import type { Repository } from "@resume/models";
 import { octokitApp } from "./client";
 
 export const getUserCommitedRepositories = async (

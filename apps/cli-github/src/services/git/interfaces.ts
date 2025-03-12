@@ -1,4 +1,4 @@
-import type { Repository } from "@/models";
+import type { Repository } from "@resume/models";
 import { cloneOrPullRepository } from "./cloneOrPullRepository";
 
 interface GitService {

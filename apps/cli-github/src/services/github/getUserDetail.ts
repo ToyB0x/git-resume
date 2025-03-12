@@ -1,4 +1,4 @@
-import type { User } from "@/models";
+import type { User } from "@resume/models";
 import { octokitApp } from "./client";
 
 export const getUserDetail = async (userName: string): Promise<User> => {

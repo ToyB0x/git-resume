@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import type { Repository } from "@/models";
+import type { Repository } from "@resume/models";
 import { simpleGit } from "simple-git";
 
 export const cloneOrPullRepository = async (repository: Repository) => {

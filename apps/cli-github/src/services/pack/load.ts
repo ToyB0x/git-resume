@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import type { Pack } from "@/models";
+import type { Pack } from "@resume/models";
 
 export const load = (userName: string): Pack[] => {
   const userPackDir = `./generated/pack/${userName}`;

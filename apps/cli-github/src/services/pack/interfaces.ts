@@ -1,4 +1,4 @@
-import type { Pack } from "@/models";
+import type { Pack } from "@resume/models";
 import { create } from "./create";
 import { load } from "./load";
 

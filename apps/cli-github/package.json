@@ -6,6 +6,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@resume/models": "workspace:*",
     "@genkit-ai/googleai": "^1.0.5",
     "@inquirer/confirm": "^5.1.6",
     "@octokit/plugin-throttling": "9.4.0",

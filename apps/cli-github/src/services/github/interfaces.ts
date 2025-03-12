@@ -1,4 +1,4 @@
-import type { Repository, User } from "@/models";
+import type { Repository, User } from "@resume/models";
 import { getUserCommitedRepositories } from "./getUserCommitedRepositories";
 import { getUserDetail } from "./getUserDetail";
 

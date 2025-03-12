@@ -1,8 +1,8 @@
 import fs from "node:fs";
-import type { Summary } from "@/models";
 import { env } from "@/utils/env";
 import { gemini20Flash, googleAI } from "@genkit-ai/googleai";
 import confirm from "@inquirer/confirm";
+import type { Summary } from "@resume/models";
 import { genkit } from "genkit";
 
 const ai = genkit({
