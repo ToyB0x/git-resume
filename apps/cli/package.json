@@ -1,5 +1,5 @@
 {
-  "name": "@resume/cli-github",
+  "name": "@resume/cli",
   "type": "module",
   "scripts": {
     "build": "tsup",
