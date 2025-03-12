@@ -40,7 +40,7 @@ importers:
         specifier: ^4.7.1
         version: 4.19.3
 
-  apps/cli-github:
+  apps/cli:
     dependencies:
       '@inquirer/confirm':
         specifier: ^5.1.6
