@@ -1,9 +1,18 @@
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import { hClient } from "~/clients";
 import type { Route } from "./+types/github.$userId";
+import type {
+  AnalyzeState,
+  CreateSummaryState,
+  CreatingResumeState,
+  GitCloneState,
+  GitSearchState,
+  ResumeGenerationState,
+} from "./_state";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
 export function meta({}: Route.MetaArgs) {
@@ -51,8 +60,248 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   };
 }
 
+// Sequential state update component
+function LoadingStates() {
+  const [currentState, setCurrentState] = useState<ResumeGenerationState>({
+    type: "GitSearch",
+    foundCommits: 0,
+    foundRepositories: 0,
+  });
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    if (isComplete) return;
+
+    // Function to update the state based on current type
+    const updateState = () => {
+      setCurrentState((prevState) => {
+        switch (prevState.type) {
+          case "GitSearch":
+            return {
+              ...prevState,
+              foundCommits: Math.min((prevState.foundCommits || 0) + 50, 250),
+              foundRepositories: Math.min(
+                (prevState.foundRepositories || 0) + 1,
+                5,
+              ),
+            } as GitSearchState;
+          case "GitClone":
+            return {
+              ...prevState,
+              current: Math.min(prevState.current + 1, prevState.total),
+            } as GitCloneState;
+          case "Analyze":
+            return {
+              ...prevState,
+              current: Math.min(prevState.current + 1, prevState.total),
+            } as AnalyzeState;
+          case "CreateSummary":
+            return {
+              ...prevState,
+              current: Math.min(prevState.current + 1, prevState.total),
+            } as CreateSummaryState;
+          default:
+            return prevState;
+        }
+      });
+    };
+
+    // Update state values every few seconds
+    const updateInterval = setInterval(updateState, 3000);
+
+    // Change state type after specific intervals
+    const transitions = [
+      {
+        time: 12000,
+        state: {
+          type: "GitClone",
+          repository: "user/repo1",
+          current: 0,
+          total: 3,
+        } as GitCloneState,
+      },
+      {
+        time: 24000,
+        state: {
+          type: "Analyze",
+          repository: "user/repo1",
+          current: 0,
+          total: 5,
+        } as AnalyzeState,
+      },
+      {
+        time: 36000,
+        state: {
+          type: "CreateSummary",
+          current: 0,
+          total: 5,
+        } as CreateSummaryState,
+      },
+      { time: 48000, state: { type: "CreatingResume" } as CreatingResumeState },
+      { time: 55000, complete: true },
+    ];
+
+    // Schedule the transitions
+    const timeouts = transitions.map(({ time, state, complete }) =>
+      setTimeout(() => {
+        if (complete) {
+          setIsComplete(true);
+        } else if (state) {
+          setCurrentState(state);
+        }
+      }, time),
+    );
+
+    // Clean up intervals and timeouts on unmount
+    return () => {
+      clearInterval(updateInterval);
+      for (const timeout of timeouts) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [isComplete]);
+
+  // Render different UI based on state type
+  const renderStateUI = () => {
+    if (isComplete) {
+      return (
+        <div className="text-center text-green-400">
+          <div className="mb-2">✓ Resume generation complete!</div>
+          <div className="text-sm text-gray-400">
+            Your personalized GitHub resume is ready
+          </div>
+        </div>
+      );
+    }
+
+    switch (currentState.type) {
+      case "GitSearch":
+        return (
+          <div>
+            <div className="mb-2 text-blue-400">
+              Searching GitHub repositories...
+            </div>
+            <div className="text-sm text-gray-400 space-y-1">
+              <div>Found {currentState.foundCommits || 0} commits</div>
+              <div>
+                Found {currentState.foundRepositories || 0} repositories
+              </div>
+            </div>
+          </div>
+        );
+      case "GitClone":
+        return (
+          <div>
+            <div className="mb-2 text-indigo-400">Cloning repositories...</div>
+            <div className="text-sm text-gray-400 space-y-1">
+              <div>Repository: {currentState.repository}</div>
+              <div className="flex items-center">
+                <div className="w-full bg-gray-700 rounded-full h-2 mr-2">
+                  <div
+                    className="bg-indigo-500 h-2 rounded-full"
+                    style={{
+                      width: `${(currentState.current / currentState.total) * 100}%`,
+                    }}
+                  />
+                </div>
+                <span>
+                  {currentState.current}/{currentState.total}
+                </span>
+              </div>
+            </div>
+          </div>
+        );
+      case "Analyze":
+        return (
+          <div>
+            <div className="mb-2 text-purple-400">
+              Analyzing repository content...
+            </div>
+            <div className="text-sm text-gray-400 space-y-1">
+              <div>Repository: {currentState.repository}</div>
+              <div className="flex items-center">
+                <div className="w-full bg-gray-700 rounded-full h-2 mr-2">
+                  <div
+                    className="bg-purple-500 h-2 rounded-full"
+                    style={{
+                      width: `${(currentState.current / currentState.total) * 100}%`,
+                    }}
+                  />
+                </div>
+                <span>
+                  {currentState.current}/{currentState.total}
+                </span>
+              </div>
+            </div>
+          </div>
+        );
+      case "CreateSummary":
+        return (
+          <div>
+            <div className="mb-2 text-cyan-400">Creating summaries...</div>
+            <div className="text-sm text-gray-400 space-y-1">
+              {currentState.repository && (
+                <div>Repository: {currentState.repository}</div>
+              )}
+              <div className="flex items-center">
+                <div className="w-full bg-gray-700 rounded-full h-2 mr-2">
+                  <div
+                    className="bg-cyan-500 h-2 rounded-full"
+                    style={{
+                      width: `${(currentState.current / currentState.total) * 100}%`,
+                    }}
+                  />
+                </div>
+                <span>
+                  {currentState.current}/{currentState.total}
+                </span>
+              </div>
+            </div>
+          </div>
+        );
+      case "CreatingResume":
+        return (
+          <div>
+            <div className="mb-2 text-emerald-400">
+              Generating final resume...
+            </div>
+            <div className="text-sm text-gray-400">
+              Formatting and finalizing your GitHub resume
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="bg-black/80 backdrop-blur-sm border border-gray-700 rounded-lg p-4 mb-6">
+      <div className="flex items-center">
+        <div className="relative mr-3">
+          <div className="h-8 w-8 rounded-full border-2 border-b-transparent border-blue-500 animate-spin" />
+          <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold">
+            {isComplete ? "✓" : ""}
+          </div>
+        </div>
+        <div className="flex-1">{renderStateUI()}</div>
+      </div>
+    </div>
+  );
+}
+
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { markdown } = loaderData;
+  const [showLoading, setShowLoading] = useState(true);
+
+  // Hide the loading states after 60 seconds (1 minute)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+    }, 60000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950 relative overflow-hidden p-4">
@@ -65,6 +314,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             Profile generated from GitHub activity
           </p>
         </header>
+
+        {/* Sequential state update UI - shows for 1 minute */}
+        {showLoading && <LoadingStates />}
 
         {/* Resume Content (Markdown) */}
         <div className="markdown-content bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
