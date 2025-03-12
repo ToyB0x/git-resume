@@ -126,10 +126,16 @@ export default function Page({ loaderData }: Route.ComponentProps) {
                   />
                 ),
                 code: ({ node, ...props }) => (
-                  <code className="bg-gray-800 text-gray-200 px-1.5 py-0.5 rounded text-sm" {...props} />
+                  <code
+                    className="bg-gray-800 text-gray-200 px-1.5 py-0.5 rounded text-sm"
+                    {...props}
+                  />
                 ),
                 pre: ({ node, ...props }) => (
-                  <pre className="bg-gray-900 text-gray-200 p-3 rounded text-sm overflow-x-auto my-4" {...props} />
+                  <pre
+                    className="bg-gray-900 text-gray-200 p-3 rounded text-sm overflow-x-auto my-4"
+                    {...props}
+                  />
                 ),
                 strong: ({ node, ...props }) => (
                   <strong className="text-white font-bold" {...props} />
