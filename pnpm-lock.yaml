@@ -61,9 +61,6 @@ importers:
 
   apps/cli-github:
     dependencies:
-      '@genkit-ai/googleai':
-        specifier: ^1.0.5
-        version: 1.0.5(genkit@1.0.5)
       '@inquirer/confirm':
         specifier: ^5.1.6
         version: 5.1.6(@types/node@22.13.5)
@@ -85,9 +82,6 @@ importers:
       dotenv-cli:
         specifier: 8.0.0
         version: 8.0.0
-      genkit:
-        specifier: ^1.0.5
-        version: 1.0.5
       pino:
         specifier: 9.6.0
         version: 9.6.0
@@ -293,12 +287,18 @@ importers:
 
   packages/services:
     dependencies:
+      '@genkit-ai/googleai':
+        specifier: ^1.0.5
+        version: 1.0.5(genkit@1.0.5)
       '@octokit/plugin-throttling':
         specifier: 9.4.0
         version: 9.4.0(@octokit/core@6.1.4)
       '@resume/models':
         specifier: workspace:*
         version: link:../models
+      genkit:
+        specifier: ^1.0.5
+        version: 1.0.5
       octokit:
         specifier: 4.1.2
         version: 4.1.2
