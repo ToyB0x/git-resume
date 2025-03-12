@@ -29,3 +29,8 @@ export const getOctokit = (githubToken: string) => {
     },
   });
 };
+
+export const getUsage = async (octokit: Octokit) => {
+  return await octokit.rest.rateLimit.get();
+  // return (await octokit.rest.rateLimit.get()).data.rate.used;
+};
