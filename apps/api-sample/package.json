@@ -1,5 +1,5 @@
 {
-  "name": "api-sample",
+  "name": "@resume/api-sample",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts"

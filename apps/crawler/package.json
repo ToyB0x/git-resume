@@ -1,5 +1,5 @@
 {
-  "name": "@survive/crawler",
+  "name": "@resume/crawler",
   "type": "module",
   "types": "./src/index.ts",
   "scripts": {

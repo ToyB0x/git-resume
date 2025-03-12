@@ -1,5 +1,5 @@
 {
-  "name": "web-sample",
+  "name": "@resume/web-sample",
   "private": true,
   "type": "module",
   "scripts": {
