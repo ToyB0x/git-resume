@@ -6,7 +6,7 @@
  * Git search commit progress state
  */
 export type GitSearchState = {
-  type: 'GitSearch';
+  type: "GitSearch";
   foundCommits?: number;
   foundRepositories?: number;
 };
@@ -15,7 +15,7 @@ export type GitSearchState = {
  * Git clone progress state
  */
 export type GitCloneState = {
-  type: 'GitClone';
+  type: "GitClone";
   repository: string;
   current: number;
   total: number;
@@ -25,7 +25,7 @@ export type GitCloneState = {
  * Repository analysis progress state
  */
 export type AnalyzeState = {
-  type: 'Analyze';
+  type: "Analyze";
   repository: string;
   current: number;
   total: number;
@@ -35,7 +35,7 @@ export type AnalyzeState = {
  * Summary creation progress state
  */
 export type CreateSummaryState = {
-  type: 'CreateSummary';
+  type: "CreateSummary";
   repository?: string;
   current: number;
   total: number;
@@ -45,7 +45,7 @@ export type CreateSummaryState = {
  * Resume creation progress state
  */
 export type CreatingResumeState = {
-  type: 'CreatingResume';
+  type: "CreatingResume";
 };
 
 /**
