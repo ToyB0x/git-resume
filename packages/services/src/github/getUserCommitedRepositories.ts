@@ -1,11 +1,12 @@
 import type { Repository } from "@resume/models";
-import type { getOctokit } from "./client";
+import { getOctokit } from "./client";
 
 export const getUserCommitedRepositories = async (
   userName: string,
   publicOnly: boolean,
-  octokitApp: ReturnType<typeof getOctokit>,
+  githubToken: string,
 ): Promise<Repository[]> => {
+  const octokitApp = getOctokit(githubToken);
   // NOTE: 最大直近1000件のコミットを取得
   // https://docs.github.com/ja/rest/search/search?apiVersion=2022-11-28#search-commits
   const commits = await octokitApp.paginate(octokitApp.rest.search.commits, {
