@@ -9,6 +9,10 @@ export const create = async (userName: string) => {
     const repoDirs: string[] = fs.readdirSync(`${dir}/${orgDir}`);
     for (const repoDir of repoDirs) {
       const gitRepoDir = `${dir}/${orgDir}/${repoDir}`;
+
+      // avoid .DS_Store files (errors on Mac)
+      if (gitRepoDir.endsWith(".DS_Store")) continue;
+
       await packService.create(userName, gitRepoDir);
     }
   }
