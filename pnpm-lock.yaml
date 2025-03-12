@@ -70,6 +70,9 @@ importers:
       '@octokit/plugin-throttling':
         specifier: 9.4.0
         version: 9.4.0(@octokit/core@6.1.4)
+      '@resume/models':
+        specifier: workspace:*
+        version: link:../../packages/models
       '@supercharge/promise-pool':
         specifier: 3.2.0
         version: 3.2.0
@@ -277,6 +280,15 @@ importers:
         version: 5.7.3
 
   packages/github:
+    devDependencies:
+      '@tsconfig/strictest':
+        specifier: 2.0.5
+        version: 2.0.5
+      typescript:
+        specifier: 5.7.3
+        version: 5.7.3
+
+  packages/models:
     devDependencies:
       '@tsconfig/strictest':
         specifier: 2.0.5
