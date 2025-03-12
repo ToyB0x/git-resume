@@ -1,17 +1,10 @@
 import type { Pack, Summary } from "@resume/models";
-import { create } from "./create";
-import { load } from "./load";
 
-interface SummaryService {
+export interface SummaryService {
   create: (
     userName: string,
-    packs: Pack[],
-    skipConfirm: boolean,
+    pack: Pack,
+    RESUME_GEMINI_API_KEY: string,
   ) => Promise<void>;
   load: (userName: string) => Summary[];
 }
-
-export const summaryService: SummaryService = {
-  create: create,
-  load: load,
-};

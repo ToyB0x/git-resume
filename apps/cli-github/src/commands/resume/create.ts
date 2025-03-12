@@ -1,3 +1,4 @@
+import { env } from "@/utils/env";
 import confirm from "@inquirer/confirm";
 import { resumeService, summaryService } from "@resume/services";
 
@@ -16,5 +17,5 @@ Continue?`,
     }
   }
 
-  await resumeService.create(userName, summaries, skipConfirm);
+  await resumeService.create(userName, summaries, env.RESUME_GEMINI_API_KEY);
 };
