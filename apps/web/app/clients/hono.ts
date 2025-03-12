@@ -1,4 +1,4 @@
-import type { AppType } from "@resume/api-sample/src";
+import type { AppType } from "@resume/api/src";
 import { hc } from "hono/client";
 // import { publicViteEnv } from "@/env";
 

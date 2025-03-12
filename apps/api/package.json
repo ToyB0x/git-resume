@@ -1,18 +1,18 @@
 {
   "name": "@resume/api",
+  "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
-    "typecheck": "tsc --noEmit"
+    "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
-    "hono": "4.7.2"
+    "@hono/node-server": "^1.13.8",
+    "@hono/valibot-validator": "^0.5.2",
+    "hono": "^4.7.4",
+    "valibot": "1.0.0-rc.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20250109.0",
     "@tsconfig/strictest": "2.0.5",
-    "wrangler": "3.109.2",
-    "typescript": "5.7.3"
+    "@types/node": "^20.11.17",
+    "tsx": "^4.7.1"
   }
 }

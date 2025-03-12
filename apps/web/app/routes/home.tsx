@@ -1,13 +1,14 @@
 import { Welcome } from "../welcome/welcome";
 import type { Route } from "./+types/home";
 
-export function meta(_: Route.MetaArgs) {
+// biome-ignore lint/correctness/noEmptyPattern: template default
+export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "GitHub Check" },
+    { name: "description", content: "Explore GitHub profiles" },
   ];
 }
 
-export default function Home() {
+export default function Page() {
   return <Welcome />;
 }
