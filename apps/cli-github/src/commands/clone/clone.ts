@@ -1,5 +1,4 @@
-import { logger } from "@/utils";
-import { env } from "@/utils/env";
+import { env, logger } from "@/utils";
 import { gitHubService, gitService } from "@resume/services";
 import { PromisePool } from "@supercharge/promise-pool";
 

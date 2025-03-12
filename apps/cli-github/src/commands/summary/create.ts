@@ -1,4 +1,4 @@
-import { env } from "@/utils/env";
+import { env } from "@/utils";
 import confirm from "@inquirer/confirm";
 import { packService, summaryService } from "@resume/services";
 
