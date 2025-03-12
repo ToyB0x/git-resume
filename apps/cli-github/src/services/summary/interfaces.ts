@@ -3,7 +3,11 @@ import { create } from "./create";
 import { load } from "./load";
 
 interface SummaryService {
-  create: (userName: string, packs: Pack[]) => Promise<void>;
+  create: (
+    userName: string,
+    packs: Pack[],
+    skipConfirm: boolean,
+  ) => Promise<void>;
   load: (userName: string) => Summary[];
 }
 

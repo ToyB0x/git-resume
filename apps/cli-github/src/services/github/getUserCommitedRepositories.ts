@@ -3,11 +3,12 @@ import { octokitApp } from "./client";
 
 export const getUserCommitedRepositories = async (
   userName: string,
+  publicOnly: boolean,
 ): Promise<Repository[]> => {
   // NOTE: 最大直近1000件のコミットを取得
   // https://docs.github.com/ja/rest/search/search?apiVersion=2022-11-28#search-commits
   const commits = await octokitApp.paginate(octokitApp.rest.search.commits, {
-    q: `author:${userName}`,
+    q: publicOnly ? `author:${userName} is:public` : `author:${userName}`,
     sort: "author-date",
     order: "desc",
     per_page: 100,

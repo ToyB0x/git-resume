@@ -9,9 +9,10 @@ export const newSummaryCommand = () => {
     .command("create")
     .description("Create user summaries.")
     .argument("<userName>", "userName to summarize")
-    .action(async (userName) => {
+    .option("-y, --skip-confirm", "skip confirmation")
+    .action(async (userName, options) => {
       if (typeof userName !== "string") throw Error("userName must be string");
-      await create(userName);
+      await create(userName, options.skipConfirm);
     });
 
   return summaryCmd;

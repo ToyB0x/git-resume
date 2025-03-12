@@ -14,15 +14,21 @@ const ai = genkit({
   model: gemini20Flash,
 });
 
-export const create = async (userName: string, summaries: Summary[]) => {
-  const answer = await confirm({
-    message: `all summary text size is ${summaries.toString().length} (about ${Math.floor(summaries.toString().length / 4)} token)
+export const create = async (
+  userName: string,
+  summaries: Summary[],
+  skipConfirm: boolean,
+) => {
+  if (!skipConfirm) {
+    const answer = await confirm({
+      message: `all summary text size is ${summaries.toString().length} (about ${Math.floor(summaries.toString().length / 4)} token)
 Continue?`,
-  });
+    });
 
-  console.log(answer);
-  if (!answer) {
-    process.exit(1);
+    console.log(answer);
+    if (!answer) {
+      process.exit(1);
+    }
   }
 
   const { text } = await ai.generate({

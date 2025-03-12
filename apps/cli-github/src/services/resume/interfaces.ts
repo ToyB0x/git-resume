@@ -2,7 +2,11 @@ import type { Summary } from "@/models";
 import { create } from "./create";
 
 interface ResumeService {
-  create: (userName: string, summaries: Summary[]) => Promise<void>;
+  create: (
+    userName: string,
+    summaries: Summary[],
+    skipConfirm: boolean,
+  ) => Promise<void>;
   // update: (userName: string) => Promise<Resume>;
 }
 
