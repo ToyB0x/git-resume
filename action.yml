@@ -62,7 +62,7 @@ runs:
     - name: Show Help
       run: pnpm jobs ${{ inputs.RESUME_COMMAND }}
       shell: bash
-      working-directory: git-resume/apps/cli-github
+      working-directory: git-resume/apps/cli
       env:
         RESUME_USERNAME: ${{ inputs.RESUME_USERNAME }}
         RESUME_GEMINI_API_KEY: ${{ inputs.RESUME_GEMINI_API_KEY }}
