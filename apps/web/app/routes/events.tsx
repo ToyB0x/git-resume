@@ -1,17 +1,14 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
+import type { ValueEventData } from "@resume/models";
+import { EventType } from "@resume/models";
 import { useEffect, useState } from "react";
 
-interface EventData {
-  value: string;
-}
+// Using a Record type with fixed keys for EventsState
+type EventsState = Record<"a" | "b" | "c", ValueEventData | null>;
 
 export default function EventsPage() {
   const [isConnected, setIsConnected] = useState(false);
-  const [events, setEvents] = useState<{
-    a: EventData | null;
-    b: EventData | null;
-    c: EventData | null;
-  }>({
+  const [events, setEvents] = useState<EventsState>({
     a: null,
     b: null,
     c: null,
@@ -40,17 +37,36 @@ export default function EventsPage() {
           },
 
           onmessage: (event) => {
-            const { event: eventType, data } = event;
+            const { event: eventTypeStr, data } = event;
             const parsedData = JSON.parse(data);
 
-            if (eventType === "connect") {
+            // Type guard to ensure eventType is a valid EventType
+            const isValidEventType = (type: string): type is EventType => {
+              return Object.values(EventType).includes(type as EventType);
+            };
+
+            if (!isValidEventType(eventTypeStr)) {
+              console.warn(`Received unknown event type: ${eventTypeStr}`);
+              return;
+            }
+
+            const eventType = eventTypeStr as EventType;
+
+            if (eventType === EventType.CONNECTED) {
               console.log("Connected:", parsedData.message);
             } else if (
-              eventType === "a" ||
-              eventType === "b" ||
-              eventType === "c"
+              eventType === EventType.A ||
+              eventType === EventType.B ||
+              eventType === EventType.C
             ) {
-              setEvents((prev) => ({ ...prev, [eventType]: parsedData }));
+              // Using the string value directly since our state uses string keys
+              const key = eventType as string as keyof EventsState;
+
+              // Type assertion is safe because we've checked that eventType is one of these values
+              setEvents((prev) => ({
+                ...prev,
+                [key]: parsedData,
+              }));
             }
           },
 
@@ -101,15 +117,21 @@ export default function EventsPage() {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <EventCard type="a" data={events.a} />
-        <EventCard type="b" data={events.b} />
-        <EventCard type="c" data={events.c} />
+        <EventCard type={EventType.A} data={events.a} />
+        <EventCard type={EventType.B} data={events.b} />
+        <EventCard type={EventType.C} data={events.c} />
       </div>
     </div>
   );
 }
 
-function EventCard({ type, data }: { type: string; data: EventData | null }) {
+function EventCard({
+  type,
+  data,
+}: {
+  type: EventType.A | EventType.B | EventType.C;
+  data: ValueEventData | null;
+}) {
   return (
     <div className="border rounded-lg p-4 shadow-sm">
       <h2 className="text-xl font-semibold mb-2">Event Type: {type}</h2>

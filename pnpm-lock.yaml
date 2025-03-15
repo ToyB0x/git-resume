@@ -23,6 +23,9 @@ importers:
       '@hono/valibot-validator':
         specifier: ^0.5.2
         version: 0.5.2(hono@4.7.4)(valibot@1.0.0-rc.2(typescript@5.7.3))
+      '@resume/models':
+        specifier: workspace:*
+        version: link:../../packages/models
       hono:
         specifier: ^4.7.4
         version: 4.7.4
@@ -39,6 +42,9 @@ importers:
       tsx:
         specifier: ^4.7.1
         version: 4.19.3
+      typescript:
+        specifier: ^5.7.3
+        version: 5.7.3
 
   apps/cli:
     dependencies:
@@ -94,6 +100,9 @@ importers:
       '@react-router/serve':
         specifier: ^7.3.0
         version: 7.3.0(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3)
+      '@resume/models':
+        specifier: workspace:*
+        version: link:../../packages/models
       hono:
         specifier: ^4.7.4
         version: 4.7.4
