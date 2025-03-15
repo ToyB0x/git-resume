@@ -1,6 +1,11 @@
 /**
- * Shared types for SSE (Server-Sent Events) between API and client
+ * Shared types for event-driven messages between server and client
+ * Includes both SSE (Server-Sent Events) types and state updates for the resume generation process
  */
+
+// ------------------------------------------------------------------------------------
+// SSE Events
+// ------------------------------------------------------------------------------------
 
 /**
  * Type for the connected event data
@@ -10,34 +15,106 @@ export interface ConnectedEventData {
 }
 
 /**
- * Type for the value events (a, b, c)
- */
-export interface ValueEventData {
-  value: string;
-}
-
-/**
- * Enumeration of all supported event types
+ * Enumeration of all supported SSE event types
  * This is exported as a value to allow direct usage in SSE events
  */
 export enum EventType {
   CONNECTED = "connected",
-  A = "a",
-  B = "b",
-  C = "c",
+  RESUME_PROGRESS = "resume_progress",
 }
 
 /**
- * Type mapping event types to their corresponding data types
+ * Type mapping SSE event types to their corresponding data types
  */
 export interface EventDataMap {
   [EventType.CONNECTED]: ConnectedEventData;
-  [EventType.A]: ValueEventData;
-  [EventType.B]: ValueEventData;
-  [EventType.C]: ValueEventData;
+  [EventType.RESUME_PROGRESS]: ResumeGenerationState;
 }
 
 /**
- * Union type for all event data
+ * Union type for all SSE event data
  */
 export type EventData = EventDataMap[keyof EventDataMap];
+
+// ------------------------------------------------------------------------------------
+// Resume Generation State Events
+// ------------------------------------------------------------------------------------
+
+/**
+ * Enumeration of all resume generation state event types
+ * This allows for a more formalized approach to state events
+ */
+export enum ResumeEventType {
+  GIT_SEARCH = "GitSearch",
+  GIT_CLONE = "GitClone",
+  ANALYZE = "Analyze",
+  CREATE_SUMMARY = "CreateSummary",
+  CREATING_RESUME = "CreatingResume",
+}
+
+/**
+ * Git search commit progress state
+ */
+export type GitSearchState = {
+  type: ResumeEventType.GIT_SEARCH;
+  foundCommits?: number;
+  foundRepositories?: number;
+};
+
+/**
+ * Git clone progress state
+ */
+export type GitCloneState = {
+  type: ResumeEventType.GIT_CLONE;
+  repository: string;
+  current: number;
+  total: number;
+};
+
+/**
+ * Repository analysis progress state
+ */
+export type AnalyzeState = {
+  type: ResumeEventType.ANALYZE;
+  repository: string;
+  current: number;
+  total: number;
+};
+
+/**
+ * Summary creation progress state
+ */
+export type CreateSummaryState = {
+  type: ResumeEventType.CREATE_SUMMARY;
+  repository?: string;
+  current: number;
+  total: number;
+};
+
+/**
+ * Resume creation progress state
+ */
+export type CreatingResumeState = {
+  type: ResumeEventType.CREATING_RESUME;
+};
+
+/**
+ * Union type of all possible resume generation states
+ */
+export type ResumeGenerationState =
+  | GitSearchState
+  | GitCloneState
+  | AnalyzeState
+  | CreateSummaryState
+  | CreatingResumeState;
+
+/**
+ * Type mapping resume event types to their corresponding state types
+ */
+export interface ResumeEventDataMap {
+  [ResumeEventType.GIT_SEARCH]: GitSearchState;
+  [ResumeEventType.GIT_CLONE]: GitCloneState;
+  [ResumeEventType.ANALYZE]: AnalyzeState;
+  [ResumeEventType.CREATE_SUMMARY]: CreateSummaryState;
+  [ResumeEventType.CREATING_RESUME]: CreatingResumeState;
+}

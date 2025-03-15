@@ -1,8 +1,7 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { githubRoute } from "./routes/api";
-import { eventsRoute } from "./routes/api/events";
+import { githubRoute, resumeRoute } from "./routes/api";
 
 const app = new Hono()
   .use(
@@ -18,7 +17,7 @@ const app = new Hono()
     return c.text("Hello Hono!");
   })
   .route("/api/github", githubRoute)
-  .route("/api/events", eventsRoute);
+  .route("/api/resume", resumeRoute);
 
 serve(
   {
