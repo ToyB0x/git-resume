@@ -1,12 +1,16 @@
 import { randomUUID } from "node:crypto";
+import { EventType } from "@resume/models";
+import type {
+  ConnectedEventData,
+  EventDataMap,
+  ValueEventData,
+} from "@resume/models";
 import { Hono } from "hono";
 import {
   type SSEMessage,
   type SSEStreamingApi,
   streamSSE,
 } from "hono/streaming";
-import { EventType } from "models";
-import type { ConnectedEventData, EventDataMap, ValueEventData } from "models";
 
 /**
  * Helper function for sending typed SSE events
