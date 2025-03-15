@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 
 interface EventData {
   value: string;
@@ -17,47 +18,70 @@ export default function EventsPage() {
   });
 
   useEffect(() => {
-    const eventSource = new EventSource("http://localhost:3000/api/events");
+    let abortController = new AbortController();
+    let retryCount = 0;
+    const MAX_RETRIES = 5;
 
-    // Handle connection open
-    eventSource.onopen = () => {
-      setIsConnected(true);
+    const connectToEventSource = async () => {
+      try {
+        await fetchEventSource("http://localhost:3000/api/events", {
+          signal: abortController.signal,
+          
+          onopen: async (response) => {
+            if (response.ok) {
+              setIsConnected(true);
+              retryCount = 0;
+              console.log("Connection opened");
+            } else {
+              const error = await response.text();
+              console.error(`Failed to connect: ${error}`);
+              throw new Error(`Failed to connect: ${response.status} ${error}`);
+            }
+          },
+          
+          onmessage: (event) => {
+            const { event: eventType, data } = event;
+            const parsedData = JSON.parse(data);
+            
+            if (eventType === "connect") {
+              console.log("Connected:", parsedData.message);
+            } else if (eventType === "a" || eventType === "b" || eventType === "c") {
+              setEvents((prev) => ({ ...prev, [eventType]: parsedData }));
+            }
+          },
+          
+          onerror: (err) => {
+            console.error("EventSource error:", err);
+            setIsConnected(false);
+            
+            retryCount++;
+            if (retryCount > MAX_RETRIES) {
+              console.error(`Max retries (${MAX_RETRIES}) reached`);
+              abortController.abort();
+              return;
+            }
+            
+            // Allow the fetchEventSource to retry automatically
+            // according to its retry strategy
+            return;
+          },
+          
+          onclose: () => {
+            console.log("Connection closed");
+            setIsConnected(false);
+          }
+        });
+      } catch (err) {
+        console.error("Error connecting to event source:", err);
+        setIsConnected(false);
+      }
     };
 
-    // Handle connection error
-    eventSource.onerror = (error) => {
-      console.error("EventSource error:", error);
-      setIsConnected(false);
-      eventSource.close();
-    };
-
-    // Handle "connect" event
-    eventSource.addEventListener("connect", (e) => {
-      const data = JSON.parse(e.data);
-      console.log("Connected:", data.message);
-    });
-
-    // Handle event type "a"
-    eventSource.addEventListener("a", (e) => {
-      const data = JSON.parse(e.data);
-      setEvents((prev) => ({ ...prev, a: data }));
-    });
-
-    // Handle event type "b"
-    eventSource.addEventListener("b", (e) => {
-      const data = JSON.parse(e.data);
-      setEvents((prev) => ({ ...prev, b: data }));
-    });
-
-    // Handle event type "c"
-    eventSource.addEventListener("c", (e) => {
-      const data = JSON.parse(e.data);
-      setEvents((prev) => ({ ...prev, c: data }));
-    });
+    connectToEventSource();
 
     // Clean up on component unmount
     return () => {
-      eventSource.close();
+      abortController.abort();
     };
   }, []);
 
