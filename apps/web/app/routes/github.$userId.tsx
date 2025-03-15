@@ -1,12 +1,6 @@
-import type {
-  AnalyzeState,
-  CreateSummaryState,
-  CreatingResumeState,
-  GitCloneState,
-  GitSearchState,
-  ResumeGenerationState,
-} from "@resume/models";
-import { ResumeEventType } from "@resume/models";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
+import type { ResumeGenerationState } from "@resume/models";
+import { EventType, ResumeEventType } from "@resume/models";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -61,109 +55,92 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   };
 }
 
-// Sequential state update component
-function LoadingStates() {
+// Real-time state update component using SSE
+function LoadingStates({ userId }: { userId: string }) {
   const [currentState, setCurrentState] = useState<ResumeGenerationState>({
     type: ResumeEventType.GIT_SEARCH,
     foundCommits: 0,
     foundRepositories: 0,
   });
   const [isComplete, setIsComplete] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    if (isComplete) return;
+    const abortController = new AbortController();
+    let retryCount = 0;
+    const MAX_RETRIES = 5;
 
-    // Function to update the state based on current type
-    const updateState = () => {
-      setCurrentState((prevState: ResumeGenerationState) => {
-        switch (prevState.type) {
-          case ResumeEventType.GIT_SEARCH:
-            return {
-              ...prevState,
-              foundCommits: Math.min((prevState.foundCommits || 0) + 50, 250),
-              foundRepositories: Math.min(
-                (prevState.foundRepositories || 0) + 1,
-                5,
-              ),
-            } as GitSearchState;
-          case ResumeEventType.GIT_CLONE:
-            return {
-              ...prevState,
-              current: Math.min(prevState.current + 1, prevState.total),
-            } as GitCloneState;
-          case ResumeEventType.ANALYZE:
-            return {
-              ...prevState,
-              current: Math.min(prevState.current + 1, prevState.total),
-            } as AnalyzeState;
-          case ResumeEventType.CREATE_SUMMARY:
-            return {
-              ...prevState,
-              current: Math.min(prevState.current + 1, prevState.total),
-            } as CreateSummaryState;
-          default:
-            return prevState;
-        }
-      });
-    };
+    const connectToEventSource = async () => {
+      try {
+        await fetchEventSource(
+          `http://localhost:3000/api/resume/${userId}/progress`,
+          {
+            signal: abortController.signal,
 
-    // Update state values every few seconds
-    const updateInterval = setInterval(updateState, 3000);
+            onopen: async (response) => {
+              if (response.ok) {
+                setIsConnected(true);
+                retryCount = 0;
+                console.log("Connected to resume progress stream");
+              } else {
+                const error = await response.text();
+                console.error(`Failed to connect to progress stream: ${error}`);
+                throw new Error(
+                  `Failed to connect: ${response.status} ${error}`,
+                );
+              }
+            },
 
-    // Change state type after specific intervals
-    const transitions = [
-      {
-        time: 12000,
-        state: {
-          type: ResumeEventType.GIT_CLONE,
-          repository: "user/repo1",
-          current: 0,
-          total: 3,
-        } as GitCloneState,
-      },
-      {
-        time: 24000,
-        state: {
-          type: ResumeEventType.ANALYZE,
-          repository: "user/repo1",
-          current: 0,
-          total: 5,
-        } as AnalyzeState,
-      },
-      {
-        time: 36000,
-        state: {
-          type: ResumeEventType.CREATE_SUMMARY,
-          current: 0,
-          total: 5,
-        } as CreateSummaryState,
-      },
-      {
-        time: 48000,
-        state: { type: ResumeEventType.CREATING_RESUME } as CreatingResumeState,
-      },
-      { time: 55000, complete: true },
-    ];
+            onmessage: (event) => {
+              const { event: eventTypeStr, data } = event;
+              const parsedData = JSON.parse(data);
 
-    // Schedule the transitions
-    const timeouts = transitions.map(({ time, state, complete }) =>
-      setTimeout(() => {
-        if (complete) {
-          setIsComplete(true);
-        } else if (state) {
-          setCurrentState(state);
-        }
-      }, time),
-    );
+              // Handle resume progress events
+              if (eventTypeStr === EventType.RESUME_PROGRESS) {
+                setCurrentState(parsedData as ResumeGenerationState);
+              } else if (eventTypeStr === EventType.CONNECTED) {
+                console.log("Connected:", parsedData.message);
+              }
+            },
 
-    // Clean up intervals and timeouts on unmount
-    return () => {
-      clearInterval(updateInterval);
-      for (const timeout of timeouts) {
-        clearTimeout(timeout);
+            onerror: (err) => {
+              console.error("EventSource error:", err);
+              setIsConnected(false);
+
+              retryCount++;
+              if (retryCount > MAX_RETRIES) {
+                console.error(`Max retries (${MAX_RETRIES}) reached`);
+                // Fall back to static display if connection fails
+                setIsComplete(true);
+                abortController.abort();
+                return;
+              }
+
+              // Allow the fetchEventSource to retry automatically
+              return;
+            },
+
+            onclose: () => {
+              console.log("Resume progress stream closed");
+              setIsConnected(false);
+              setIsComplete(true);
+            },
+          },
+        );
+      } catch (err) {
+        console.error("Error connecting to event source:", err);
+        setIsConnected(false);
+        setIsComplete(true);
       }
     };
-  }, [isComplete]);
+
+    connectToEventSource();
+
+    // Clean up on component unmount
+    return () => {
+      abortController.abort();
+    };
+  }, [userId]);
 
   // Render different UI based on state type
   const renderStateUI = () => {
@@ -173,6 +150,18 @@ function LoadingStates() {
           <div className="mb-2">✓ Resume generation complete!</div>
           <div className="text-sm text-gray-400">
             Your personalized GitHub resume is ready
+          </div>
+        </div>
+      );
+    }
+
+    // When not connected yet, show connecting message
+    if (!isConnected) {
+      return (
+        <div className="text-center text-yellow-400">
+          <div className="mb-2">Connecting to resume generator...</div>
+          <div className="text-sm text-gray-400">
+            Please wait while we establish connection
           </div>
         </div>
       );
@@ -295,7 +284,7 @@ function LoadingStates() {
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { markdown } = loaderData;
+  const { userId, markdown } = loaderData;
   const [showLoading, setShowLoading] = useState(true);
 
   // Hide the loading states after 60 seconds (1 minute)
@@ -319,8 +308,8 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           </p>
         </header>
 
-        {/* Sequential state update UI - shows for 1 minute */}
-        {showLoading && <LoadingStates />}
+        {/* Real-time state update UI with SSE - shows for 1 minute */}
+        {showLoading && <LoadingStates userId={userId} />}
 
         {/* Resume Content (Markdown) */}
         <div className="markdown-content bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">

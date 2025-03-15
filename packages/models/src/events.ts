@@ -30,6 +30,7 @@ export enum EventType {
   A = "a",
   B = "b",
   C = "c",
+  RESUME_PROGRESS = "resume_progress",
 }
 
 /**
@@ -40,6 +41,7 @@ export interface EventDataMap {
   [EventType.A]: ValueEventData;
   [EventType.B]: ValueEventData;
   [EventType.C]: ValueEventData;
+  [EventType.RESUME_PROGRESS]: ResumeGenerationState;
 }
 
 /**
