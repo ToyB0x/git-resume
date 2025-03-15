@@ -191,35 +191,43 @@ function LoadingStates({
     }, 1500);
   };
 
-  // Get status icon and color based on state type
-  const getStateIcon = (stateType: ResumeEventType, isCurrent: boolean) => {
+  // Get status indicator based on state type - using minimal modern design
+  const getStateIndicator = (
+    stateType: ResumeEventType,
+    isCurrent: boolean,
+  ) => {
     const isCompleted = completedStates.includes(stateType);
 
     const stateConfig = {
       [ResumeEventType.GIT_SEARCH]: {
-        icon: "🔍",
-        color: "text-blue-400",
+        color: "from-blue-500 to-blue-600",
         bgColor: "bg-blue-500",
+        textColor: "text-blue-400",
+        barWidth: "w-16",
       },
       [ResumeEventType.GIT_CLONE]: {
-        icon: "📥",
-        color: "text-indigo-400",
+        color: "from-indigo-500 to-indigo-600",
         bgColor: "bg-indigo-500",
+        textColor: "text-indigo-400",
+        barWidth: "w-16",
       },
       [ResumeEventType.ANALYZE]: {
-        icon: "🔎",
-        color: "text-purple-400",
+        color: "from-purple-500 to-purple-600",
         bgColor: "bg-purple-500",
+        textColor: "text-purple-400",
+        barWidth: "w-16",
       },
       [ResumeEventType.CREATE_SUMMARY]: {
-        icon: "📝",
-        color: "text-cyan-400",
+        color: "from-cyan-500 to-cyan-600",
         bgColor: "bg-cyan-500",
+        textColor: "text-cyan-400",
+        barWidth: "w-16",
       },
       [ResumeEventType.CREATING_RESUME]: {
-        icon: "📄",
-        color: "text-emerald-400",
+        color: "from-emerald-500 to-emerald-600",
         bgColor: "bg-emerald-500",
+        textColor: "text-emerald-400",
+        barWidth: "w-16",
       },
     };
 
@@ -227,26 +235,60 @@ function LoadingStates({
 
     if (isCompleted) {
       return (
-        <div
-          className={`h-10 w-10 rounded-full bg-gray-800 flex items-center justify-center ${config.color} transition-all duration-300`}
-        >
-          <span className="text-lg">✓</span>
+        <div className="flex flex-col items-center">
+          <div
+            className={`h-0.5 ${config.barWidth} ${config.bgColor} rounded-full mb-2`}
+          />
+          <span className={`text-xs font-medium ${config.textColor}`}>
+            {stateType === ResumeEventType.GIT_SEARCH
+              ? "Search"
+              : stateType === ResumeEventType.GIT_CLONE
+                ? "Clone"
+                : stateType === ResumeEventType.ANALYZE
+                  ? "Analyze"
+                  : stateType === ResumeEventType.CREATE_SUMMARY
+                    ? "Summarize"
+                    : "Generate"}
+          </span>
         </div>
       );
     }
+
     if (isCurrent) {
       return (
-        <div
-          className={`relative h-10 w-10 rounded-full flex items-center justify-center ${config.bgColor} animate-pulse transition-all duration-300`}
-        >
-          <span className="text-lg">{config.icon}</span>
-          <div className="absolute inset-0 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+        <div className="flex flex-col items-center">
+          <div
+            className={`h-0.5 ${config.barWidth} bg-gradient-to-r ${config.color} rounded-full mb-2 animate-pulse`}
+          />
+          <span className={`text-xs font-semibold ${config.textColor}`}>
+            {stateType === ResumeEventType.GIT_SEARCH
+              ? "Search"
+              : stateType === ResumeEventType.GIT_CLONE
+                ? "Clone"
+                : stateType === ResumeEventType.ANALYZE
+                  ? "Analyze"
+                  : stateType === ResumeEventType.CREATE_SUMMARY
+                    ? "Summarize"
+                    : "Generate"}
+          </span>
         </div>
       );
     }
+
     return (
-      <div className="h-10 w-10 rounded-full bg-gray-800 text-gray-600 flex items-center justify-center opacity-50 transition-all duration-300">
-        <span className="text-lg">{config.icon}</span>
+      <div className="flex flex-col items-center">
+        <div className="h-0.5 w-16 bg-gray-800 rounded-full mb-2" />
+        <span className="text-xs text-gray-500">
+          {stateType === ResumeEventType.GIT_SEARCH
+            ? "Search"
+            : stateType === ResumeEventType.GIT_CLONE
+              ? "Clone"
+              : stateType === ResumeEventType.ANALYZE
+                ? "Analyze"
+                : stateType === ResumeEventType.CREATE_SUMMARY
+                  ? "Summarize"
+                  : "Generate"}
+        </span>
       </div>
     );
   };
@@ -255,12 +297,20 @@ function LoadingStates({
   const renderStateUI = () => {
     if (isComplete) {
       return (
-        <div className="animate-in fade-in duration-500 text-center text-green-400 mt-8">
-          <div className="text-2xl mb-4">✓ Resume Generation Complete!</div>
-          <div className="text-lg text-gray-300">
-            Your personalized GitHub resume is ready
+        <div className="animate-in fade-in duration-500 text-center mt-8">
+          <div className="h-px w-48 mx-auto bg-gradient-to-r from-transparent via-green-500 to-transparent mb-8" />
+          <div className="text-2xl mb-4 font-light text-white">
+            Generation Complete
           </div>
-          <div className="mt-6 text-sm text-gray-400">
+          <div className="text-base text-gray-300 max-w-md mx-auto">
+            Your personalized GitHub resume has been successfully generated
+          </div>
+          <div className="mt-8 flex justify-center space-x-1">
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 animate-pulse delay-100" />
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 animate-pulse delay-200" />
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 animate-pulse delay-300" />
+          </div>
+          <div className="mt-3 text-sm text-gray-500">
             Loading your resume...
           </div>
         </div>
@@ -270,10 +320,35 @@ function LoadingStates({
     // When not connected yet, show connecting message
     if (!isConnected) {
       return (
-        <div className="text-center text-yellow-400 animate-pulse">
-          <div className="text-2xl mb-4">Connecting to resume generator...</div>
-          <div className="text-lg text-gray-300">
-            Please wait while we establish connection
+        <div className="text-center animate-in fade-in duration-500">
+          <div className="h-px w-36 mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent mb-8" />
+          <div className="text-xl mb-4 font-light text-white">
+            Establishing Connection
+          </div>
+          <div className="flex justify-center space-x-2 mb-6">
+            <div
+              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
+              style={{ animationDelay: "0ms" }}
+            />
+            <div
+              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
+              style={{ animationDelay: "100ms" }}
+            />
+            <div
+              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
+              style={{ animationDelay: "200ms" }}
+            />
+            <div
+              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
+              style={{ animationDelay: "300ms" }}
+            />
+            <div
+              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
+              style={{ animationDelay: "400ms" }}
+            />
+          </div>
+          <div className="text-base text-gray-400 max-w-md mx-auto">
+            Connecting to the resume generator service
           </div>
         </div>
       );
@@ -284,65 +359,40 @@ function LoadingStates({
       <div className="flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* Progress steps visualization */}
         <div className="flex items-center justify-center mb-10 mt-4 w-full max-w-2xl relative">
-          {/* Connecting lines between steps */}
-          <div className="absolute h-1 bg-gray-700 top-5 left-0 right-0 z-0" />
+          {/* Connecting lines between steps - simplified modern line */}
+          <div className="absolute h-px bg-gray-800 top-0 left-0 right-0 z-0" />
 
-          {/* Step indicators */}
+          {/* Step indicators - modern minimal design */}
           <div className="grid grid-cols-5 w-full relative z-10">
             <div className="flex flex-col items-center">
-              {getStateIcon(
+              {getStateIndicator(
                 ResumeEventType.GIT_SEARCH,
                 currentState.type === ResumeEventType.GIT_SEARCH,
               )}
-              <span
-                className={`mt-2 text-xs ${currentState.type === ResumeEventType.GIT_SEARCH ? "text-blue-400 font-bold" : "text-gray-500"}`}
-              >
-                Search
-              </span>
             </div>
             <div className="flex flex-col items-center">
-              {getStateIcon(
+              {getStateIndicator(
                 ResumeEventType.GIT_CLONE,
                 currentState.type === ResumeEventType.GIT_CLONE,
               )}
-              <span
-                className={`mt-2 text-xs ${currentState.type === ResumeEventType.GIT_CLONE ? "text-indigo-400 font-bold" : "text-gray-500"}`}
-              >
-                Clone
-              </span>
             </div>
             <div className="flex flex-col items-center">
-              {getStateIcon(
+              {getStateIndicator(
                 ResumeEventType.ANALYZE,
                 currentState.type === ResumeEventType.ANALYZE,
               )}
-              <span
-                className={`mt-2 text-xs ${currentState.type === ResumeEventType.ANALYZE ? "text-purple-400 font-bold" : "text-gray-500"}`}
-              >
-                Analyze
-              </span>
             </div>
             <div className="flex flex-col items-center">
-              {getStateIcon(
+              {getStateIndicator(
                 ResumeEventType.CREATE_SUMMARY,
                 currentState.type === ResumeEventType.CREATE_SUMMARY,
               )}
-              <span
-                className={`mt-2 text-xs ${currentState.type === ResumeEventType.CREATE_SUMMARY ? "text-cyan-400 font-bold" : "text-gray-500"}`}
-              >
-                Summarize
-              </span>
             </div>
             <div className="flex flex-col items-center">
-              {getStateIcon(
+              {getStateIndicator(
                 ResumeEventType.CREATING_RESUME,
                 currentState.type === ResumeEventType.CREATING_RESUME,
               )}
-              <span
-                className={`mt-2 text-xs ${currentState.type === ResumeEventType.CREATING_RESUME ? "text-emerald-400 font-bold" : "text-gray-500"}`}
-              >
-                Generate
-              </span>
             </div>
           </div>
         </div>
