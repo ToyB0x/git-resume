@@ -14,7 +14,7 @@ const eventsRoute = new Hono()
         });
 
         await streamSSE.writeSSE({
-          data: "connected start",
+          data: JSON.stringify({ message: "connected start" }),
           event: "connected",
           id: randomUUID(),
         });
