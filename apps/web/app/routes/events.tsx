@@ -1,6 +1,6 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
-import { EventType } from "models";
-import type { ValueEventData } from "models";
+import type { ValueEventData } from "@resume/models";
+import { EventType } from "@resume/models";
 import { useEffect, useState } from "react";
 
 // Using a Record type with fixed keys for EventsState
