@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
+import { useEffect, useState } from "react";
 
 interface EventData {
   value: string;
@@ -18,7 +18,7 @@ export default function EventsPage() {
   });
 
   useEffect(() => {
-    let abortController = new AbortController();
+    const abortController = new AbortController();
     let retryCount = 0;
     const MAX_RETRIES = 5;
 
@@ -26,7 +26,7 @@ export default function EventsPage() {
       try {
         await fetchEventSource("http://localhost:3000/api/events", {
           signal: abortController.signal,
-          
+
           onopen: async (response) => {
             if (response.ok) {
               setIsConnected(true);
@@ -38,38 +38,42 @@ export default function EventsPage() {
               throw new Error(`Failed to connect: ${response.status} ${error}`);
             }
           },
-          
+
           onmessage: (event) => {
             const { event: eventType, data } = event;
             const parsedData = JSON.parse(data);
-            
+
             if (eventType === "connect") {
               console.log("Connected:", parsedData.message);
-            } else if (eventType === "a" || eventType === "b" || eventType === "c") {
+            } else if (
+              eventType === "a" ||
+              eventType === "b" ||
+              eventType === "c"
+            ) {
               setEvents((prev) => ({ ...prev, [eventType]: parsedData }));
             }
           },
-          
+
           onerror: (err) => {
             console.error("EventSource error:", err);
             setIsConnected(false);
-            
+
             retryCount++;
             if (retryCount > MAX_RETRIES) {
               console.error(`Max retries (${MAX_RETRIES}) reached`);
               abortController.abort();
               return;
             }
-            
+
             // Allow the fetchEventSource to retry automatically
             // according to its retry strategy
             return;
           },
-          
+
           onclose: () => {
             console.log("Connection closed");
             setIsConnected(false);
-          }
+          },
         });
       } catch (err) {
         console.error("Error connecting to event source:", err);
