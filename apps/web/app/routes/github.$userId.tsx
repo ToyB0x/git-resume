@@ -56,7 +56,13 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 }
 
 // Real-time state update component using SSE
-function LoadingStates({ userId }: { userId: string }) {
+function LoadingStates({
+  userId,
+  onComplete,
+}: {
+  userId: string;
+  onComplete: () => void;
+}) {
   const [currentState, setCurrentState] = useState<ResumeGenerationState>({
     type: ResumeEventType.GIT_SEARCH,
     foundCommits: 0,
@@ -64,6 +70,14 @@ function LoadingStates({ userId }: { userId: string }) {
   });
   const [isComplete, setIsComplete] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
+  const [completedStates, setCompletedStates] = useState<ResumeEventType[]>([]);
+
+  // Add a state transition animation
+  const [animation, setAnimation] = useState<{
+    active: boolean;
+    from: ResumeEventType;
+    to: ResumeEventType;
+  } | null>(null);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -72,6 +86,7 @@ function LoadingStates({ userId }: { userId: string }) {
 
     const connectToEventSource = async () => {
       try {
+        // Use relative URL to avoid hardcoded localhost in production
         await fetchEventSource(
           `http://localhost:3000/api/resume/${userId}/progress`,
           {
@@ -97,7 +112,29 @@ function LoadingStates({ userId }: { userId: string }) {
 
               // Handle resume progress events
               if (eventTypeStr === EventType.RESUME_PROGRESS) {
-                setCurrentState(parsedData as ResumeGenerationState);
+                const newState = parsedData as ResumeGenerationState;
+
+                // If state type changed, trigger animation
+                if (currentState.type !== newState.type) {
+                  // First add the previous state to completed states
+                  if (!completedStates.includes(currentState.type)) {
+                    setCompletedStates((prev) => [...prev, currentState.type]);
+                  }
+
+                  // Then animate the transition
+                  setAnimation({
+                    active: true,
+                    from: currentState.type,
+                    to: newState.type,
+                  });
+
+                  // Reset animation after 1 second
+                  setTimeout(() => {
+                    setAnimation(null);
+                  }, 1000);
+                }
+
+                setCurrentState(newState);
               } else if (eventTypeStr === EventType.CONNECTED) {
                 console.log("Connected:", parsedData.message);
               }
@@ -112,6 +149,7 @@ function LoadingStates({ userId }: { userId: string }) {
                 console.error(`Max retries (${MAX_RETRIES}) reached`);
                 // Fall back to static display if connection fails
                 setIsComplete(true);
+                handleComplete();
                 abortController.abort();
                 return;
               }
@@ -123,7 +161,27 @@ function LoadingStates({ userId }: { userId: string }) {
             onclose: () => {
               console.log("Resume progress stream closed");
               setIsConnected(false);
-              setIsComplete(true);
+
+              // Check if we have completed the full process before closing the connection
+              const allStates = [
+                ResumeEventType.GIT_SEARCH,
+                ResumeEventType.GIT_CLONE,
+                ResumeEventType.ANALYZE,
+                ResumeEventType.CREATE_SUMMARY,
+                ResumeEventType.CREATING_RESUME,
+              ];
+
+              const allCompleted = allStates.every(
+                (state) =>
+                  completedStates.includes(state) ||
+                  currentState.type === state,
+              );
+
+              // Only mark as complete if we've seen all states
+              if (allCompleted) {
+                setIsComplete(true);
+                handleComplete();
+              }
             },
           },
         );
@@ -131,6 +189,7 @@ function LoadingStates({ userId }: { userId: string }) {
         console.error("Error connecting to event source:", err);
         setIsConnected(false);
         setIsComplete(true);
+        handleComplete();
       }
     };
 
@@ -140,16 +199,184 @@ function LoadingStates({ userId }: { userId: string }) {
     return () => {
       abortController.abort();
     };
-  }, [userId]);
+  }, [userId, currentState.type, completedStates]); // Only depend on userId to prevent reconnection when state changes
+
+  // Handle completion after a slight delay for better UX
+  const handleComplete = () => {
+    // Add a small delay to show completion animation before switching to markdown
+    setTimeout(() => {
+      if (onComplete) {
+        onComplete();
+      }
+    }, 1500);
+  };
+
+  // Get status indicator based on state type - using modern SVG icons
+  const getStateIndicator = (
+    stateType: ResumeEventType,
+    isCurrent: boolean,
+  ) => {
+    const isCompleted = completedStates.includes(stateType);
+
+    const stateConfig = {
+      [ResumeEventType.GIT_SEARCH]: {
+        color: "text-blue-500",
+        fillColor: "fill-blue-500",
+        strokeColor: "stroke-blue-500",
+        label: "Search",
+      },
+      [ResumeEventType.GIT_CLONE]: {
+        color: "text-indigo-500",
+        fillColor: "fill-indigo-500",
+        strokeColor: "stroke-indigo-500",
+        label: "Clone",
+      },
+      [ResumeEventType.ANALYZE]: {
+        color: "text-purple-500",
+        fillColor: "fill-purple-500",
+        strokeColor: "stroke-purple-500",
+        label: "Analyze",
+      },
+      [ResumeEventType.CREATE_SUMMARY]: {
+        color: "text-cyan-500",
+        fillColor: "fill-cyan-500",
+        strokeColor: "stroke-cyan-500",
+        label: "Summarize",
+      },
+      [ResumeEventType.CREATING_RESUME]: {
+        color: "text-emerald-500",
+        fillColor: "fill-emerald-500",
+        strokeColor: "stroke-emerald-500",
+        label: "Generate",
+      },
+    };
+
+    const config = stateConfig[stateType];
+
+    // Completed status - check mark in a circle
+    if (isCompleted) {
+      return (
+        <div className="flex flex-col items-center group">
+          <div className="mb-2">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label={`Completed: ${config.label}`}
+            >
+              <title>{`Completed: ${config.label}`}</title>
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                className={`${config.fillColor} opacity-20`}
+              />
+              <path
+                d="M8 12L11 15L16 9"
+                className={`${config.strokeColor}`}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          <span className={`text-xs font-medium ${config.color}`}>
+            {config.label}
+          </span>
+        </div>
+      );
+    }
+
+    // Current/In-progress status - animated pulse circle
+    if (isCurrent) {
+      return (
+        <div className="flex flex-col items-center group">
+          <div className="mb-2">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="animate-pulse"
+              role="img"
+              aria-label={`In progress: ${config.label}`}
+            >
+              <title>{`In progress: ${config.label}`}</title>
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                className={`${config.fillColor} opacity-20`}
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="5"
+                className={`${config.fillColor} opacity-40`}
+              />
+              <circle cx="12" cy="12" r="2" className={`${config.fillColor}`} />
+            </svg>
+          </div>
+          <span className={`text-xs font-semibold ${config.color}`}>
+            {config.label}
+          </span>
+        </div>
+      );
+    }
+
+    // Pending status - empty circle
+    return (
+      <div className="flex flex-col items-center group">
+        <div className="mb-2">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label={`Pending: ${config.label}`}
+          >
+            <title>{`Pending: ${config.label}`}</title>
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              className="text-gray-700"
+              strokeOpacity="0.4"
+              strokeWidth="1"
+            />
+          </svg>
+        </div>
+        <span className="text-xs text-gray-500">{config.label}</span>
+      </div>
+    );
+  };
 
   // Render different UI based on state type
   const renderStateUI = () => {
     if (isComplete) {
       return (
-        <div className="text-center text-green-400">
-          <div className="mb-2">✓ Resume generation complete!</div>
-          <div className="text-sm text-gray-400">
-            Your personalized GitHub resume is ready
+        <div className="animate-in fade-in duration-500 text-center mt-8">
+          <div className="h-px w-48 mx-auto bg-gradient-to-r from-transparent via-green-500 to-transparent mb-8" />
+          <div className="text-2xl mb-4 font-light text-white">
+            Generation Complete
+          </div>
+          <div className="text-base text-gray-300 max-w-md mx-auto">
+            Your personalized GitHub resume has been successfully generated
+          </div>
+          <div className="mt-8 flex justify-center space-x-1">
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 animate-pulse delay-100" />
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 animate-pulse delay-200" />
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 animate-pulse delay-300" />
+          </div>
+          <div className="mt-3 text-sm text-gray-500">
+            Loading your resume...
           </div>
         </div>
       );
@@ -158,143 +385,230 @@ function LoadingStates({ userId }: { userId: string }) {
     // When not connected yet, show connecting message
     if (!isConnected) {
       return (
-        <div className="text-center text-yellow-400">
-          <div className="mb-2">Connecting to resume generator...</div>
-          <div className="text-sm text-gray-400">
-            Please wait while we establish connection
+        <div className="text-center animate-in fade-in duration-500">
+          <div className="h-px w-36 mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent mb-8" />
+          <div className="text-xl mb-4 font-light text-white">
+            Establishing Connection
+          </div>
+          <div className="flex justify-center space-x-2 mb-6">
+            <div
+              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
+              style={{ animationDelay: "0ms" }}
+            />
+            <div
+              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
+              style={{ animationDelay: "100ms" }}
+            />
+            <div
+              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
+              style={{ animationDelay: "200ms" }}
+            />
+            <div
+              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
+              style={{ animationDelay: "300ms" }}
+            />
+            <div
+              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
+              style={{ animationDelay: "400ms" }}
+            />
+          </div>
+          <div className="text-base text-gray-400 max-w-md mx-auto">
+            Connecting to the resume generator service
           </div>
         </div>
       );
     }
 
-    switch (currentState.type) {
-      case ResumeEventType.GIT_SEARCH:
-        return (
-          <div>
-            <div className="mb-2 text-blue-400">
-              Searching GitHub repositories...
-            </div>
-            <div className="text-sm text-gray-400 space-y-1">
-              <div>Found {currentState.foundCommits || 0} commits</div>
-              <div>
-                Found {currentState.foundRepositories || 0} repositories
-              </div>
-            </div>
-          </div>
-        );
-      case ResumeEventType.GIT_CLONE:
-        return (
-          <div>
-            <div className="mb-2 text-indigo-400">Cloning repositories...</div>
-            <div className="text-sm text-gray-400 space-y-1">
-              <div>Repository: {currentState.repository}</div>
-              <div className="flex items-center">
-                <div className="w-full bg-gray-700 rounded-full h-2 mr-2">
-                  <div
-                    className="bg-indigo-500 h-2 rounded-full"
-                    style={{
-                      width: `${(currentState.current / currentState.total) * 100}%`,
-                    }}
-                  />
-                </div>
-                <span>
-                  {currentState.current}/{currentState.total}
-                </span>
-              </div>
-            </div>
-          </div>
-        );
-      case ResumeEventType.ANALYZE:
-        return (
-          <div>
-            <div className="mb-2 text-purple-400">
-              Analyzing repository content...
-            </div>
-            <div className="text-sm text-gray-400 space-y-1">
-              <div>Repository: {currentState.repository}</div>
-              <div className="flex items-center">
-                <div className="w-full bg-gray-700 rounded-full h-2 mr-2">
-                  <div
-                    className="bg-purple-500 h-2 rounded-full"
-                    style={{
-                      width: `${(currentState.current / currentState.total) * 100}%`,
-                    }}
-                  />
-                </div>
-                <span>
-                  {currentState.current}/{currentState.total}
-                </span>
-              </div>
-            </div>
-          </div>
-        );
-      case ResumeEventType.CREATE_SUMMARY:
-        return (
-          <div>
-            <div className="mb-2 text-cyan-400">Creating summaries...</div>
-            <div className="text-sm text-gray-400 space-y-1">
-              {currentState.repository && (
-                <div>Repository: {currentState.repository}</div>
-              )}
-              <div className="flex items-center">
-                <div className="w-full bg-gray-700 rounded-full h-2 mr-2">
-                  <div
-                    className="bg-cyan-500 h-2 rounded-full"
-                    style={{
-                      width: `${(currentState.current / currentState.total) * 100}%`,
-                    }}
-                  />
-                </div>
-                <span>
-                  {currentState.current}/{currentState.total}
-                </span>
-              </div>
-            </div>
-          </div>
-        );
-      case ResumeEventType.CREATING_RESUME:
-        return (
-          <div>
-            <div className="mb-2 text-emerald-400">
-              Generating final resume...
-            </div>
-            <div className="text-sm text-gray-400">
-              Formatting and finalizing your GitHub resume
-            </div>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
+    // Show progress stages with detailed information
+    return (
+      <div className="flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+        {/* Progress steps visualization */}
+        <div className="flex items-center justify-center mb-10 mt-4 w-full max-w-2xl relative">
+          {/* Connecting lines between steps - SVG Edition */}
+          <div className="absolute h-px bg-gray-800 top-12 left-[10%] right-[10%] z-0" />
 
-  return (
-    <div className="bg-black/80 backdrop-blur-sm border border-gray-700 rounded-lg p-4 mb-6">
-      <div className="flex items-center">
-        <div className="relative mr-3">
-          <div className="h-8 w-8 rounded-full border-2 border-b-transparent border-blue-500 animate-spin" />
-          <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold">
-            {isComplete ? "✓" : ""}
+          {/* Step indicators - modern minimal design */}
+          <div className="grid grid-cols-5 w-full relative z-10">
+            <div className="flex flex-col items-center">
+              {getStateIndicator(
+                ResumeEventType.GIT_SEARCH,
+                currentState.type === ResumeEventType.GIT_SEARCH,
+              )}
+            </div>
+            <div className="flex flex-col items-center">
+              {getStateIndicator(
+                ResumeEventType.GIT_CLONE,
+                currentState.type === ResumeEventType.GIT_CLONE,
+              )}
+            </div>
+            <div className="flex flex-col items-center">
+              {getStateIndicator(
+                ResumeEventType.ANALYZE,
+                currentState.type === ResumeEventType.ANALYZE,
+              )}
+            </div>
+            <div className="flex flex-col items-center">
+              {getStateIndicator(
+                ResumeEventType.CREATE_SUMMARY,
+                currentState.type === ResumeEventType.CREATE_SUMMARY,
+              )}
+            </div>
+            <div className="flex flex-col items-center">
+              {getStateIndicator(
+                ResumeEventType.CREATING_RESUME,
+                currentState.type === ResumeEventType.CREATING_RESUME,
+              )}
+            </div>
           </div>
         </div>
-        <div className="flex-1">{renderStateUI()}</div>
+
+        {/* Current state details */}
+        <div className="bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800 w-full max-w-lg animate-in fade-in duration-500 relative">
+          {animation && (
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 animate-pulse rounded-lg" />
+          )}
+
+          {currentState.type === ResumeEventType.GIT_SEARCH && (
+            <div className="text-center">
+              <div className="text-xl mb-4 text-blue-400 font-semibold">
+                Searching GitHub repositories
+              </div>
+              <div className="space-y-3 text-gray-300">
+                <div className="flex items-center justify-between">
+                  <span>Commits found:</span>
+                  <span className="font-mono bg-blue-900/30 px-2 py-1 rounded">
+                    {currentState.foundCommits || 0}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Repositories found:</span>
+                  <span className="font-mono bg-blue-900/30 px-2 py-1 rounded">
+                    {currentState.foundRepositories || 0}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {currentState.type === ResumeEventType.GIT_CLONE && (
+            <div className="text-center">
+              <div className="text-xl mb-4 text-indigo-400 font-semibold">
+                Cloning repositories
+              </div>
+              <div className="space-y-3 text-gray-300">
+                <div className="overflow-hidden text-ellipsis">
+                  <span className="font-mono bg-indigo-900/30 px-2 py-1 rounded text-sm">
+                    {currentState.repository}
+                  </span>
+                </div>
+                <div className="w-full bg-gray-800 rounded-full h-3 mt-2 overflow-hidden">
+                  <div
+                    className="bg-indigo-500 h-full rounded-full transition-all duration-300 ease-out"
+                    style={{
+                      width: `${(currentState.current / currentState.total) * 100}%`,
+                    }}
+                  />
+                </div>
+                <div className="text-right text-sm text-gray-400">
+                  {currentState.current}/{currentState.total} repositories
+                </div>
+              </div>
+            </div>
+          )}
+
+          {currentState.type === ResumeEventType.ANALYZE && (
+            <div className="text-center">
+              <div className="text-xl mb-4 text-purple-400 font-semibold">
+                Analyzing repository content
+              </div>
+              <div className="space-y-3 text-gray-300">
+                <div className="overflow-hidden text-ellipsis">
+                  <span className="font-mono bg-purple-900/30 px-2 py-1 rounded text-sm">
+                    {currentState.repository}
+                  </span>
+                </div>
+                <div className="w-full bg-gray-800 rounded-full h-3 mt-2 overflow-hidden">
+                  <div
+                    className="bg-purple-500 h-full rounded-full transition-all duration-300 ease-out"
+                    style={{
+                      width: `${(currentState.current / currentState.total) * 100}%`,
+                    }}
+                  />
+                </div>
+                <div className="text-right text-sm text-gray-400">
+                  {currentState.current}/{currentState.total} files
+                </div>
+              </div>
+            </div>
+          )}
+
+          {currentState.type === ResumeEventType.CREATE_SUMMARY && (
+            <div className="text-center">
+              <div className="text-xl mb-4 text-cyan-400 font-semibold">
+                Creating summaries
+              </div>
+              <div className="space-y-3 text-gray-300">
+                {currentState.repository && (
+                  <div className="overflow-hidden text-ellipsis">
+                    <span className="font-mono bg-cyan-900/30 px-2 py-1 rounded text-sm">
+                      {currentState.repository}
+                    </span>
+                  </div>
+                )}
+                <div className="w-full bg-gray-800 rounded-full h-3 mt-2 overflow-hidden">
+                  <div
+                    className="bg-cyan-500 h-full rounded-full transition-all duration-300 ease-out"
+                    style={{
+                      width: `${(currentState.current / currentState.total) * 100}%`,
+                    }}
+                  />
+                </div>
+                <div className="text-right text-sm text-gray-400">
+                  {currentState.current}/{currentState.total} repositories
+                </div>
+              </div>
+            </div>
+          )}
+
+          {currentState.type === ResumeEventType.CREATING_RESUME && (
+            <div className="text-center">
+              <div className="text-xl mb-4 text-emerald-400 font-semibold">
+                Generating final resume
+              </div>
+              <div className="flex justify-center space-x-1 text-emerald-400 mt-2">
+                <div
+                  className="w-2 h-2 rounded-full bg-current animate-bounce"
+                  style={{ animationDelay: "0ms" }}
+                />
+                <div
+                  className="w-2 h-2 rounded-full bg-current animate-bounce"
+                  style={{ animationDelay: "150ms" }}
+                />
+                <div
+                  className="w-2 h-2 rounded-full bg-current animate-bounce"
+                  style={{ animationDelay: "300ms" }}
+                />
+                <div
+                  className="w-2 h-2 rounded-full bg-current animate-bounce"
+                  style={{ animationDelay: "450ms" }}
+                />
+              </div>
+              <div className="text-gray-300 mt-4">
+                Formatting and finalizing your GitHub resume
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  return <div className="w-full max-w-3xl mx-auto">{renderStateUI()}</div>;
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { userId, markdown } = loaderData;
-  const [showLoading, setShowLoading] = useState(true);
-
-  // Hide the loading states after 60 seconds (1 minute)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoading(false);
-    }, 60000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const [isGenerating, setIsGenerating] = useState(true);
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950 relative overflow-hidden p-4">
@@ -308,111 +622,116 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           </p>
         </header>
 
-        {/* Real-time state update UI with SSE - shows for 1 minute */}
-        {showLoading && <LoadingStates userId={userId} />}
-
-        {/* Resume Content (Markdown) */}
-        <div className="markdown-content bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
-          <div className="prose prose-invert max-w-none text-gray-200">
-            <ReactMarkdown
-              components={{
-                h1: ({ node, ...props }) => (
-                  <h1
-                    className="text-3xl font-bold text-white mt-10 mb-6"
-                    {...props}
-                  />
-                ),
-                h2: ({ node, ...props }) => (
-                  <h2
-                    className="text-2xl font-semibold text-gray-100 mt-10 mb-5 border-b border-gray-700 pb-4"
-                    {...props}
-                  />
-                ),
-                h3: ({ node, ...props }) => (
-                  <h3
-                    className="text-xl font-semibold text-gray-200 mt-7 mb-4"
-                    {...props}
-                  />
-                ),
-                h4: ({ node, ...props }) => (
-                  <h4
-                    className="text-lg font-semibold text-gray-300 mt-5 mb-3"
-                    {...props}
-                  />
-                ),
-                p: ({ node, ...props }) => (
-                  <p className="text-gray-300 my-3" {...props} />
-                ),
-                ul: ({ node, ...props }) => (
-                  <ul
-                    className="text-gray-300 list-disc pl-5 my-3"
-                    {...props}
-                  />
-                ),
-                ol: ({ node, ...props }) => (
-                  <ol
-                    className="text-gray-300 list-decimal pl-5 my-3"
-                    {...props}
-                  />
-                ),
-                li: ({ node, ...props }) => (
-                  <li className="text-gray-300 ml-2 my-1" {...props} />
-                ),
-                a: ({ node, ...props }) => (
-                  <a
-                    className="text-blue-400 hover:text-blue-300 underline"
-                    {...props}
-                  />
-                ),
-                blockquote: ({ node, ...props }) => (
-                  <blockquote
-                    className="border-l-4 border-purple-500 pl-4 italic text-gray-300 my-4"
-                    {...props}
-                  />
-                ),
-                code: ({ node, ...props }) => (
-                  <code
-                    className="bg-gray-800 text-gray-200 px-1.5 py-0.5 rounded text-sm"
-                    {...props}
-                  />
-                ),
-                pre: ({ node, ...props }) => (
-                  <pre
-                    className="bg-gray-900 text-gray-200 p-3 rounded text-sm overflow-x-auto my-4"
-                    {...props}
-                  />
-                ),
-                strong: ({ node, ...props }) => (
-                  <strong className="text-white font-bold" {...props} />
-                ),
-                table: ({ node, ...props }) => (
-                  <table
-                    className="border-collapse table-auto w-full text-sm my-4"
-                    {...props}
-                  />
-                ),
-                th: ({ node, ...props }) => (
-                  <th
-                    className="border-b border-gray-600 p-2 text-left text-gray-200 font-medium"
-                    {...props}
-                  />
-                ),
-                td: ({ node, ...props }) => (
-                  <td
-                    className="border-b border-gray-700 p-2 text-gray-300"
-                    {...props}
-                  />
-                ),
-              }}
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw, rehypeSanitize]}
-            >
-              {markdown}
-            </ReactMarkdown>
+        {isGenerating ? (
+          <div className="flex items-center justify-center min-h-[60vh]">
+            {/* Full-screen loading experience while generating */}
+            <LoadingStates
+              userId={userId}
+              onComplete={() => setIsGenerating(false)}
+            />
           </div>
-        </div>
-
-        {/* Frontmatter data is no longer displayed */}
+        ) : (
+          /* Resume Content (Markdown) - Only shown after generation complete */
+          <div className="markdown-content bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800 animate-in fade-in duration-500">
+            <div className="prose prose-invert max-w-none text-gray-200">
+              <ReactMarkdown
+                components={{
+                  h1: ({ node, ...props }) => (
+                    <h1
+                      className="text-3xl font-bold text-white mt-10 mb-6"
+                      {...props}
+                    />
+                  ),
+                  h2: ({ node, ...props }) => (
+                    <h2
+                      className="text-2xl font-semibold text-gray-100 mt-10 mb-5 border-b border-gray-700 pb-4"
+                      {...props}
+                    />
+                  ),
+                  h3: ({ node, ...props }) => (
+                    <h3
+                      className="text-xl font-semibold text-gray-200 mt-7 mb-4"
+                      {...props}
+                    />
+                  ),
+                  h4: ({ node, ...props }) => (
+                    <h4
+                      className="text-lg font-semibold text-gray-300 mt-5 mb-3"
+                      {...props}
+                    />
+                  ),
+                  p: ({ node, ...props }) => (
+                    <p className="text-gray-300 my-3" {...props} />
+                  ),
+                  ul: ({ node, ...props }) => (
+                    <ul
+                      className="text-gray-300 list-disc pl-5 my-3"
+                      {...props}
+                    />
+                  ),
+                  ol: ({ node, ...props }) => (
+                    <ol
+                      className="text-gray-300 list-decimal pl-5 my-3"
+                      {...props}
+                    />
+                  ),
+                  li: ({ node, ...props }) => (
+                    <li className="text-gray-300 ml-2 my-1" {...props} />
+                  ),
+                  a: ({ node, ...props }) => (
+                    <a
+                      className="text-blue-400 hover:text-blue-300 underline"
+                      {...props}
+                    />
+                  ),
+                  blockquote: ({ node, ...props }) => (
+                    <blockquote
+                      className="border-l-4 border-purple-500 pl-4 italic text-gray-300 my-4"
+                      {...props}
+                    />
+                  ),
+                  code: ({ node, ...props }) => (
+                    <code
+                      className="bg-gray-800 text-gray-200 px-1.5 py-0.5 rounded text-sm"
+                      {...props}
+                    />
+                  ),
+                  pre: ({ node, ...props }) => (
+                    <pre
+                      className="bg-gray-900 text-gray-200 p-3 rounded text-sm overflow-x-auto my-4"
+                      {...props}
+                    />
+                  ),
+                  strong: ({ node, ...props }) => (
+                    <strong className="text-white font-bold" {...props} />
+                  ),
+                  table: ({ node, ...props }) => (
+                    <table
+                      className="border-collapse table-auto w-full text-sm my-4"
+                      {...props}
+                    />
+                  ),
+                  th: ({ node, ...props }) => (
+                    <th
+                      className="border-b border-gray-600 p-2 text-left text-gray-200 font-medium"
+                      {...props}
+                    />
+                  ),
+                  td: ({ node, ...props }) => (
+                    <td
+                      className="border-b border-gray-700 p-2 text-gray-300"
+                      {...props}
+                    />
+                  ),
+                }}
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw, rehypeSanitize]}
+              >
+                {markdown}
+              </ReactMarkdown>
+            </div>
+          </div>
+        )}
 
         <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mt-10 rounded-full" />
 
