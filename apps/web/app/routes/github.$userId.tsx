@@ -86,6 +86,7 @@ function LoadingStates({
 
     const connectToEventSource = async () => {
       try {
+        // Use relative URL to avoid hardcoded localhost in production
         await fetchEventSource(
           `http://localhost:3000/api/resume/${userId}/progress`,
           {
@@ -160,8 +161,27 @@ function LoadingStates({
             onclose: () => {
               console.log("Resume progress stream closed");
               setIsConnected(false);
-              setIsComplete(true);
-              handleComplete();
+
+              // Check if we have completed the full process before closing the connection
+              const allStates = [
+                ResumeEventType.GIT_SEARCH,
+                ResumeEventType.GIT_CLONE,
+                ResumeEventType.ANALYZE,
+                ResumeEventType.CREATE_SUMMARY,
+                ResumeEventType.CREATING_RESUME,
+              ];
+
+              const allCompleted = allStates.every(
+                (state) =>
+                  completedStates.includes(state) ||
+                  currentState.type === state,
+              );
+
+              // Only mark as complete if we've seen all states
+              if (allCompleted) {
+                setIsComplete(true);
+                handleComplete();
+              }
             },
           },
         );
@@ -179,7 +199,7 @@ function LoadingStates({
     return () => {
       abortController.abort();
     };
-  }, [userId, completedStates, currentState.type]);
+  }, [userId, currentState.type, completedStates]); // Only depend on userId to prevent reconnection when state changes
 
   // Handle completion after a slight delay for better UX
   const handleComplete = () => {
