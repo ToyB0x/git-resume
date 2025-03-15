@@ -1,10 +1,3 @@
-import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
-import remarkGfm from "remark-gfm";
-import { hClient } from "~/clients";
-import type { Route } from "./+types/github.$userId";
 import type {
   AnalyzeState,
   CreateSummaryState,
@@ -12,7 +5,14 @@ import type {
   GitCloneState,
   GitSearchState,
   ResumeGenerationState,
-} from "./_state";
+} from "@resume/models";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
+import remarkGfm from "remark-gfm";
+import { hClient } from "~/clients";
+import type { Route } from "./+types/github.$userId";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
 export function meta({}: Route.MetaArgs) {
@@ -74,7 +74,7 @@ function LoadingStates() {
 
     // Function to update the state based on current type
     const updateState = () => {
-      setCurrentState((prevState) => {
+      setCurrentState((prevState: ResumeGenerationState) => {
         switch (prevState.type) {
           case "GitSearch":
             return {
