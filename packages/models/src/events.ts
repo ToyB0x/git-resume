@@ -15,21 +15,11 @@ export interface ConnectedEventData {
 }
 
 /**
- * Type for the value events (a, b, c)
- */
-export interface ValueEventData {
-  value: string;
-}
-
-/**
  * Enumeration of all supported SSE event types
  * This is exported as a value to allow direct usage in SSE events
  */
 export enum EventType {
   CONNECTED = "connected",
-  A = "a",
-  B = "b",
-  C = "c",
   RESUME_PROGRESS = "resume_progress",
 }
 
@@ -38,9 +28,6 @@ export enum EventType {
  */
 export interface EventDataMap {
   [EventType.CONNECTED]: ConnectedEventData;
-  [EventType.A]: ValueEventData;
-  [EventType.B]: ValueEventData;
-  [EventType.C]: ValueEventData;
   [EventType.RESUME_PROGRESS]: ResumeGenerationState;
 }
 
