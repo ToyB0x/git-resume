@@ -6,6 +6,7 @@ import type {
   GitSearchState,
   ResumeGenerationState,
 } from "@resume/models";
+import { ResumeEventType } from "@resume/models";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -63,7 +64,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 // Sequential state update component
 function LoadingStates() {
   const [currentState, setCurrentState] = useState<ResumeGenerationState>({
-    type: "GitSearch",
+    type: ResumeEventType.GIT_SEARCH,
     foundCommits: 0,
     foundRepositories: 0,
   });
@@ -76,7 +77,7 @@ function LoadingStates() {
     const updateState = () => {
       setCurrentState((prevState: ResumeGenerationState) => {
         switch (prevState.type) {
-          case "GitSearch":
+          case ResumeEventType.GIT_SEARCH:
             return {
               ...prevState,
               foundCommits: Math.min((prevState.foundCommits || 0) + 50, 250),
@@ -85,17 +86,17 @@ function LoadingStates() {
                 5,
               ),
             } as GitSearchState;
-          case "GitClone":
+          case ResumeEventType.GIT_CLONE:
             return {
               ...prevState,
               current: Math.min(prevState.current + 1, prevState.total),
             } as GitCloneState;
-          case "Analyze":
+          case ResumeEventType.ANALYZE:
             return {
               ...prevState,
               current: Math.min(prevState.current + 1, prevState.total),
             } as AnalyzeState;
-          case "CreateSummary":
+          case ResumeEventType.CREATE_SUMMARY:
             return {
               ...prevState,
               current: Math.min(prevState.current + 1, prevState.total),
@@ -114,7 +115,7 @@ function LoadingStates() {
       {
         time: 12000,
         state: {
-          type: "GitClone",
+          type: ResumeEventType.GIT_CLONE,
           repository: "user/repo1",
           current: 0,
           total: 3,
@@ -123,7 +124,7 @@ function LoadingStates() {
       {
         time: 24000,
         state: {
-          type: "Analyze",
+          type: ResumeEventType.ANALYZE,
           repository: "user/repo1",
           current: 0,
           total: 5,
@@ -132,12 +133,15 @@ function LoadingStates() {
       {
         time: 36000,
         state: {
-          type: "CreateSummary",
+          type: ResumeEventType.CREATE_SUMMARY,
           current: 0,
           total: 5,
         } as CreateSummaryState,
       },
-      { time: 48000, state: { type: "CreatingResume" } as CreatingResumeState },
+      {
+        time: 48000,
+        state: { type: ResumeEventType.CREATING_RESUME } as CreatingResumeState,
+      },
       { time: 55000, complete: true },
     ];
 
@@ -175,7 +179,7 @@ function LoadingStates() {
     }
 
     switch (currentState.type) {
-      case "GitSearch":
+      case ResumeEventType.GIT_SEARCH:
         return (
           <div>
             <div className="mb-2 text-blue-400">
@@ -189,7 +193,7 @@ function LoadingStates() {
             </div>
           </div>
         );
-      case "GitClone":
+      case ResumeEventType.GIT_CLONE:
         return (
           <div>
             <div className="mb-2 text-indigo-400">Cloning repositories...</div>
@@ -211,7 +215,7 @@ function LoadingStates() {
             </div>
           </div>
         );
-      case "Analyze":
+      case ResumeEventType.ANALYZE:
         return (
           <div>
             <div className="mb-2 text-purple-400">
@@ -235,7 +239,7 @@ function LoadingStates() {
             </div>
           </div>
         );
-      case "CreateSummary":
+      case ResumeEventType.CREATE_SUMMARY:
         return (
           <div>
             <div className="mb-2 text-cyan-400">Creating summaries...</div>
@@ -259,7 +263,7 @@ function LoadingStates() {
             </div>
           </div>
         );
-      case "CreatingResume":
+      case ResumeEventType.CREATING_RESUME:
         return (
           <div>
             <div className="mb-2 text-emerald-400">
