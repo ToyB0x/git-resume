@@ -191,7 +191,7 @@ function LoadingStates({
     }, 1500);
   };
 
-  // Get status indicator based on state type - using minimal modern design
+  // Get status indicator based on state type - using modern SVG icons
   const getStateIndicator = (
     stateType: ResumeEventType,
     isCurrent: boolean,
@@ -200,95 +200,140 @@ function LoadingStates({
 
     const stateConfig = {
       [ResumeEventType.GIT_SEARCH]: {
-        color: "from-blue-500 to-blue-600",
-        bgColor: "bg-blue-500",
-        textColor: "text-blue-400",
-        barWidth: "w-16",
+        color: "text-blue-500",
+        fillColor: "fill-blue-500",
+        strokeColor: "stroke-blue-500",
+        label: "Search",
       },
       [ResumeEventType.GIT_CLONE]: {
-        color: "from-indigo-500 to-indigo-600",
-        bgColor: "bg-indigo-500",
-        textColor: "text-indigo-400",
-        barWidth: "w-16",
+        color: "text-indigo-500",
+        fillColor: "fill-indigo-500",
+        strokeColor: "stroke-indigo-500",
+        label: "Clone",
       },
       [ResumeEventType.ANALYZE]: {
-        color: "from-purple-500 to-purple-600",
-        bgColor: "bg-purple-500",
-        textColor: "text-purple-400",
-        barWidth: "w-16",
+        color: "text-purple-500",
+        fillColor: "fill-purple-500",
+        strokeColor: "stroke-purple-500",
+        label: "Analyze",
       },
       [ResumeEventType.CREATE_SUMMARY]: {
-        color: "from-cyan-500 to-cyan-600",
-        bgColor: "bg-cyan-500",
-        textColor: "text-cyan-400",
-        barWidth: "w-16",
+        color: "text-cyan-500",
+        fillColor: "fill-cyan-500",
+        strokeColor: "stroke-cyan-500",
+        label: "Summarize",
       },
       [ResumeEventType.CREATING_RESUME]: {
-        color: "from-emerald-500 to-emerald-600",
-        bgColor: "bg-emerald-500",
-        textColor: "text-emerald-400",
-        barWidth: "w-16",
+        color: "text-emerald-500",
+        fillColor: "fill-emerald-500",
+        strokeColor: "stroke-emerald-500",
+        label: "Generate",
       },
     };
 
     const config = stateConfig[stateType];
 
+    // Completed status - check mark in a circle
     if (isCompleted) {
       return (
-        <div className="flex flex-col items-center">
-          <div
-            className={`h-0.5 ${config.barWidth} ${config.bgColor} rounded-full mb-2`}
-          />
-          <span className={`text-xs font-medium ${config.textColor}`}>
-            {stateType === ResumeEventType.GIT_SEARCH
-              ? "Search"
-              : stateType === ResumeEventType.GIT_CLONE
-                ? "Clone"
-                : stateType === ResumeEventType.ANALYZE
-                  ? "Analyze"
-                  : stateType === ResumeEventType.CREATE_SUMMARY
-                    ? "Summarize"
-                    : "Generate"}
+        <div className="flex flex-col items-center group">
+          <div className="mb-2">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label={`Completed: ${config.label}`}
+            >
+              <title>{`Completed: ${config.label}`}</title>
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                className={`${config.fillColor} opacity-20`}
+              />
+              <path
+                d="M8 12L11 15L16 9"
+                className={`${config.strokeColor}`}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          <span className={`text-xs font-medium ${config.color}`}>
+            {config.label}
           </span>
         </div>
       );
     }
 
+    // Current/In-progress status - animated pulse circle
     if (isCurrent) {
       return (
-        <div className="flex flex-col items-center">
-          <div
-            className={`h-0.5 ${config.barWidth} bg-gradient-to-r ${config.color} rounded-full mb-2 animate-pulse`}
-          />
-          <span className={`text-xs font-semibold ${config.textColor}`}>
-            {stateType === ResumeEventType.GIT_SEARCH
-              ? "Search"
-              : stateType === ResumeEventType.GIT_CLONE
-                ? "Clone"
-                : stateType === ResumeEventType.ANALYZE
-                  ? "Analyze"
-                  : stateType === ResumeEventType.CREATE_SUMMARY
-                    ? "Summarize"
-                    : "Generate"}
+        <div className="flex flex-col items-center group">
+          <div className="mb-2">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="animate-pulse"
+              role="img"
+              aria-label={`In progress: ${config.label}`}
+            >
+              <title>{`In progress: ${config.label}`}</title>
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                className={`${config.fillColor} opacity-20`}
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="5"
+                className={`${config.fillColor} opacity-40`}
+              />
+              <circle cx="12" cy="12" r="2" className={`${config.fillColor}`} />
+            </svg>
+          </div>
+          <span className={`text-xs font-semibold ${config.color}`}>
+            {config.label}
           </span>
         </div>
       );
     }
 
+    // Pending status - empty circle
     return (
-      <div className="flex flex-col items-center">
-        <div className="h-0.5 w-16 bg-gray-800 rounded-full mb-2" />
-        <span className="text-xs text-gray-500">
-          {stateType === ResumeEventType.GIT_SEARCH
-            ? "Search"
-            : stateType === ResumeEventType.GIT_CLONE
-              ? "Clone"
-              : stateType === ResumeEventType.ANALYZE
-                ? "Analyze"
-                : stateType === ResumeEventType.CREATE_SUMMARY
-                  ? "Summarize"
-                  : "Generate"}
-        </span>
+      <div className="flex flex-col items-center group">
+        <div className="mb-2">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label={`Pending: ${config.label}`}
+          >
+            <title>{`Pending: ${config.label}`}</title>
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              className="text-gray-700"
+              strokeOpacity="0.4"
+              strokeWidth="1"
+            />
+          </svg>
+        </div>
+        <span className="text-xs text-gray-500">{config.label}</span>
       </div>
     );
   };
@@ -359,8 +404,8 @@ function LoadingStates({
       <div className="flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* Progress steps visualization */}
         <div className="flex items-center justify-center mb-10 mt-4 w-full max-w-2xl relative">
-          {/* Connecting lines between steps - simplified modern line */}
-          <div className="absolute h-px bg-gray-800 top-0 left-0 right-0 z-0" />
+          {/* Connecting lines between steps - SVG Edition */}
+          <div className="absolute h-px bg-gray-800 top-12 left-[10%] right-[10%] z-0" />
 
           {/* Step indicators - modern minimal design */}
           <div className="grid grid-cols-5 w-full relative z-10">
