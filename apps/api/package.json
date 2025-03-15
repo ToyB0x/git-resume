@@ -2,17 +2,20 @@
   "name": "@resume/api",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.8",
     "@hono/valibot-validator": "^0.5.2",
     "hono": "^4.7.4",
+    "@resume/models": "workspace:*",
     "valibot": "1.0.0-rc.2"
   },
   "devDependencies": {
     "@tsconfig/strictest": "2.0.5",
     "@types/node": "^20.11.17",
-    "tsx": "^4.7.1"
+    "tsx": "^4.7.1",
+    "typescript": "^5.7.3"
   }
 }
