@@ -480,7 +480,12 @@ function LoadingStates({
               </div>
               <div className="space-y-3 text-gray-300">
                 {currentState.repositories
-                  .filter((repo) => repo.state === "cloning")
+                  // .filter((repo) => repo.state === "cloning")
+                  .sort(
+                    (a, b) =>
+                      new Date(b.updatedAt).getTime() -
+                      new Date(a.updatedAt).getTime(),
+                  )
                   .slice(-3)
                   .map((repo) => (
                     <div
@@ -498,9 +503,9 @@ function LoadingStates({
                     </div>
                   ))}
               </div>
-              <div className="w-full bg-gray-800 rounded-sm h-2 mt-2 overflow-hidden">
+              <div className="w-full rounded-xs h-1 mt-4 px-2 overflow-hidden bg-gray-800">
                 <div
-                  className="bg-indigo-500 h-full rounded-full transition-all duration-300 ease-out"
+                  className="h-full rounded-full transition-all duration-300 ease-out"
                   style={{
                     width: `${
                       currentState.repositories.filter(
@@ -513,6 +518,21 @@ function LoadingStates({
                           ) * 100
                         : 0
                     }%`,
+                    background:
+                      "linear-gradient(to right, #22d3ee, #3b82f6, #a855f7)",
+                    backgroundSize: "200% 100%",
+                    backgroundPosition: `${
+                      currentState.repositories.filter(
+                        (repo) => repo.state === "cloned",
+                      ).length && currentState.repositories.length
+                        ? 100 -
+                          (currentState.repositories.filter(
+                            (repo) => repo.state === "cloned",
+                          ).length /
+                            currentState.repositories.length) *
+                            100
+                        : 0
+                    }% 0`,
                   }}
                 />
               </div>

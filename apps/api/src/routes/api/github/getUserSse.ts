@@ -80,8 +80,11 @@ async function simulateResumeGeneration(
     "demo/blog",
     "demo/website",
     "demo/app",
+    "demo/api",
     "demo/cli",
     "demo/mobile",
+    "demo/desktop",
+    "demo/library",
   ];
 
   // Step 1: Git Search
@@ -116,16 +119,32 @@ async function simulateResumeGeneration(
   if (isDemo) {
     // search commitsの最後のページネーション結果の表示を待つ
     // await streamSSE.sleep(1500);
-
-    const gitCloneState: ResumeGenerationState = {
+    // init state
+    let gitCloneState: ResumeGenerationState = {
       type: ResumeEventType.GIT_CLONE,
       repositories: demoRepositories.map((repo) => ({
         name: repo,
-        state: "cloning",
+        state: "waiting",
+        updatedAt: new Date(),
       })),
     };
-    await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, gitCloneState);
-    await streamSSE.sleep(1000);
+
+    for (let i = 0; i < demoRepositories.length; i++) {
+      // update and send ongoing state
+      gitCloneState = {
+        ...gitCloneState,
+        repositories: gitCloneState.repositories.map((r) => ({
+          ...r,
+          state: r.name === demoRepositories[i] ? "cloned" : r.state,
+          updatedAt: r.name === demoRepositories[i] ? new Date() : r.updatedAt,
+        })),
+      };
+
+      console.log(gitCloneState);
+
+      await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, gitCloneState);
+      await streamSSE.sleep(300);
+    }
   } else {
     // send init state
     let gitCloneState: GitCloneState = {
@@ -133,6 +152,7 @@ async function simulateResumeGeneration(
       repositories: repositories.map((repo) => ({
         name: `${repo.owner}/${repo.name}`,
         state: "waiting",
+        updatedAt: new Date(),
       })),
     };
     await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, gitCloneState);
@@ -147,6 +167,10 @@ async function simulateResumeGeneration(
             ...r,
             state:
               r.name === `${repo.owner}/${repo.name}` ? "cloning" : r.state,
+            updatedAt:
+              r.name === `${repo.owner}/${repo.name}`
+                ? new Date()
+                : r.updatedAt,
           })),
         };
         await sendTypedEvent(
@@ -164,6 +188,10 @@ async function simulateResumeGeneration(
           repositories: gitCloneState.repositories.map((r) => ({
             ...r,
             state: r.name === `${repo.owner}/${repo.name}` ? "cloned" : r.state,
+            updatedAt:
+              r.name === `${repo.owner}/${repo.name}`
+                ? new Date()
+                : r.updatedAt,
           })),
         };
 

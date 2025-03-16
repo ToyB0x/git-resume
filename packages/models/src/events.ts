@@ -69,6 +69,7 @@ export type GitCloneState = {
   repositories: {
     name: string;
     state: "waiting" | "cloning" | "cloned";
+    updatedAt: Date;
   }[];
 };
 
