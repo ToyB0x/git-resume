@@ -12,6 +12,7 @@ export const cloneOrPullRepository = async (repository: Repository) => {
     await simpleGit().clone(
       `git@github.com:${repository.owner}/${repository.name}.git`,
       targetDir,
+      ["--no-checkout"],
     );
   }
 };

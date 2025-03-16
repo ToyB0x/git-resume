@@ -6,6 +6,10 @@ export interface GithubService {
     userName: string,
     publicOnly: boolean,
     githubToken: string,
+    callBack?: ({
+      commitSize,
+      repositories,
+    }: { commitSize: number; repositories: string[] }) => Promise<void>,
   ) => Promise<Repository[]>;
   // instead of git commands (for case not setup git ssh config, like in CI)
   cloneOrPullRepositories: (repository: Repository) => Promise<void>;

@@ -50,6 +50,7 @@ export enum ResumeEventType {
   ANALYZE = "Analyze",
   CREATE_SUMMARY = "CreateSummary",
   CREATING_RESUME = "CreatingResume",
+  COMPLETE = "Complete",
 }
 
 /**
@@ -57,8 +58,8 @@ export enum ResumeEventType {
  */
 export type GitSearchState = {
   type: ResumeEventType.GIT_SEARCH;
-  foundCommits?: number;
-  foundRepositories?: number;
+  foundCommitSize: number;
+  foundRepositories: string[];
 };
 
 /**
@@ -66,9 +67,11 @@ export type GitSearchState = {
  */
 export type GitCloneState = {
   type: ResumeEventType.GIT_CLONE;
-  repository: string;
-  current: number;
-  total: number;
+  repositories: {
+    name: string;
+    state: "waiting" | "cloning" | "cloned";
+    updatedAt: Date;
+  }[];
 };
 
 /**
@@ -76,9 +79,11 @@ export type GitCloneState = {
  */
 export type AnalyzeState = {
   type: ResumeEventType.ANALYZE;
-  repository: string;
-  current: number;
-  total: number;
+  repositories: {
+    name: string;
+    state: "waiting" | "analyzing" | "analyzed";
+    updatedAt: Date;
+  }[];
 };
 
 /**
@@ -86,9 +91,11 @@ export type AnalyzeState = {
  */
 export type CreateSummaryState = {
   type: ResumeEventType.CREATE_SUMMARY;
-  repository?: string;
-  current: number;
-  total: number;
+  repositories: {
+    name: string;
+    state: "waiting" | "summarizing" | "summarized";
+    updatedAt: Date;
+  }[];
 };
 
 /**
@@ -99,6 +106,14 @@ export type CreatingResumeState = {
 };
 
 /**
+ * Type for the completed resume event
+ */
+export type ResumeCompletedEvent = {
+  type: ResumeEventType.COMPLETE;
+  markdown: string;
+};
+
+/**
  * Union type of all possible resume generation states
  */
 export type ResumeGenerationState =
@@ -106,7 +121,8 @@ export type ResumeGenerationState =
   | GitCloneState
   | AnalyzeState
   | CreateSummaryState
-  | CreatingResumeState;
+  | CreatingResumeState
+  | ResumeCompletedEvent;
 
 /**
  * Type mapping resume event types to their corresponding state types
@@ -117,4 +133,5 @@ export interface ResumeEventDataMap {
   [ResumeEventType.ANALYZE]: AnalyzeState;
   [ResumeEventType.CREATE_SUMMARY]: CreateSummaryState;
   [ResumeEventType.CREATING_RESUME]: CreatingResumeState;
+  [ResumeEventType.COMPLETE]: ResumeCompletedEvent;
 }
