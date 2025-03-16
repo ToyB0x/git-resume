@@ -49,7 +49,7 @@ function LoadingStates({
     foundCommitSize: 0,
     foundRepositories: [],
   });
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Only depend on userId to prevent reconnection when state changes
+
   useEffect(() => {
     const abortController = new AbortController();
     let retryCount = 0;

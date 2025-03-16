@@ -9,11 +9,7 @@
   "exclude": ["build"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": [
-      "node",
-      "vite/client",
-      "@react-router/cloudflare"
-    ],
+    "types": ["node", "vite/client", "@react-router/cloudflare"],
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "bundler",
