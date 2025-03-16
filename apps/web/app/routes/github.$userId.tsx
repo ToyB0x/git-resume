@@ -206,8 +206,8 @@ function LoadingStates({
         <div className="flex flex-col items-center group">
           <div className="mb-2">
             <svg
-              width="24"
-              height="24"
+              width="28"
+              height="28"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -242,8 +242,8 @@ function LoadingStates({
         <div className="flex flex-col items-center group">
           <div className="mb-2">
             <svg
-              width="24"
-              height="24"
+              width="28"
+              height="28"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -279,8 +279,8 @@ function LoadingStates({
       <div className="flex flex-col items-center group">
         <div className="mb-2">
           <svg
-            width="24"
-            height="24"
+            width="28"
+            height="28"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -417,7 +417,7 @@ function LoadingStates({
         {/* Progress steps visualization */}
         <div className="flex items-center justify-center mb-10 mt-4 w-full max-w-2xl relative">
           {/* Connecting lines between steps - SVG Edition */}
-          <div className="absolute h-px bg-gray-800 top-12 left-[10%] right-[10%] z-0" />
+          <div className="absolute h-px bg-gray-800 top-14 left-[10%] right-[10%] z-0" />
 
           {/* Step indicators - modern minimal design */}
           <div className="grid grid-cols-5 w-full relative z-10">
