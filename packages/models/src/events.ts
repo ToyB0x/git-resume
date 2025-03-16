@@ -110,6 +110,7 @@ export type CreatingResumeState = {
  */
 export type ResumeCompletedEvent = {
   type: ResumeEventType.COMPLETE;
+  markdown: string;
 };
 
 /**

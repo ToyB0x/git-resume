@@ -6,7 +6,6 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
-import { hClient } from "~/clients";
 import type { Route } from "./+types/github.$userId";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
@@ -36,32 +35,30 @@ function stripFrontmatter(text: string): string {
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const userId = params.userId;
 
-  const userResponse = await hClient.api.github[":userName"].$get({
-    param: {
-      userName: userId,
-    },
-  });
-
-  if (!userResponse.ok) throw Error("Failed to fetch user data");
-
-  const { markdown } = await userResponse.json();
-
-  // Strip frontmatter if present
-  const content = stripFrontmatter(markdown);
+  // const userResponse = await hClient.api.github[":userName"].$get({
+  //   param: {
+  //     userName: userId,
+  //   },
+  // });
+  //
+  // if (!userResponse.ok) throw Error("Failed to fetch user data");
+  //
+  // const { markdown } = await userResponse.json();
+  //
+  // // Strip frontmatter if present
+  // const content = stripFrontmatter(markdown);
 
   return {
     userId,
-    markdown: content,
+    // markdown: content,
   };
 }
 
 // Real-time state update component using SSE
 function LoadingStates({
   userId,
-  onComplete,
 }: {
   userId: string;
-  onComplete: () => void;
 }) {
   const [currentState, setCurrentState] = useState<ResumeGenerationState>({
     type: ResumeEventType.GIT_SEARCH,
@@ -69,7 +66,6 @@ function LoadingStates({
     foundRepositories: [],
   });
   const [isComplete, setIsComplete] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
   const [completedStates, setCompletedStates] = useState<ResumeEventType[]>([]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Only depend on userId to prevent reconnection when state changes
@@ -88,7 +84,6 @@ function LoadingStates({
 
             onopen: async (response) => {
               if (response.ok) {
-                setIsConnected(true);
                 retryCount = 0;
                 console.log("Connected to resume progress stream");
               } else {
@@ -103,6 +98,8 @@ function LoadingStates({
             onmessage: (event) => {
               const { event: eventTypeStr, data } = event;
               const parsedData = JSON.parse(data);
+
+              console.log({ eventTypeStr, data });
 
               // Handle resume progress events
               if (eventTypeStr === EventType.RESUME_PROGRESS) {
@@ -124,14 +121,11 @@ function LoadingStates({
 
             onerror: (err) => {
               console.error("EventSource error:", err);
-              setIsConnected(false);
-
               retryCount++;
               if (retryCount > MAX_RETRIES) {
                 console.error(`Max retries (${MAX_RETRIES}) reached`);
                 // Fall back to static display if connection fails
                 setIsComplete(true);
-                handleComplete();
                 abortController.abort();
                 return;
               }
@@ -142,8 +136,6 @@ function LoadingStates({
 
             onclose: () => {
               console.log("Resume progress stream closed");
-              setIsConnected(false);
-
               // Check if we have completed the full process before closing the connection
               const allStates = [
                 ResumeEventType.GIT_SEARCH,
@@ -163,16 +155,13 @@ function LoadingStates({
               // Only mark as complete if we've seen all states
               if (allCompleted) {
                 setIsComplete(true);
-                handleComplete();
               }
             },
           },
         );
       } catch (err) {
         console.error("Error connecting to event source:", err);
-        setIsConnected(false);
         setIsComplete(true);
-        handleComplete();
       }
     };
 
@@ -183,16 +172,6 @@ function LoadingStates({
       abortController.abort();
     };
   }, [userId]); // Only depend on userId to prevent reconnection when state changes
-
-  // Handle completion after a slight delay for better UX
-  const handleComplete = () => {
-    // Add a small delay to show completion animation before switching to markdown
-    setTimeout(() => {
-      if (onComplete) {
-        onComplete();
-      }
-    }, 1500);
-  };
 
   // Get status indicator based on state type - using modern SVG icons
   const getStateIndicator = (
@@ -279,7 +258,6 @@ function LoadingStates({
       );
     }
 
-    // Current/In-progress status - animated pulse circle
     if (isCurrent) {
       return (
         <div className="flex flex-col items-center group">
@@ -349,60 +327,106 @@ function LoadingStates({
 
   // Render different UI based on state type
   const renderStateUI = () => {
-    if (isComplete) {
+    if (currentState.type === "Complete") {
       return (
-        <div className="animate-in fade-in duration-500 text-center mt-8">
-          <div className="h-px w-48 mx-auto bg-gradient-to-r from-transparent via-green-500 to-transparent mb-8" />
-          <div className="text-2xl mb-4 font-light text-white">
-            Generation Complete
-          </div>
-          <div className="text-base text-gray-300 max-w-md mx-auto">
-            Your personalized GitHub resume has been successfully generated
-          </div>
-          <div className="mt-8 flex justify-center space-x-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 animate-pulse delay-100" />
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 animate-pulse delay-200" />
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 animate-pulse delay-300" />
-          </div>
-          <div className="mt-3 text-sm text-gray-500">
-            Loading your resume...
-          </div>
-        </div>
-      );
-    }
-
-    // When not connected yet, show connecting message
-    if (!isConnected) {
-      return (
-        <div className="text-center animate-in fade-in duration-500">
-          <div className="h-px w-36 mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent mb-8" />
-          <div className="text-xl mb-4 font-light text-white">
-            Establishing Connection
-          </div>
-          <div className="flex justify-center space-x-2 mb-6">
-            <div
-              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
-              style={{ animationDelay: "0ms" }}
-            />
-            <div
-              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
-              style={{ animationDelay: "100ms" }}
-            />
-            <div
-              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
-              style={{ animationDelay: "200ms" }}
-            />
-            <div
-              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
-              style={{ animationDelay: "300ms" }}
-            />
-            <div
-              className="w-1 h-4 bg-yellow-500/50 rounded-full animate-pulse"
-              style={{ animationDelay: "400ms" }}
-            />
-          </div>
-          <div className="text-base text-gray-400 max-w-md mx-auto">
-            Connecting to the resume generator service
+        /* Resume Content (Markdown) - Only shown after generation complete */
+        <div className="markdown-content bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
+          <div className="prose prose-invert max-w-none text-gray-200">
+            <ReactMarkdown
+              components={{
+                h1: ({ node, ...props }) => (
+                  <h1
+                    className="text-3xl font-bold text-white mt-10 mb-6"
+                    {...props}
+                  />
+                ),
+                h2: ({ node, ...props }) => (
+                  <h2
+                    className="text-2xl font-semibold text-gray-100 mt-10 mb-5 border-b border-gray-700 pb-4"
+                    {...props}
+                  />
+                ),
+                h3: ({ node, ...props }) => (
+                  <h3
+                    className="text-xl font-semibold text-gray-200 mt-7 mb-4"
+                    {...props}
+                  />
+                ),
+                h4: ({ node, ...props }) => (
+                  <h4
+                    className="text-lg font-semibold text-gray-300 mt-5 mb-3"
+                    {...props}
+                  />
+                ),
+                p: ({ node, ...props }) => (
+                  <p className="text-gray-300 my-3" {...props} />
+                ),
+                ul: ({ node, ...props }) => (
+                  <ul
+                    className="text-gray-300 list-disc pl-5 my-3"
+                    {...props}
+                  />
+                ),
+                ol: ({ node, ...props }) => (
+                  <ol
+                    className="text-gray-300 list-decimal pl-5 my-3"
+                    {...props}
+                  />
+                ),
+                li: ({ node, ...props }) => (
+                  <li className="text-gray-300 ml-2 my-1" {...props} />
+                ),
+                a: ({ node, ...props }) => (
+                  <a
+                    className="text-blue-400 hover:text-blue-300 underline"
+                    {...props}
+                  />
+                ),
+                blockquote: ({ node, ...props }) => (
+                  <blockquote
+                    className="border-l-4 border-purple-500 pl-4 italic text-gray-300 my-4"
+                    {...props}
+                  />
+                ),
+                code: ({ node, ...props }) => (
+                  <code
+                    className="bg-gray-800 text-gray-200 px-1.5 py-0.5 rounded text-sm"
+                    {...props}
+                  />
+                ),
+                pre: ({ node, ...props }) => (
+                  <pre
+                    className="bg-gray-900 text-gray-200 p-3 rounded text-sm overflow-x-auto my-4"
+                    {...props}
+                  />
+                ),
+                strong: ({ node, ...props }) => (
+                  <strong className="text-white font-bold" {...props} />
+                ),
+                table: ({ node, ...props }) => (
+                  <table
+                    className="border-collapse table-auto w-full text-sm my-4"
+                    {...props}
+                  />
+                ),
+                th: ({ node, ...props }) => (
+                  <th
+                    className="border-b border-gray-600 p-2 text-left text-gray-200 font-medium"
+                    {...props}
+                  />
+                ),
+                td: ({ node, ...props }) => (
+                  <td
+                    className="border-b border-gray-700 p-2 text-gray-300"
+                    {...props}
+                  />
+                ),
+              }}
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw, rehypeSanitize]}
+            >
+              {currentState.markdown}
+            </ReactMarkdown>
           </div>
         </div>
       );
@@ -658,8 +682,7 @@ function LoadingStates({
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { userId, markdown } = loaderData;
-  const [isGenerating, setIsGenerating] = useState(true);
+  const { userId } = loaderData;
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950 relative overflow-hidden p-4">
@@ -673,119 +696,12 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           </p>
         </header>
 
-        {isGenerating ? (
-          <div className="flex items-center justify-center min-h-[60vh]">
-            {/* Full-screen loading experience while generating */}
-            <LoadingStates
-              userId={userId}
-              onComplete={() => setIsGenerating(false)}
-            />
-          </div>
-        ) : (
-          /* Resume Content (Markdown) - Only shown after generation complete */
-          <div className="markdown-content bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800 animate-in fade-in duration-500">
-            <div className="prose prose-invert max-w-none text-gray-200">
-              <ReactMarkdown
-                components={{
-                  h1: ({ node, ...props }) => (
-                    <h1
-                      className="text-3xl font-bold text-white mt-10 mb-6"
-                      {...props}
-                    />
-                  ),
-                  h2: ({ node, ...props }) => (
-                    <h2
-                      className="text-2xl font-semibold text-gray-100 mt-10 mb-5 border-b border-gray-700 pb-4"
-                      {...props}
-                    />
-                  ),
-                  h3: ({ node, ...props }) => (
-                    <h3
-                      className="text-xl font-semibold text-gray-200 mt-7 mb-4"
-                      {...props}
-                    />
-                  ),
-                  h4: ({ node, ...props }) => (
-                    <h4
-                      className="text-lg font-semibold text-gray-300 mt-5 mb-3"
-                      {...props}
-                    />
-                  ),
-                  p: ({ node, ...props }) => (
-                    <p className="text-gray-300 my-3" {...props} />
-                  ),
-                  ul: ({ node, ...props }) => (
-                    <ul
-                      className="text-gray-300 list-disc pl-5 my-3"
-                      {...props}
-                    />
-                  ),
-                  ol: ({ node, ...props }) => (
-                    <ol
-                      className="text-gray-300 list-decimal pl-5 my-3"
-                      {...props}
-                    />
-                  ),
-                  li: ({ node, ...props }) => (
-                    <li className="text-gray-300 ml-2 my-1" {...props} />
-                  ),
-                  a: ({ node, ...props }) => (
-                    <a
-                      className="text-blue-400 hover:text-blue-300 underline"
-                      {...props}
-                    />
-                  ),
-                  blockquote: ({ node, ...props }) => (
-                    <blockquote
-                      className="border-l-4 border-purple-500 pl-4 italic text-gray-300 my-4"
-                      {...props}
-                    />
-                  ),
-                  code: ({ node, ...props }) => (
-                    <code
-                      className="bg-gray-800 text-gray-200 px-1.5 py-0.5 rounded text-sm"
-                      {...props}
-                    />
-                  ),
-                  pre: ({ node, ...props }) => (
-                    <pre
-                      className="bg-gray-900 text-gray-200 p-3 rounded text-sm overflow-x-auto my-4"
-                      {...props}
-                    />
-                  ),
-                  strong: ({ node, ...props }) => (
-                    <strong className="text-white font-bold" {...props} />
-                  ),
-                  table: ({ node, ...props }) => (
-                    <table
-                      className="border-collapse table-auto w-full text-sm my-4"
-                      {...props}
-                    />
-                  ),
-                  th: ({ node, ...props }) => (
-                    <th
-                      className="border-b border-gray-600 p-2 text-left text-gray-200 font-medium"
-                      {...props}
-                    />
-                  ),
-                  td: ({ node, ...props }) => (
-                    <td
-                      className="border-b border-gray-700 p-2 text-gray-300"
-                      {...props}
-                    />
-                  ),
-                }}
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw, rehypeSanitize]}
-              >
-                {markdown}
-              </ReactMarkdown>
-            </div>
-          </div>
-        )}
+        <div className="flex items-center justify-center min-h-[60vh]">
+          {/* Full-screen loading experience while generating */}
+          <LoadingStates userId={userId} />
+        </div>
 
         <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mt-10 rounded-full" />
-
         <footer className="text-center text-gray-400 text-xs mt-6">
           Built with GitHub data and AI generation
         </footer>

@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import fs from "node:fs";
 import { vValidator } from "@hono/valibot-validator";
 import {
   type AnalyzeState,
@@ -21,6 +22,7 @@ import { createFactory } from "hono/factory";
 import { type SSEStreamingApi, streamSSE } from "hono/streaming";
 import * as v from "valibot";
 import { env, sendTypedEvent } from "../../../utils";
+import { mockResumeMarkdown } from "./mock";
 
 const factory = createFactory();
 
@@ -399,8 +401,11 @@ async function simulateResumeGeneration(
     // Resume creation takes a bit longer
     await streamSSE.sleep(2000);
 
+    // const resumeFile = fs.readFileSync(`./generated/resumes/${userName}.md`);
+
     const resumeCompletedState: ResumeCompletedEvent = {
       type: ResumeEventType.COMPLETE,
+      markdown: mockResumeMarkdown,
     };
     await sendTypedEvent(
       streamSSE,
