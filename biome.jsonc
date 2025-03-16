@@ -14,7 +14,8 @@
       "**/generated/**",
       "**/drizzle/**",
       "**/.react-router/**",
-      "**/.turbo/**"
+      "**/.turbo/**",
+      "**/worker-configuration.d.ts"
     ]
   },
   "formatter": {
