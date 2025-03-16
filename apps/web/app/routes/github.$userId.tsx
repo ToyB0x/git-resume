@@ -65,9 +65,6 @@ function LoadingStates({
     foundCommitSize: 0,
     foundRepositories: [],
   });
-  const [isComplete, setIsComplete] = useState(false);
-  const [completedStates, setCompletedStates] = useState<ResumeEventType[]>([]);
-
   // biome-ignore lint/correctness/useExhaustiveDependencies: Only depend on userId to prevent reconnection when state changes
   useEffect(() => {
     const abortController = new AbortController();
@@ -104,15 +101,6 @@ function LoadingStates({
               // Handle resume progress events
               if (eventTypeStr === EventType.RESUME_PROGRESS) {
                 const newState = parsedData as ResumeGenerationState;
-
-                // If state type changed, trigger animation
-                if (currentState.type !== newState.type) {
-                  // First add the previous state to completed states
-                  if (!completedStates.includes(currentState.type)) {
-                    setCompletedStates((prev) => [...prev, currentState.type]);
-                  }
-                }
-
                 setCurrentState(newState);
               } else if (eventTypeStr === EventType.CONNECTED) {
                 console.log("Connected:", parsedData.message);
@@ -124,8 +112,6 @@ function LoadingStates({
               retryCount++;
               if (retryCount > MAX_RETRIES) {
                 console.error(`Max retries (${MAX_RETRIES}) reached`);
-                // Fall back to static display if connection fails
-                setIsComplete(true);
                 abortController.abort();
                 return;
               }
@@ -136,32 +122,11 @@ function LoadingStates({
 
             onclose: () => {
               console.log("Resume progress stream closed");
-              // Check if we have completed the full process before closing the connection
-              const allStates = [
-                ResumeEventType.GIT_SEARCH,
-                ResumeEventType.GIT_CLONE,
-                ResumeEventType.ANALYZE,
-                ResumeEventType.CREATE_SUMMARY,
-                ResumeEventType.CREATING_RESUME,
-                ResumeEventType.COMPLETE,
-              ];
-
-              const allCompleted = allStates.every(
-                (state) =>
-                  completedStates.includes(state) ||
-                  currentState.type === state,
-              );
-
-              // Only mark as complete if we've seen all states
-              if (allCompleted) {
-                setIsComplete(true);
-              }
             },
           },
         );
       } catch (err) {
         console.error("Error connecting to event source:", err);
-        setIsComplete(true);
       }
     };
 
@@ -176,9 +141,23 @@ function LoadingStates({
   // Get status indicator based on state type - using modern SVG icons
   const getStateIndicator = (
     stateType: ResumeEventType,
+    currentState: ResumeEventType,
     isCurrent: boolean,
   ) => {
-    const isCompleted = completedStates.includes(stateType);
+    // Check if we have completed the full process before closing the connection
+    const allStates = [
+      ResumeEventType.GIT_SEARCH,
+      ResumeEventType.GIT_CLONE,
+      ResumeEventType.ANALYZE,
+      ResumeEventType.CREATE_SUMMARY,
+      ResumeEventType.CREATING_RESUME,
+      ResumeEventType.COMPLETE,
+    ];
+    const selfStateIndex =
+      allStates.findIndex((state) => state === stateType) ?? 0;
+    const currentStateIndex =
+      allStates.findIndex((state) => state === currentState) ?? 0;
+    const isCompleted = selfStateIndex < currentStateIndex;
 
     const stateConfig = {
       [ResumeEventType.GIT_SEARCH]: {
@@ -445,30 +424,35 @@ function LoadingStates({
             <div className="flex flex-col items-center">
               {getStateIndicator(
                 ResumeEventType.GIT_SEARCH,
+                currentState.type,
                 currentState.type === ResumeEventType.GIT_SEARCH,
               )}
             </div>
             <div className="flex flex-col items-center">
               {getStateIndicator(
                 ResumeEventType.GIT_CLONE,
+                currentState.type,
                 currentState.type === ResumeEventType.GIT_CLONE,
               )}
             </div>
             <div className="flex flex-col items-center">
               {getStateIndicator(
                 ResumeEventType.ANALYZE,
+                currentState.type,
                 currentState.type === ResumeEventType.ANALYZE,
               )}
             </div>
             <div className="flex flex-col items-center">
               {getStateIndicator(
                 ResumeEventType.CREATE_SUMMARY,
+                currentState.type,
                 currentState.type === ResumeEventType.CREATE_SUMMARY,
               )}
             </div>
             <div className="flex flex-col items-center">
               {getStateIndicator(
                 ResumeEventType.CREATING_RESUME,
+                currentState.type,
                 currentState.type === ResumeEventType.CREATING_RESUME,
               )}
             </div>
