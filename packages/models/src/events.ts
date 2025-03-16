@@ -57,8 +57,8 @@ export enum ResumeEventType {
  */
 export type GitSearchState = {
   type: ResumeEventType.GIT_SEARCH;
-  foundCommits?: number;
-  foundRepositories?: number;
+  foundCommitSize: number;
+  foundRepositories: string[];
 };
 
 /**
