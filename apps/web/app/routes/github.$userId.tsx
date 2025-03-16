@@ -232,6 +232,12 @@ function LoadingStates({
         strokeColor: "stroke-emerald-500",
         label: "Generate",
       },
+      [ResumeEventType.COMPLETE]: {
+        color: "text-green-500",
+        fillColor: "fill-green-500",
+        strokeColor: "stroke-green-500",
+        label: "Complete",
+      },
     };
 
     const config = stateConfig[stateType];
