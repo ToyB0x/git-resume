@@ -54,7 +54,7 @@ export function Welcome() {
           </div>
           <button
             type="submit"
-            className="relative w-full py-3 px-4 rounded-md font-medium text-white transition-all duration-300 group"
+            className="relative w-full mt-2 py-3 px-4 rounded-md font-medium text-white transition-all duration-300 group"
           >
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-700 rounded-md" />
             <span className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-50 bg-gradient-to-r from-purple-700 via-blue-600 to-cyan-500 rounded-md transition-opacity" />
@@ -62,7 +62,7 @@ export function Welcome() {
           </button>
         </form>
 
-        <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mt-10 rounded-full" />
+        <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mt-6 rounded-full" />
 
         <footer className="text-center text-gray-400 text-xs mt-6">
           Built with Gemini Flash 2.0
