@@ -5,6 +5,6 @@ export interface ResumeService {
     userName: string,
     summaries: Summary[],
     RESUME_GEMINI_API_KEY: string,
-  ) => Promise<void>;
+  ) => Promise<string>;
   // update: (userName: string) => Promise<Resume>;
 }

@@ -16,22 +16,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-// Strip frontmatter from markdown content
-function stripFrontmatter(text: string): string {
-  // Frontmatter must start at the very beginning of the document
-  // This regex specifically matches frontmatter at the start of the document
-  // followed by two or more hyphens on their own line
-  const frontmatterRegex = /^\s*---\s*\n([\s\S]*?)\n\s*---\s*\n/;
-  const match = text.match(frontmatterRegex);
-
-  if (match) {
-    // Return everything after the frontmatter block
-    return text.substring(match[0].length).trim();
-  }
-
-  return text;
-}
-
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const userId = params.userId;
 
@@ -537,7 +521,7 @@ function LoadingStates({
           {currentState.type === ResumeEventType.ANALYZE && (
             <div className="h-56 text-center">
               <div className="text-xl mb-4 text-indigo-400 font-semibold">
-                Cloning repositories
+                Analyzing repositories
               </div>
               <div className="space-y-3 text-gray-300">
                 {currentState.repositories
@@ -589,7 +573,7 @@ function LoadingStates({
           {currentState.type === ResumeEventType.CREATE_SUMMARY && (
             <div className="h-56 text-center">
               <div className="text-xl mb-4 text-indigo-400 font-semibold">
-                Cloning repositories
+                Creating summary for each repository
               </div>
               <div className="space-y-3 text-gray-300">
                 {currentState.repositories

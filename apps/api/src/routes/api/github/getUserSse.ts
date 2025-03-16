@@ -1,5 +1,4 @@
 import { randomUUID } from "node:crypto";
-import fs from "node:fs";
 import { vValidator } from "@hono/valibot-validator";
 import {
   type AnalyzeState,
@@ -15,6 +14,7 @@ import {
   gitHubService,
   gitService,
   packService,
+  resumeService,
   summaryService,
 } from "@resume/services";
 import { PromisePool } from "@supercharge/promise-pool";
@@ -341,8 +341,10 @@ async function simulateResumeGeneration(
     await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, summaryState);
 
     const { errors } = await PromisePool.for(packs)
-      .withConcurrency(3)
+      .withConcurrency(1)
       .process(async (pack) => {
+        // avoid rate limit error (temp solution)
+        await streamSSE.sleep(10 * 1000);
         // update and send ongoing state
         summaryState = {
           ...summaryState,
@@ -412,5 +414,38 @@ async function simulateResumeGeneration(
       EventType.RESUME_PROGRESS,
       resumeCompletedState,
     );
+  } else {
+    const summaries = summaryService.load(userName);
+    const markdown = await resumeService.create(
+      userName,
+      summaries,
+      env.RESUME_GEMINI_API_KEY,
+    );
+
+    const resumeCompletedState: ResumeCompletedEvent = {
+      type: ResumeEventType.COMPLETE,
+      markdown: stripFrontmatter(markdown),
+    };
+    await sendTypedEvent(
+      streamSSE,
+      EventType.RESUME_PROGRESS,
+      resumeCompletedState,
+    );
   }
+}
+
+// Strip frontmatter from markdown content
+function stripFrontmatter(text: string): string {
+  // Frontmatter must start at the very beginning of the document
+  // This regex specifically matches frontmatter at the start of the document
+  // followed by two or more hyphens on their own line
+  const frontmatterRegex = /^\s*---\s*\n([\s\S]*?)\n\s*---\s*\n/;
+  const match = text.match(frontmatterRegex);
+
+  if (match) {
+    // Return everything after the frontmatter block
+    return text.substring(match[0].length).trim();
+  }
+
+  return text;
 }

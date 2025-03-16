@@ -47,12 +47,8 @@ export const create = async (
   });
 
   const resumeDir = "./generated/resumes";
+  const markdown = text.replace("```markdown", "").replace("```", ""); // マークダウン用のコードブロックで全体が括られる場合があるので削除
   fs.mkdirSync(resumeDir, { recursive: true });
-  fs.writeFileSync(
-    `${resumeDir}/${userName}.md`,
-    text
-      .replace("```markdown", "")
-      .replace("```", ""), // マークダウン用のコードブロックで全体が括られる場合があるので削除
-    "utf8",
-  );
+  fs.writeFileSync(`${resumeDir}/${userName}.md`, markdown, "utf8");
+  return markdown;
 };
