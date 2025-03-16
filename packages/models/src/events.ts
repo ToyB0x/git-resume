@@ -78,9 +78,11 @@ export type GitCloneState = {
  */
 export type AnalyzeState = {
   type: ResumeEventType.ANALYZE;
-  repository: string;
-  current: number;
-  total: number;
+  repositories: {
+    name: string;
+    state: "waiting" | "analyzing" | "analyzed";
+    updatedAt: Date;
+  }[];
 };
 
 /**

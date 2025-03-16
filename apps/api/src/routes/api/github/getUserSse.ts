@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { vValidator } from "@hono/valibot-validator";
 import {
+  type AnalyzeState,
   type ConnectedEventData,
   type CreateSummaryState,
   EventType,
@@ -8,7 +9,7 @@ import {
   ResumeEventType,
   type ResumeGenerationState,
 } from "@resume/models";
-import { gitHubService, gitService } from "@resume/services";
+import { gitHubService, gitService, packService } from "@resume/services";
 import { PromisePool } from "@supercharge/promise-pool";
 import { createFactory } from "hono/factory";
 import { type SSEStreamingApi, streamSSE } from "hono/streaming";
@@ -117,10 +118,8 @@ async function simulateResumeGeneration(
 
   // Step 2: Git Clone (3 repositories)
   if (isDemo) {
-    // search commitsの最後のページネーション結果の表示を待つ
-    // await streamSSE.sleep(1500);
     // init state
-    let gitCloneState: ResumeGenerationState = {
+    let gitCloneState: GitCloneState = {
       type: ResumeEventType.GIT_CLONE,
       repositories: demoRepositories.map((repo) => ({
         name: repo,
@@ -139,8 +138,6 @@ async function simulateResumeGeneration(
           updatedAt: r.name === demoRepositories[i] ? new Date() : r.updatedAt,
         })),
       };
-
-      console.log(gitCloneState);
 
       await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, gitCloneState);
       await streamSSE.sleep(300);
@@ -207,24 +204,93 @@ async function simulateResumeGeneration(
   await streamSSE.sleep(1000);
 
   // Step 3: Analyze repositories
-  for (let repoIdx = 0; repoIdx < 3; repoIdx++) {
-    const repoName = `user/repo${repoIdx + 1}`;
-    const analyzeState: ResumeGenerationState = {
+  if (isDemo) {
+    // init state
+    let gitAnalyzeState: AnalyzeState = {
       type: ResumeEventType.ANALYZE,
-      repository: repoName,
-      current: 0,
-      total: 5,
+      repositories: demoRepositories.map((repo) => ({
+        name: repo,
+        state: "waiting",
+        updatedAt: new Date(),
+      })),
     };
 
+    for (let i = 0; i < demoRepositories.length; i++) {
+      // update and send ongoing state
+      gitAnalyzeState = {
+        ...gitAnalyzeState,
+        repositories: gitAnalyzeState.repositories.map((r) => ({
+          ...r,
+          state: r.name === demoRepositories[i] ? "analyzed" : r.state,
+          updatedAt: r.name === demoRepositories[i] ? new Date() : r.updatedAt,
+        })),
+      };
+
+      await sendTypedEvent(
+        streamSSE,
+        EventType.RESUME_PROGRESS,
+        gitAnalyzeState,
+      );
+      await streamSSE.sleep(300);
+    }
+  } else {
+    // send init state
+    let analyzeState: AnalyzeState = {
+      type: ResumeEventType.ANALYZE,
+      repositories: repositories.map((repo) => ({
+        name: `${repo.owner}/${repo.name}`,
+        state: "waiting",
+        updatedAt: new Date(),
+      })),
+    };
     await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, analyzeState);
 
-    // Simulate analysis progress
-    for (let i = 0; i < 5; i++) {
-      await streamSSE.sleep(800);
-      analyzeState.current = i + 1;
+    const { errors } = await PromisePool.for(repositories)
+      .withConcurrency(3)
+      .process(async (repo) => {
+        // update and send ongoing state
+        analyzeState = {
+          ...analyzeState,
+          repositories: analyzeState.repositories.map((r) => ({
+            ...r,
+            state:
+              r.name === `${repo.owner}/${repo.name}` ? "analyzing" : r.state,
+            updatedAt:
+              r.name === `${repo.owner}/${repo.name}`
+                ? new Date()
+                : r.updatedAt,
+          })),
+        };
+        await sendTypedEvent(
+          streamSSE,
+          EventType.RESUME_PROGRESS,
+          analyzeState,
+        );
 
-      await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, analyzeState);
-    }
+        const gitRepoDir = `./generated/git/${repo.owner}/${repo.name}`;
+        await packService.create(userName, gitRepoDir);
+
+        // update and send completed state
+        analyzeState = {
+          ...analyzeState,
+          repositories: analyzeState.repositories.map((r) => ({
+            ...r,
+            state:
+              r.name === `${repo.owner}/${repo.name}` ? "analyzed" : r.state,
+            updatedAt:
+              r.name === `${repo.owner}/${repo.name}`
+                ? new Date()
+                : r.updatedAt,
+          })),
+        };
+
+        await sendTypedEvent(
+          streamSSE,
+          EventType.RESUME_PROGRESS,
+          analyzeState,
+        );
+      });
+    console.error(errors);
   }
 
   // Step 4: Create summaries
