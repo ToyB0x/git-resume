@@ -50,6 +50,7 @@ export enum ResumeEventType {
   ANALYZE = "Analyze",
   CREATE_SUMMARY = "CreateSummary",
   CREATING_RESUME = "CreatingResume",
+  COMPLETE = "Complete",
 }
 
 /**
@@ -102,7 +103,13 @@ export type CreateSummaryState = {
  */
 export type CreatingResumeState = {
   type: ResumeEventType.CREATING_RESUME;
-  state: "AI_THINKING" | "AI_DONE";
+};
+
+/**
+ * Type for the completed resume event
+ */
+export type ResumeCompletedEvent = {
+  type: ResumeEventType.COMPLETE;
 };
 
 /**
@@ -113,7 +120,8 @@ export type ResumeGenerationState =
   | GitCloneState
   | AnalyzeState
   | CreateSummaryState
-  | CreatingResumeState;
+  | CreatingResumeState
+  | ResumeCompletedEvent;
 
 /**
  * Type mapping resume event types to their corresponding state types
@@ -124,4 +132,5 @@ export interface ResumeEventDataMap {
   [ResumeEventType.ANALYZE]: AnalyzeState;
   [ResumeEventType.CREATE_SUMMARY]: CreateSummaryState;
   [ResumeEventType.CREATING_RESUME]: CreatingResumeState;
+  [ResumeEventType.COMPLETE]: ResumeCompletedEvent;
 }

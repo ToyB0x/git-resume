@@ -151,6 +151,7 @@ function LoadingStates({
                 ResumeEventType.ANALYZE,
                 ResumeEventType.CREATE_SUMMARY,
                 ResumeEventType.CREATING_RESUME,
+                ResumeEventType.COMPLETE,
               ];
 
               const allCompleted = allStates.every(

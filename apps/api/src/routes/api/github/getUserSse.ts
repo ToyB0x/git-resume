@@ -6,6 +6,7 @@ import {
   type CreateSummaryState,
   EventType,
   type GitCloneState,
+  type ResumeCompletedEvent,
   ResumeEventType,
   type ResumeGenerationState,
 } from "@resume/models";
@@ -391,14 +392,20 @@ async function simulateResumeGeneration(
   // Step 5: Create resume
   const resumeState: ResumeGenerationState = {
     type: ResumeEventType.CREATING_RESUME,
-    state: "AI_THINKING",
   };
   await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, resumeState);
 
   if (isDemo) {
     // Resume creation takes a bit longer
     await streamSSE.sleep(2000);
-    resumeState.state = "AI_DONE";
-    await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, resumeState);
+
+    const resumeCompletedState: ResumeCompletedEvent = {
+      type: ResumeEventType.COMPLETE,
+    };
+    await sendTypedEvent(
+      streamSSE,
+      EventType.RESUME_PROGRESS,
+      resumeCompletedState,
+    );
   }
 }
