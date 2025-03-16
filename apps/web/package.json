@@ -12,11 +12,11 @@
     "deploy": "pnpm run build && wrangler pages deploy --branch main "
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20250313.0",
     "wrangler": "4.0.0",
     "@microsoft/fetch-event-source": "^2.0.1",
     "@react-router/node": "^7.3.0",
     "@react-router/serve": "^7.3.0",
+    "@react-router/cloudflare": "7.3.0",
     "@resume/models": "workspace:*",
     "hono": "^4.7.4",
     "isbot": "^5.1.17",

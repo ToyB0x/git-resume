@@ -12,8 +12,7 @@
     "types": [
       "node",
       "vite/client",
-      "@remix-run/cloudflare",
-      "@cloudflare/workers-types/2023-07-01"
+      "@react-router/cloudflare"
     ],
     "target": "ES2022",
     "module": "ES2022",
