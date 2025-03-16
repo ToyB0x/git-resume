@@ -497,7 +497,7 @@ function LoadingStates({
                       </span>
                       <span className="text-xs italic px-2 py-1 rounded">
                         {repo.state === "cloning"
-                          ? `${repo.state}...`
+                          ? `...${repo.state}`
                           : repo.state}
                       </span>
                     </div>
