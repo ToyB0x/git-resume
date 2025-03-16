@@ -4,7 +4,7 @@
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "resume-web",
+  "name": "git-resume-web",
   "compatibility_date": "2025-03-13",
   "pages_build_output_dir": "./build/client",
   "observability": {
