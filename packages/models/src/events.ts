@@ -90,9 +90,11 @@ export type AnalyzeState = {
  */
 export type CreateSummaryState = {
   type: ResumeEventType.CREATE_SUMMARY;
-  repository?: string;
-  current: number;
-  total: number;
+  repositories: {
+    name: string;
+    state: "waiting" | "summarizing" | "summarized";
+    updatedAt: Date;
+  }[];
 };
 
 /**
@@ -100,6 +102,7 @@ export type CreateSummaryState = {
  */
 export type CreatingResumeState = {
   type: ResumeEventType.CREATING_RESUME;
+  state: "AI_THINKING" | "AI_DONE";
 };
 
 /**

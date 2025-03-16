@@ -631,8 +631,8 @@ function LoadingStates({
 
           {currentState.type === ResumeEventType.CREATING_RESUME && (
             <div className="h-56 text-center">
-              <div className="text-xl mb-4 text-emerald-400 font-semibold">
-                Generating final resume
+              <div className="text-xl mb-4 font-light text-white">
+                AI Generating {userId}'s Resume
               </div>
               <div className="flex justify-center space-x-1 text-emerald-400 mt-2">
                 <div
