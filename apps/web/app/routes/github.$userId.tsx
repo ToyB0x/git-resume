@@ -486,7 +486,7 @@ function LoadingStates({
                       new Date(b.updatedAt).getTime() -
                       new Date(a.updatedAt).getTime(),
                   )
-                  .slice(-3)
+                  .slice(0, 3)
                   .map((repo) => (
                     <div
                       key={repo.name}

@@ -204,6 +204,8 @@ async function simulateResumeGeneration(
     console.error(errors);
   }
 
+  await streamSSE.sleep(1000);
+
   // Step 3: Analyze repositories
   for (let repoIdx = 0; repoIdx < 3; repoIdx++) {
     const repoName = `user/repo${repoIdx + 1}`;
