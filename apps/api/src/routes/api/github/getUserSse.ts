@@ -391,10 +391,14 @@ async function simulateResumeGeneration(
   // Step 5: Create resume
   const resumeState: ResumeGenerationState = {
     type: ResumeEventType.CREATING_RESUME,
+    state: "AI_THINKING",
   };
-
   await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, resumeState);
 
-  // Resume creation takes a bit longer
-  await streamSSE.sleep(2000);
+  if (isDemo) {
+    // Resume creation takes a bit longer
+    await streamSSE.sleep(2000);
+    resumeState.state = "AI_DONE";
+    await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, resumeState);
+  }
 }

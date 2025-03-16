@@ -632,28 +632,13 @@ function LoadingStates({
           {currentState.type === ResumeEventType.CREATING_RESUME && (
             <div className="h-56 text-center">
               <div className="text-xl mb-4 font-light text-white">
-                AI Generating {userId}'s Resume
+                <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent animate-pulse">
+                  AI Generating
+                </span>{" "}
+                {userId}'s Resume
               </div>
-              <div className="flex justify-center space-x-1 text-emerald-400 mt-2">
-                <div
-                  className="w-2 h-2 rounded-full bg-current animate-bounce"
-                  style={{ animationDelay: "0ms" }}
-                />
-                <div
-                  className="w-2 h-2 rounded-full bg-current animate-bounce"
-                  style={{ animationDelay: "150ms" }}
-                />
-                <div
-                  className="w-2 h-2 rounded-full bg-current animate-bounce"
-                  style={{ animationDelay: "300ms" }}
-                />
-                <div
-                  className="w-2 h-2 rounded-full bg-current animate-bounce"
-                  style={{ animationDelay: "450ms" }}
-                />
-              </div>
-              <div className="text-gray-300 mt-4">
-                Formatting and finalizing your GitHub resume
+              <div className="inline-flex items-center mt-8 text-gray-300">
+                TIPS: Get more detailed analysis with Pro plan
               </div>
             </div>
           )}
