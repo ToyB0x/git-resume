@@ -503,38 +503,24 @@ function LoadingStates({
                     </div>
                   ))}
               </div>
-              <div className="w-full rounded-xs h-1 mt-4 px-2 overflow-hidden bg-gray-800">
-                <div
-                  className="h-full rounded-full transition-all duration-300 ease-out"
-                  style={{
-                    width: `${
-                      currentState.repositories.filter(
-                        (repo) => repo.state === "cloned",
-                      ).length && currentState.repositories.length
-                        ? (
-                            currentState.repositories.filter(
-                              (repo) => repo.state === "cloned",
-                            ).length / currentState.repositories.length
-                          ) * 100
-                        : 0
-                    }%`,
-                    background:
-                      "linear-gradient(to right, #22d3ee, #3b82f6, #a855f7)",
-                    backgroundSize: "200% 100%",
-                    backgroundPosition: `${
-                      currentState.repositories.filter(
-                        (repo) => repo.state === "cloned",
-                      ).length && currentState.repositories.length
-                        ? 100 -
-                          (currentState.repositories.filter(
-                            (repo) => repo.state === "cloned",
-                          ).length /
-                            currentState.repositories.length) *
-                            100
-                        : 0
-                    }% 0`,
-                  }}
-                />
+              <div className="w-full h-1 mt-4 px-2 overflow-hidden bg-gray-800 rounded">
+                {(() => {
+                  const clonedCount = currentState.repositories.filter(
+                    (repo) => repo.state === "cloned",
+                  ).length;
+                  const totalCount = currentState.repositories.length;
+                  const progress = (clonedCount / totalCount) * 100;
+                  return (
+                    <div
+                      className="h-full rounded-full transition-all duration-300 ease-out bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500"
+                      style={{
+                        width: `${progress}%`,
+                        backgroundSize: "200% 100%",
+                        backgroundPosition: `${progress}% 0`,
+                      }}
+                    />
+                  );
+                })()}
               </div>
             </div>
           )}
