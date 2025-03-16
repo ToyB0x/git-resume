@@ -6,9 +6,14 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc --noEmit"
+    "typegen": "wrangler types",
+    "typecheck": "react-router typegen && tsc --noEmit",
+    "preview": "pnpm run build && wrangler pages dev",
+    "deploy": "pnpm run build && wrangler pages deploy"
   },
   "dependencies": {
+    "@cloudflare/workers-types": "^4.20250313.0",
+    "wrangler": "4.0.0",
     "@microsoft/fetch-event-source": "^2.0.1",
     "@react-router/node": "^7.3.0",
     "@react-router/serve": "^7.3.0",
