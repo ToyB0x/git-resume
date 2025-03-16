@@ -26,6 +26,12 @@ importers:
       '@resume/models':
         specifier: workspace:*
         version: link:../../packages/models
+      '@resume/services':
+        specifier: workspace:*
+        version: link:../../packages/services
+      dotenv-cli:
+        specifier: 8.0.0
+        version: 8.0.0
       hono:
         specifier: ^4.7.4
         version: 4.7.4

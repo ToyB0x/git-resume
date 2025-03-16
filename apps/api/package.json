@@ -2,14 +2,16 @@
   "name": "@resume/api",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "dotenv -e ../../.env -- tsx watch src/index.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.8",
     "@hono/valibot-validator": "^0.5.2",
     "hono": "^4.7.4",
+    "dotenv-cli": "8.0.0",
     "@resume/models": "workspace:*",
+    "@resume/services": "workspace:*",
     "valibot": "1.0.0-rc.2"
   },
   "devDependencies": {
