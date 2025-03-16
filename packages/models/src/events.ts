@@ -66,9 +66,10 @@ export type GitSearchState = {
  */
 export type GitCloneState = {
   type: ResumeEventType.GIT_CLONE;
-  repository: string;
-  current: number;
-  total: number;
+  repositories: {
+    name: string;
+    state: "waiting" | "cloning" | "cloned";
+  }[];
 };
 
 /**

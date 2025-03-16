@@ -72,13 +72,7 @@ function LoadingStates({
   const [isConnected, setIsConnected] = useState(false);
   const [completedStates, setCompletedStates] = useState<ResumeEventType[]>([]);
 
-  // Add a state transition animation
-  const [animation, setAnimation] = useState<{
-    active: boolean;
-    from: ResumeEventType;
-    to: ResumeEventType;
-  } | null>(null);
-
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Only depend on userId to prevent reconnection when state changes
   useEffect(() => {
     const abortController = new AbortController();
     let retryCount = 0;
@@ -120,18 +114,6 @@ function LoadingStates({
                   if (!completedStates.includes(currentState.type)) {
                     setCompletedStates((prev) => [...prev, currentState.type]);
                   }
-
-                  // Then animate the transition
-                  setAnimation({
-                    active: true,
-                    from: currentState.type,
-                    to: newState.type,
-                  });
-
-                  // Reset animation after 1 second
-                  setTimeout(() => {
-                    setAnimation(null);
-                  }, 1000);
                 }
 
                 setCurrentState(newState);
@@ -199,7 +181,7 @@ function LoadingStates({
     return () => {
       abortController.abort();
     };
-  }, [userId, currentState.type, completedStates]); // Only depend on userId to prevent reconnection when state changes
+  }, [userId]); // Only depend on userId to prevent reconnection when state changes
 
   // Handle completion after a slight delay for better UX
   const handleComplete = () => {
@@ -463,11 +445,7 @@ function LoadingStates({
         </div>
 
         {/* Current state details */}
-        <div className="bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800 w-full max-w-lg animate-in fade-in duration-500 relative">
-          {animation && (
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 animate-pulse rounded-lg" />
-          )}
-
+        <div className="h-56 bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800 w-full max-w-lg relative">
           {currentState.type === ResumeEventType.GIT_SEARCH && (
             <div className="text-center">
               <div className="text-xl mb-4 text-blue-400 font-semibold">
@@ -496,33 +474,53 @@ function LoadingStates({
           )}
 
           {currentState.type === ResumeEventType.GIT_CLONE && (
-            <div className="text-center">
+            <div className="h-56 text-center">
               <div className="text-xl mb-4 text-indigo-400 font-semibold">
                 Cloning repositories
               </div>
               <div className="space-y-3 text-gray-300">
-                <div className="overflow-hidden text-ellipsis">
-                  <span className="font-mono bg-indigo-900/30 px-2 py-1 rounded text-sm">
-                    {currentState.repository}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-800 rounded-full h-3 mt-2 overflow-hidden">
-                  <div
-                    className="bg-indigo-500 h-full rounded-full transition-all duration-300 ease-out"
-                    style={{
-                      width: `${(currentState.current / currentState.total) * 100}%`,
-                    }}
-                  />
-                </div>
-                <div className="text-right text-sm text-gray-400">
-                  {currentState.current}/{currentState.total} repositories
-                </div>
+                {currentState.repositories
+                  .filter((repo) => repo.state === "cloning")
+                  .slice(-3)
+                  .map((repo) => (
+                    <div
+                      key={repo.name}
+                      className="flex justify-between items-center overflow-hidden"
+                    >
+                      <span className="font-mono px-2 py-1 rounded text-sm truncate max-w-[70%] text-left">
+                        {repo.name}
+                      </span>
+                      <span className="text-xs italic px-2 py-1 rounded">
+                        {repo.state === "cloning"
+                          ? `${repo.state}...`
+                          : repo.state}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+              <div className="w-full bg-gray-800 rounded-sm h-2 mt-2 overflow-hidden">
+                <div
+                  className="bg-indigo-500 h-full rounded-full transition-all duration-300 ease-out"
+                  style={{
+                    width: `${
+                      currentState.repositories.filter(
+                        (repo) => repo.state === "cloned",
+                      ).length && currentState.repositories.length
+                        ? (
+                            currentState.repositories.filter(
+                              (repo) => repo.state === "cloned",
+                            ).length / currentState.repositories.length
+                          ) * 100
+                        : 0
+                    }%`,
+                  }}
+                />
               </div>
             </div>
           )}
 
           {currentState.type === ResumeEventType.ANALYZE && (
-            <div className="text-center">
+            <div className="h-56 text-center">
               <div className="text-xl mb-4 text-purple-400 font-semibold">
                 Analyzing repository content
               </div>
@@ -548,7 +546,7 @@ function LoadingStates({
           )}
 
           {currentState.type === ResumeEventType.CREATE_SUMMARY && (
-            <div className="text-center">
+            <div className="h-56 text-center">
               <div className="text-xl mb-4 text-cyan-400 font-semibold">
                 Creating summaries
               </div>
@@ -576,7 +574,7 @@ function LoadingStates({
           )}
 
           {currentState.type === ResumeEventType.CREATING_RESUME && (
-            <div className="text-center">
+            <div className="h-56 text-center">
               <div className="text-xl mb-4 text-emerald-400 font-semibold">
                 Generating final resume
               </div>

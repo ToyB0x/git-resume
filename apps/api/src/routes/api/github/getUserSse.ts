@@ -4,10 +4,12 @@ import {
   type ConnectedEventData,
   type CreateSummaryState,
   EventType,
+  type GitCloneState,
   ResumeEventType,
   type ResumeGenerationState,
 } from "@resume/models";
-import { gitHubService } from "@resume/services";
+import { gitHubService, gitService } from "@resume/services";
+import { PromisePool } from "@supercharge/promise-pool";
 import { createFactory } from "hono/factory";
 import { type SSEStreamingApi, streamSSE } from "hono/streaming";
 import * as v from "valibot";
@@ -74,65 +76,104 @@ async function simulateResumeGeneration(
   userName: string,
   isDemo: boolean,
 ) {
+  const demoRepositories = [
+    "demo/blog",
+    "demo/website",
+    "demo/app",
+    "demo/cli",
+    "demo/mobile",
+  ];
+
   // Step 1: Git Search
+  const repositories = [];
   if (isDemo) {
     // Simulate finding repositories and commits
     for (let i = 0; i < 5; i++) {
-      await streamSSE.sleep(1000);
+      await streamSSE.sleep(300);
       await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, {
         type: ResumeEventType.GIT_SEARCH,
         foundCommitSize: i * 50,
-        foundRepositories: [
-          "demo/blog",
-          "demo/website",
-          "demo/app",
-          "demo/cli",
-          "demo/mobile",
-        ].slice(0, i + 1),
+        foundRepositories: demoRepositories.slice(0, i + 1),
       });
     }
   } else {
-    await gitHubService.getUserCommitedRepositories(
-      userName,
-      true,
-      env.GITHUB_TOKEN,
-      async (args) =>
-        await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, {
-          type: ResumeEventType.GIT_SEARCH,
-          foundCommitSize: args.commitSize,
-          foundRepositories: args.repositories,
-        }),
+    repositories.push(
+      ...(await gitHubService.getUserCommitedRepositories(
+        userName,
+        true,
+        env.GITHUB_TOKEN,
+        async (args) =>
+          await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, {
+            type: ResumeEventType.GIT_SEARCH,
+            foundCommitSize: args.commitSize,
+            foundRepositories: args.repositories,
+          }),
+      )),
     );
   }
 
-  // search commitsの最後のページネーション結果の表示を待つ
-  await streamSSE.sleep(1500);
-
   // Step 2: Git Clone (3 repositories)
   if (isDemo) {
-    for (let repoIdx = 0; repoIdx < 3; repoIdx++) {
-      const repoName = `user/repo${repoIdx + 1}`;
-      const gitCloneState: ResumeGenerationState = {
-        type: ResumeEventType.GIT_CLONE,
-        repository: repoName,
-        current: 0,
-        total: 3,
-      };
+    // search commitsの最後のページネーション結果の表示を待つ
+    // await streamSSE.sleep(1500);
 
-      await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, gitCloneState);
+    const gitCloneState: ResumeGenerationState = {
+      type: ResumeEventType.GIT_CLONE,
+      repositories: demoRepositories.map((repo) => ({
+        name: repo,
+        state: "cloning",
+      })),
+    };
+    await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, gitCloneState);
+    await streamSSE.sleep(1000);
+  } else {
+    // send init state
+    let gitCloneState: GitCloneState = {
+      type: ResumeEventType.GIT_CLONE,
+      repositories: repositories.map((repo) => ({
+        name: `${repo.owner}/${repo.name}`,
+        state: "waiting",
+      })),
+    };
+    await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, gitCloneState);
 
-      // Simulate cloning progress
-      for (let i = 0; i < 3; i++) {
-        await streamSSE.sleep(1000);
-        gitCloneState.current = i + 1;
+    const { errors } = await PromisePool.for(repositories)
+      .withConcurrency(3)
+      .process(async (repo) => {
+        // update and send ongoing state
+        gitCloneState = {
+          ...gitCloneState,
+          repositories: gitCloneState.repositories.map((r) => ({
+            ...r,
+            state:
+              r.name === `${repo.owner}/${repo.name}` ? "cloning" : r.state,
+          })),
+        };
+        await sendTypedEvent(
+          streamSSE,
+          EventType.RESUME_PROGRESS,
+          gitCloneState,
+        );
+
+        // clone or pull repository
+        await gitService.cloneOrPullRepository(repo);
+
+        // update and send completed state
+        gitCloneState = {
+          ...gitCloneState,
+          repositories: gitCloneState.repositories.map((r) => ({
+            ...r,
+            state: r.name === `${repo.owner}/${repo.name}` ? "cloned" : r.state,
+          })),
+        };
 
         await sendTypedEvent(
           streamSSE,
           EventType.RESUME_PROGRESS,
           gitCloneState,
         );
-      }
-    }
+      });
+    console.error(errors);
   }
 
   // Step 3: Analyze repositories
