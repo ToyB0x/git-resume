@@ -214,13 +214,7 @@ function LoadingStates({
               role="img"
               aria-label={`Completed: ${config.label}`}
             >
-              <title>{`Completed: ${config.label}`}</title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                className={`${config.fillColor} opacity-20`}
-              />
+              <title>{`Completed: ${config.label}`}</title>　
               <path
                 d="M8 12L11 15L16 9"
                 className={`${config.strokeColor}`}
