@@ -75,32 +75,21 @@ async function simulateResumeGeneration(
   isDemo: boolean,
 ) {
   // Step 1: Git Search
-  const gitSearchState: ResumeGenerationState = {
-    type: ResumeEventType.GIT_SEARCH,
-    foundCommitSize: 0,
-    foundRepositories: [],
-  };
-
-  await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, gitSearchState);
-
   if (isDemo) {
     // Simulate finding repositories and commits
     for (let i = 0; i < 5; i++) {
       await streamSSE.sleep(1000);
-      gitSearchState.foundCommitSize = (i + 1) * 50;
-      gitSearchState.foundRepositories = [
-        "demo/blog",
-        "demo/website",
-        "demo/app",
-        "demo/cli",
-        "demo/mobile",
-      ].slice(0, i + 1);
-
-      await sendTypedEvent(
-        streamSSE,
-        EventType.RESUME_PROGRESS,
-        gitSearchState,
-      );
+      await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, {
+        type: ResumeEventType.GIT_SEARCH,
+        foundCommitSize: i * 50,
+        foundRepositories: [
+          "demo/blog",
+          "demo/website",
+          "demo/app",
+          "demo/cli",
+          "demo/mobile",
+        ].slice(0, i + 1),
+      });
     }
   } else {
     await gitHubService.getUserCommitedRepositories(

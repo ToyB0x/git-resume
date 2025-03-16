@@ -65,8 +65,8 @@ function LoadingStates({
 }) {
   const [currentState, setCurrentState] = useState<ResumeGenerationState>({
     type: ResumeEventType.GIT_SEARCH,
-    foundCommits: 0,
-    foundRepositories: 0,
+    foundCommitSize: 0,
+    foundRepositories: [],
   });
   const [isComplete, setIsComplete] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
