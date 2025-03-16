@@ -579,28 +579,52 @@ function LoadingStates({
 
           {currentState.type === ResumeEventType.CREATE_SUMMARY && (
             <div className="h-56 text-center">
-              <div className="text-xl mb-4 text-cyan-400 font-semibold">
-                Creating summaries
+              <div className="text-xl mb-4 text-indigo-400 font-semibold">
+                Cloning repositories
               </div>
               <div className="space-y-3 text-gray-300">
-                {currentState.repository && (
-                  <div className="overflow-hidden text-ellipsis">
-                    <span className="font-mono bg-cyan-900/30 px-2 py-1 rounded text-sm">
-                      {currentState.repository}
-                    </span>
-                  </div>
-                )}
-                <div className="w-full bg-gray-800 rounded-full h-3 mt-2 overflow-hidden">
-                  <div
-                    className="bg-cyan-500 h-full rounded-full transition-all duration-300 ease-out"
-                    style={{
-                      width: `${(currentState.current / currentState.total) * 100}%`,
-                    }}
-                  />
-                </div>
-                <div className="text-right text-sm text-gray-400">
-                  {currentState.current}/{currentState.total} repositories
-                </div>
+                {currentState.repositories
+                  // .filter((repo) => repo.state === "cloning")
+                  .sort(
+                    (a, b) =>
+                      new Date(b.updatedAt).getTime() -
+                      new Date(a.updatedAt).getTime(),
+                  )
+                  .slice(0, 3)
+                  .map((repo) => (
+                    <div
+                      key={repo.name}
+                      className="flex justify-between items-center overflow-hidden"
+                    >
+                      <span className="font-mono px-2 py-1 rounded text-sm truncate max-w-[70%] text-left">
+                        {repo.name}
+                      </span>
+                      <span className="text-xs italic px-2 py-1 rounded">
+                        {repo.state === "summarizing"
+                          ? `...${repo.state}`
+                          : repo.state}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+              <div className="w-full h-1 mt-4 px-2 overflow-hidden bg-gray-800 rounded">
+                {(() => {
+                  const clonedCount = currentState.repositories.filter(
+                    (repo) => repo.state === "summarized",
+                  ).length;
+                  const totalCount = currentState.repositories.length;
+                  const progress = (clonedCount / totalCount) * 100;
+                  return (
+                    <div
+                      className="h-full rounded-full transition-all duration-300 ease-out bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500"
+                      style={{
+                        width: `${progress}%`,
+                        backgroundSize: "200% 100%",
+                        backgroundPosition: `${progress}% 0`,
+                      }}
+                    />
+                  );
+                })()}
               </div>
             </div>
           )}

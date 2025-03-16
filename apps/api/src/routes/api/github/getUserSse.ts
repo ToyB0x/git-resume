@@ -9,7 +9,12 @@ import {
   ResumeEventType,
   type ResumeGenerationState,
 } from "@resume/models";
-import { gitHubService, gitService, packService } from "@resume/services";
+import {
+  gitHubService,
+  gitService,
+  packService,
+  summaryService,
+} from "@resume/services";
 import { PromisePool } from "@supercharge/promise-pool";
 import { createFactory } from "hono/factory";
 import { type SSEStreamingApi, streamSSE } from "hono/streaming";
@@ -201,8 +206,6 @@ async function simulateResumeGeneration(
     console.error(errors);
   }
 
-  await streamSSE.sleep(1000);
-
   // Step 3: Analyze repositories
   if (isDemo) {
     // init state
@@ -295,34 +298,94 @@ async function simulateResumeGeneration(
 
   // Step 4: Create summaries
   // Use direct type cast to avoid exactOptionalPropertyTypes issue with repository property
-  const summaryState = {
-    type: ResumeEventType.CREATE_SUMMARY,
-    current: 0,
-    total: 5,
-  } as CreateSummaryState;
+  if (isDemo) {
+    // init state
+    let summaryState: CreateSummaryState = {
+      type: ResumeEventType.CREATE_SUMMARY,
+      repositories: demoRepositories.map((repo) => ({
+        name: repo,
+        state: "waiting",
+        updatedAt: new Date(),
+      })),
+    };
 
-  await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, summaryState);
-
-  // Simulate summary creation progress
-  for (let i = 0; i < 5; i++) {
-    await streamSSE.sleep(1000);
-    summaryState.current = i + 1;
-
-    // For the first 3 iterations, add repository info, or omit it
-    if (i < 3) {
-      const repoName = `user/repo${i + 1}`;
-
-      // Create a new state object with the repository property for first 3 iterations
-      await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, {
+    for (let i = 0; i < demoRepositories.length; i++) {
+      // update and send ongoing state
+      summaryState = {
         ...summaryState,
-        repository: repoName,
-      } as CreateSummaryState);
-    } else {
-      // For last iterations, send state without repository property
-      await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, summaryState);
-    }
+        repositories: summaryState.repositories.map((r) => ({
+          ...r,
+          state: r.name === demoRepositories[i] ? "summarized" : r.state,
+          updatedAt: r.name === demoRepositories[i] ? new Date() : r.updatedAt,
+        })),
+      };
 
-    // We've already sent the event in each condition above
+      await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, summaryState);
+      await streamSSE.sleep(300);
+    }
+  } else {
+    const packs = await packService.load(userName);
+
+    // send init state
+    let summaryState: CreateSummaryState = {
+      type: ResumeEventType.CREATE_SUMMARY,
+      repositories: packs.map(({ meta }) => ({
+        name: `${meta.owner}/${meta.repo}`,
+        state: "waiting",
+        updatedAt: new Date(),
+      })),
+    };
+    await sendTypedEvent(streamSSE, EventType.RESUME_PROGRESS, summaryState);
+
+    const { errors } = await PromisePool.for(packs)
+      .withConcurrency(3)
+      .process(async (pack) => {
+        // update and send ongoing state
+        summaryState = {
+          ...summaryState,
+          repositories: summaryState.repositories.map((r) => ({
+            ...r,
+            state:
+              r.name === `${pack.meta.owner}/${pack.meta.repo}`
+                ? "summarizing"
+                : r.state,
+            updatedAt:
+              r.name === `${pack.meta.owner}/${pack.meta.repo}`
+                ? new Date()
+                : r.updatedAt,
+          })),
+        };
+        await sendTypedEvent(
+          streamSSE,
+          EventType.RESUME_PROGRESS,
+          summaryState,
+        );
+
+        await summaryService.create(userName, pack, env.RESUME_GEMINI_API_KEY);
+
+        // update and send completed state
+        summaryState = {
+          ...summaryState,
+          repositories: summaryState.repositories.map((r) => ({
+            ...r,
+            state:
+              r.name === `${pack.meta.owner}/${pack.meta.repo}`
+                ? "summarized"
+                : r.state,
+            updatedAt:
+              r.name === `${pack.meta.owner}/${pack.meta.repo}`
+                ? new Date()
+                : r.updatedAt,
+          })),
+        };
+
+        await sendTypedEvent(
+          streamSSE,
+          EventType.RESUME_PROGRESS,
+          summaryState,
+        );
+      });
+    console.error(errors);
   }
 
   // Step 5: Create resume
