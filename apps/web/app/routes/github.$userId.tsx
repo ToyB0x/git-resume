@@ -88,7 +88,7 @@ function LoadingStates({
       try {
         // Use relative URL to avoid hardcoded localhost in production
         await fetchEventSource(
-          `http://localhost:3000/api/resume/${userId}/progress`,
+          `http://localhost:3000/api/github/${userId}/progress`,
           {
             signal: abortController.signal,
 
@@ -476,15 +476,20 @@ function LoadingStates({
               <div className="space-y-3 text-gray-300">
                 <div className="flex items-center justify-between">
                   <span>Commits found:</span>
-                  <span className="font-mono bg-blue-900/30 px-2 py-1 rounded">
-                    {currentState.foundCommits || 0}
+                  <span className="font-mono px-2 py-1 rounded">
+                    {currentState.foundCommitSize}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Repositories found:</span>
-                  <span className="font-mono bg-blue-900/30 px-2 py-1 rounded">
-                    {currentState.foundRepositories || 0}
+                  <span className="font-mono px-2 py-1 rounded">
+                    {currentState.foundRepositories.length}
                   </span>
+                </div>
+                <div className="text-right text-sm text-gray-400 truncate w-full h-6">
+                  {currentState.foundRepositories.length
+                    ? currentState.foundRepositories.join(", ")
+                    : ""}
                 </div>
               </div>
             </div>
