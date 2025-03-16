@@ -18,7 +18,7 @@ export const create = async (userName: string, gitRepoDir: string) => {
   const lines: string[] = [];
   for (const log of logs.all) {
     const show = await gitClient.show([log.hash, "--unified=0"]);
-    if (show.length > 3000) continue; // 変更が大きすぎるDiffはLockファイルなどを含む可能性があるためSkip
+    if (show.length > 5000) continue; // 変更が大きすぎるDiffはLockファイルなどを含む可能性があるためSkip
 
     const showByLines = show.split("\n");
     const filterLargeLines = showByLines.filter((line) => line.length <= 150); // 1行が長すぎる場合はSVGなどの可能性があるため除外
