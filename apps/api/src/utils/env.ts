@@ -3,6 +3,7 @@ import * as v from "valibot";
 const envSchema = v.object({
   // RESUME_DIR: v.pipe(v.string(), v.minLength(1)), // 現在は未使用
   // RESUME_USERNAME: v.pipe(v.string(), v.minLength(3)),
+  RESUME_ALLOWED_ORIGIN: v.pipe(v.string(), v.minLength(3)), // eg. "example.com"
   RESUME_GEMINI_API_KEY: v.pipe(v.string(), v.minLength(10)),
   RESUME_ENV: v.union([
     v.literal("test"),
@@ -11,7 +12,7 @@ const envSchema = v.object({
     v.literal("stg"),
     v.literal("prd"),
   ]),
-  GITHUB_TOKEN: v.pipe(v.string(), v.minLength(5)),
+  GITHUB_TOKEN: v.optional(v.pipe(v.string(), v.minLength(5))),
 });
 
 export const env = v.parse(envSchema, process.env);

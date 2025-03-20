@@ -2,12 +2,13 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { githubRoute } from "./routes/api";
+import { env } from "./utils";
 
 const app = new Hono()
   .use(
     cors({
       origin: (origin) => {
-        return origin.endsWith("example.com") // TODO: update with env
+        return origin.endsWith(env.RESUME_ALLOWED_ORIGIN)
           ? origin
           : "http://localhost:5173";
       },
@@ -15,6 +16,9 @@ const app = new Hono()
   )
   .get("/", (c) => {
     return c.text("Hello Hono!");
+  })
+  .get("/health", (c) => {
+    return c.json({ status: "ok" });
   })
   .route("/api/github", githubRoute);
 
@@ -25,6 +29,7 @@ serve(
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
+    console.log(`Environment: ${env.RESUME_ENV}`);
   },
 );
 

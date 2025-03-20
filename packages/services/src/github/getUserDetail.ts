@@ -3,7 +3,7 @@ import { getOctokit } from "./client";
 
 export const getUserDetail = async (
   userName: string,
-  githubToken: string,
+  githubToken?: string,
 ): Promise<User> => {
   const octokitApp = getOctokit(githubToken);
 

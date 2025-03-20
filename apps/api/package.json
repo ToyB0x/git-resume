@@ -3,6 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "dotenv -e ../../.env -- tsx watch src/index.ts",
+    "build": "tsup",
+    "start": "dotenv -e ../../.env -- node dist/index.cjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -18,7 +20,8 @@
   "devDependencies": {
     "@tsconfig/strictest": "2.0.5",
     "@types/node": "^20.11.17",
-    "tsx": "^4.7.1",
-    "typescript": "^5.7.3"
+    "tsx": "4.19.3",
+    "typescript": "^5.7.3",
+    "tsup": "8.4.0"
   }
 }

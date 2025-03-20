@@ -4,7 +4,7 @@ import { getOctokit } from "./client";
 export const getUserCommitedRepositories = async (
   userName: string,
   publicOnly: boolean,
-  githubToken: string,
+  githubToken?: string,
   callBack?: ({
     commitSize,
     repositories,

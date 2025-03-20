@@ -1,7 +1,7 @@
 import { throttling } from "@octokit/plugin-throttling";
 import { Octokit } from "octokit";
 
-export const getOctokit = (githubToken: string) => {
+export const getOctokit = (githubToken?: string) => {
   Octokit.plugin(throttling);
 
   return new Octokit({
