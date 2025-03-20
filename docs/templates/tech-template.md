@@ -39,19 +39,26 @@ TDDは規模や複雑さに応じて、以下のように分割することが�
 ├── data-flow.md                     # システム全体のデータフロー
 ├── deployment.md                    # デプロイメント戦略とインフラ変更
 ├── e2e-tests.md                     # エンドツーエンドテスト計画
-├── packages/                        # パッケージ別の詳細設計
-│   ├── [パッケージ名1]/
-│   │   ├── README.md                # パッケージの変更概要
-│   │   ├── implements.md            # 実装詳細
-│   │   ├── api-design.md            # API設計（必要な場合）
-│   │   └── tests.md                 # テスト計画
-│   └── [パッケージ名2]/
-│       └── ...                      # 同様の構造
-└── frontend/                        # フロントエンド固有の設計（必要な場合）
-    ├── README.md                    # フロントエンド変更の概要
-    ├── ui-components.md             # UIコンポーネント設計
-    └── screens/                     # 画面別の詳細設計
-        └── [画面名].md
+└── packages/                        # パッケージ別の詳細設計
+    ├── api/                         # APIパッケージの設計
+    │   ├── README.md                # APIパッケージの変更概要
+    │   ├── implements.md            # 実装詳細
+    │   ├── api-design.md            # API設計
+    │   └── tests.md                 # テスト計画
+    ├── services/                    # サービス層パッケージの設計
+    │   ├── README.md                # サービス層の変更概要
+    │   ├── implements.md            # 実装詳細
+    │   └── tests.md                 # テスト計画
+    ├── models/                      # データモデルパッケージの設計
+    │   ├── README.md                # モデル定義の変更概要
+    │   └── data-models.md           # データモデル詳細
+    └── frontend/                    # フロントエンドパッケージの設計
+        ├── README.md                # フロントエンド変更の概要
+        ├── ui-components.md         # UIコンポーネント設計
+        ├── state-management.md      # 状態管理設計
+        └── screens/                 # 画面別の詳細設計
+            ├── [画面名1].md
+            └── [画面名2].md
 ```
 
 **ファイル分割の基準**:
