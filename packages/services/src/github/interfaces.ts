@@ -1,11 +1,11 @@
 import type { Repository, User } from "@resume/models";
 
 export interface GithubService {
-  getUserDetail: (userName: string, githubToken: string) => Promise<User>;
+  getUserDetail: (userName: string, githubToken?: string) => Promise<User>;
   getUserCommitedRepositories: (
     userName: string,
     publicOnly: boolean,
-    githubToken: string,
+    githubToken?: string,
     callBack?: ({
       commitSize,
       repositories,
