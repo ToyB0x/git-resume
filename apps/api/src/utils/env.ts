@@ -12,7 +12,7 @@ const envSchema = v.object({
     v.literal("stg"),
     v.literal("prd"),
   ]),
-  GITHUB_TOKEN: v.pipe(v.string(), v.minLength(5)),
+  GITHUB_TOKEN: v.optional(v.pipe(v.string(), v.minLength(5))),
 });
 
 export const env = v.parse(envSchema, process.env);
