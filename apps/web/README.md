@@ -1,87 +1,116 @@
-# Welcome to React Router!
+# Web Application
 
-A modern, production-ready template for building full-stack React applications using React Router.
+**更新日**: 2025/3/21
+**確認日**: 2025/3/21
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## 概要
 
-## Features
+git-resumeプロジェクトのWebフロントエンドアプリケーションです。GitHub活動の可視化、レジュメ生成、キャリアプランニング支援などの機能をブラウザから利用できるインターフェースを提供します。
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+## 主要機能
 
-## Getting Started
+### GitHubユーザー情報の表示
 
-### Installation
+```
+/github/:userId
+```
 
-Install the dependencies:
+GitHubユーザーのプロフィール情報、リポジトリ一覧、活動履歴などを表示します。レジュメの元となる情報を確認できます。
+
+### ホームダッシュボード
+
+```
+/home
+```
+
+ユーザーのダッシュボード画面です。活動サマリー、スキル分析、キャリア推奨事項などを表示します。
+
+### ウェルカム画面
+
+サイトの概要や使い方を説明するウェルカム画面です。初回訪問時やログアウト状態で表示されます。
+
+## 技術スタック
+
+- **言語**: TypeScript
+- **フレームワーク**: React
+- **ルーティング**: React Router
+- **API連携**: Hono.js クライアント
+- **パッケージ管理**: pnpm
+- **ビルドツール**: Vite
+- **デプロイメント**: Cloudflare Pages/Workers
+
+## 開発方法
+
+### 必要条件
+
+- Node.js v22.x
+- pnpm v10.4.1以上
+
+### ローカル開発
+
+1. 依存パッケージのインストール:
+   ```
+   pnpm install
+   ```
+
+2. 開発サーバーの起動:
+   ```
+   pnpm dev --filter=web
+   ```
+   WebアプリはデフォルトでViteの標準ポート(http://localhost:5173)で起動します。
+
+3. ビルド:
+   ```
+   pnpm build --filter=web
+   ```
+   ビルド成果物は`dist`ディレクトリに生成されます。
+
+4. プレビュー:
+   ```
+   pnpm preview --filter=web
+   ```
+   ビルド済みのアプリをローカルでプレビューできます。
+
+### 環境変数
+
+| 変数名 | 説明 | デフォルト値 |
+|--------|------|-------------|
+| `VITE_API_URL` | バックエンドAPIのURL | `http://localhost:3001` |
+| `VITE_GITHUB_CLIENT_ID` | GitHub OAuth App Client ID | - |
+
+## デプロイメント
+
+このアプリケーションはCloudflare Pages/Workersへのデプロイを想定しています。
 
 ```bash
-npm install
+# Wranglerを使用したデプロイ
+pnpm wrangler pages deploy dist
 ```
 
-### Development
-
-Start the development server with HMR:
-
-```bash
-npm run dev
-```
-
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
+## ディレクトリ構造
 
 ```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+web/
+├── app/                  # アプリケーションコード
+│   ├── clients/          # APIクライアント
+│   ├── routes/           # ページコンポーネント
+│   ├── welcome/          # ウェルカム画面のアセット
+│   ├── app.css           # グローバルスタイル
+│   ├── root.tsx          # ルートコンポーネント
+│   └── routes.ts         # ルート定義
+├── public/               # 静的アセット
+├── Dockerfile            # Dockerファイル
+├── package.json          # パッケージ設定
+├── vite.config.ts        # Vite設定
+└── wrangler.jsonc        # Cloudflare Workersの設定
 ```
 
-## Styling
+## 関連ドキュメント
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+- [プロジェクト概要](/docs/guide/project-overview.md)
+- [APIアプリケーション](/apps/api/README.md)
+- [SPAモード設計](/docs/ADR/001-spa-mode/README.md)
 
----
+## Changelog
 
-Built with ❤️ using React Router.
+- 2025/3/21: 初回作成
