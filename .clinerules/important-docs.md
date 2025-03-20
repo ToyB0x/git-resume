@@ -10,11 +10,24 @@
 - [README.md](/README.md) - プロジェクトの概要説明
 - [docs/guide/project-overview.md](/docs/guide/project-overview.md) - プロジェクトの詳細な概要と目的
 - [docs/guide/onboarding.md](/docs/guide/onboarding.md) - 新規開発者向けのセットアップガイド
+- [docs/guide/roadmap.md](/docs/guide/roadmap.md) - プロジェクトの開発ロードマップ
+- [docs/guide/development-flow.md](/docs/guide/development-flow.md) - 開発フローとドキュメント作成のタイミング
 
 ## アーキテクチャと設計
 
 - [docs/ADR/](/docs/ADR/) - アーキテクチャ決定記録（Architecture Decision Records）
 - [docs/ADR/001-spa-mode/README.md](/docs/ADR/001-spa-mode/README.md) - SPAモードに関する設計決定
+- [docs/templates/prd-template.md](/docs/templates/prd-template.md) - Product Requirement Document テンプレート
+- [docs/templates/tech-template.md](/docs/templates/tech-template.md) - Technical Design Document テンプレート
+
+## ドキュメント作成の参考例
+
+- [docs/templates/example-feature/](/docs/templates/example-feature/) - 機能開発ドキュメントの包括的な参考例
+  - [docs/templates/example-feature/README.md](/docs/templates/example-feature/README.md) - 機能概要と全ドキュメントの索引
+  - [docs/templates/example-feature/PRD/](/docs/templates/example-feature/PRD/) - 要件定義書の例
+  - [docs/templates/example-feature/Technical-Design/](/docs/templates/example-feature/Technical-Design/) - 技術設計書の例（サブディレクトリ構造）
+  - [docs/templates/example-feature/Release/](/docs/templates/example-feature/Release/) - リリース計画の例
+  - [docs/templates/example-feature/User-Guide/](/docs/templates/example-feature/User-Guide/) - ユーザーガイドの例
 
 ## アプリケーション
 
@@ -65,4 +78,6 @@ git-resumeは以下の主要アプリケーションで構成されています�
 
 ## Changelog
 
+- 2025/3/21: 機能開発ドキュメントの包括的な参考例を追加
+- 2025/3/21: 新規作成した開発ロードマップとテンプレートドキュメントを追加
 - 2025/3/21: 初回作成
