@@ -3,6 +3,10 @@
 #####
 FROM node:22-slim AS node_base
 RUN npm install -g pnpm@latest-10
+RUN apt update && apt install -y \
+    git \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
 
 #####
 # Pruner
@@ -31,8 +35,10 @@ RUN pnpm install --frozen-lockfile
 COPY --from=node_pruner /pruner/out/full/ .
 RUN pnpm turbo run build --filter=...@resume/api
 
-# Remove unnecessary devDependencies
-RUN pnpm recursive prune --prod
+# > The prune command does not support recursive execution on a monorepo currently. To only install production-dependencies in a monorepo node_modules folders can be deleted and then re-installed with pnpm install --prod
+# > https://pnpm.io/cli/prune
+RUN find . -name "node_modules" -type d -exec rm -rf {} +
+RUN pnpm install --prod --frozen-lockfile
 
 ###
 # Node Runner
@@ -53,4 +59,4 @@ EXPOSE 8080
 # Start the application
 CMD ["node", "apps/api/dist/index.cjs"]
 
-# docker build -t api -f apps/api/Dockerfile . --progress plain && docker run --env-file .env api
+# docker build -t api -f apps/api/Dockerfile . --progress plain && docker run -p 3000:3000 --env-file .env api
