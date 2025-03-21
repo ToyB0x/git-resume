@@ -67,7 +67,7 @@ cp .env.sample .env
 pnpm dev
 ```
 
-詳細なセットアップ手順は[開発者向けセットアップガイド](./docs/guide/onboarding.md)を参照してください。
+詳細なセットアップ手順は[開発者向けセットアップガイド](./docs/dev-guide/onboarding.md)を参照してください。
 
 ## 使用方法
 
