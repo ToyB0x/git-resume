@@ -63,36 +63,45 @@ git-resumeプロジェクトでは、以下のドキュメント構造を採用�
 ### docs/ ディレクトリ
 
 - `docs/README.md`: 本ドキュメント（ドキュメンテーションガイド）
-- `docs/guide/`: プロジェクト全般のガイドライン
+
+- `docs/guide/`: ユーザー向けガイドライン
+  - `README.md`: 一般ユーザー向けの操作方法や機能説明の概要
+  - `usage/`: インターフェース別の使用方法
+    - `cli-guide.md`: CLIツールの使用方法
+    - `web-guide.md`: Webアプリケーションの使用方法
+    - `api-guide.md`: APIの使用方法
+  - `features/`: 機能詳細説明
+    - `resume-generation.md`: レジュメ生成機能の詳細
+  - `troubleshooting.md`: 一般的な問題とその解決方法
+  - `releases/`: リリース情報
+    - `CHANGELOG.md`: バージョンごとの変更点や新機能の説明
+  - `examples/`: ユーザー向けドキュメントの参考例
+    - `user-guide/`: ユーザーガイドの例
+
+- `docs/dev-guide/`: 開発者向けガイドライン
+  - `README.md`: 開発者向けガイドのメインページ
   - `project-overview.md`: プロジェクトの詳細な概要と目的
   - `onboarding.md`: 新規開発者向けのセットアップガイド
   - `roadmap.md`: 開発ロードマップ
   - `development-flow.md`: 開発フローとドキュメント作成のタイミング
-
-- `docs/architecture/`: 技術的な設計文書
-  - `overview.md`: システム構成、コンポーネント間の関係
-  - `data-models.md`: データモデルと関連性の説明
-
-- `docs/api/`: API仕様とドキュメント
-  - `README.md`: APIの概要と使用例
-
-- `docs/user-guide/`: エンドユーザー向けドキュメント
-  - `README.md`: 一般ユーザー向けの操作方法や機能説明
-
-- `docs/troubleshooting/`: 問題解決ガイド
-  - `README.md`: 一般的な問題とその解決方法
-
-- `docs/releases/`: リリース情報
-  - `CHANGELOG.md`: バージョンごとの変更点や新機能の説明
-
-- `docs/templates/`: ドキュメントテンプレート
-  - `prd-template.md`: Product Requirement Document テンプレート
-  - `tech-template.md`: Technical Design Document テンプレート
-  - `example-feature/`: 機能開発ドキュメントの包括的な参考例
+  - `architecture/`: 技術的な設計文書
+    - `README.md`: アーキテクチャ概要
+    - `overview.md`: システム構成、コンポーネント間の関係
+    - `data-models.md`: データモデルと関連性の説明
+  - `adr/`: アーキテクチャ決定記録
+    - `README.md`: ADRの目的と一覧
+    - `001-spa-mode/`: SPAモードに関する決定記録
+  - `templates/`: 開発ドキュメントテンプレート
+    - `README.md`: テンプレートの概要と使用方法
+    - `prd-template.md`: Product Requirement Document テンプレート
+    - `tech-template.md`: Technical Design Document テンプレート
+    - `example-feature/`: 機能開発ドキュメントの包括的な参考例
 
 ### アプリケーションとパッケージ
 
-- `apps/*/README.md`: 各アプリケーションの説明と使用方法
+- `apps/api/README.md`: APIアプリケーションの説明、実装詳細、使用方法
+- `apps/cli/README.md`: CLIツールの説明と使用方法
+- `apps/web/README.md`: Webアプリケーションの説明と使用方法
 - `packages/*/README.md`: 各共有パッケージの説明と使用方法
 
 ### .clinerules/ ディレクトリ
@@ -250,5 +259,6 @@ LLM（Clineなど）がプロジェクトを効率的に理解するために：
 
 ## Changelog
 
+- 2025/3/21: ドキュメント構造の説明を最新化（docs/guide と docs/dev-guide の分離構造を反映）
 - 2025/3/21: .clinerules/documentation-guide.md から docs/README.md に移動
 - 2025/3/21: 初回作成

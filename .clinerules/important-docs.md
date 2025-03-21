@@ -45,7 +45,7 @@
   - 主要データモデル（User、Repository、Resume、Pack、Summary、Events）
   - モデル関連図とその説明
   - 実装上の考慮事項
-- [docs/dev-guide/api-implementation.md](/docs/dev-guide/api-implementation.md) - API実装詳細
+- [apps/api/README.md](/apps/api/README.md) - API実装詳細
   - エンドポイント（getUser、getUserSse）の実装
   - リクエスト/レスポンス処理
   - 内部処理フロー
