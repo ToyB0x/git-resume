@@ -63,7 +63,7 @@ sequenceDiagram
     User->>App: レジュメ生成リクエスト
     App->>GitHub: ユーザー情報取得
     GitHub-->>App: ユーザーデータ
-    App->>GitHub: リポジトリ情報取得
+    App->>GitHub: コントリビュートリポジトリ検索
     GitHub-->>App: リポジトリリスト
     
     loop リポジトリごと
@@ -75,12 +75,12 @@ sequenceDiagram
     
     loop パッケージごと
         App->>Gemini: サマリー生成リクエスト
-        Gemini-->>App: サマリーコンテンツ
+        Gemini-->>App: リポジトリのサマリー生成
     end
     
     App->>Gemini: レジュメ生成リクエスト
-    Gemini-->>App: マークダウン形式のレジュメ
-    App-->>User: 生成されたレジュメ
+    Gemini-->>App: サマリーを統合したレジュメ
+    App-->>User: マークダウン形式のレジュメ
 ```
 
 ### Server-Sent Events (SSE) フロー
@@ -94,39 +94,101 @@ sequenceDiagram
     participant API as APIサーバー
     participant GitHub as GitHub API
     participant Git as Gitリポジトリ
-    participant AI as AI (Gemini)
+    participant Pack as パッケージングサービス
+    participant Summary as サマリーサービス
+    participant Resume as レジュメサービス
     
-    User->>Web: レジュメ生成リクエスト
-    Web->>API: SSE接続
-    API-->>Web: 接続確立
+    User->>Web: GitHubユーザー名入力
+    Web->>API: SSE接続要求
+    API-->>Web: 接続確立イベント (CONNECTED)
     
-    API->>GitHub: リポジトリ検索
-    API-->>Web: GIT_SEARCH イベント
+    API->>GitHub: コントリビュートリポジトリ検索
+    API-->>Web: GIT_SEARCH イベント (進捗更新)
     
     loop 各リポジトリ
-        API->>Git: リポジトリクローン
+        API->>Git: リポジトリクローン/更新
         API-->>Web: GIT_CLONE イベント (進捗更新)
     end
     
     loop 各リポジトリ
-        API->>API: リポジトリ分析
+        API->>Pack: リポジトリコード分析
         API-->>Web: ANALYZE イベント (進捗更新)
     end
     
     loop 各リポジトリ
-        API->>AI: サマリー生成
-        AI-->>API: サマリー結果
+        API->>Summary: Google Geminiを使用したサマリー生成
         API-->>Web: CREATE_SUMMARY イベント (進捗更新)
     end
     
-    API->>AI: レジュメ生成
-    API-->>Web: CREATING_RESUME イベント
+    API->>Resume: サマリーを統合したレジュメ生成
+    API-->>Web: CREATING_RESUME イベント (進捗更新)
     
-    AI-->>API: 完成したレジュメ
-    API-->>Web: COMPLETE イベント (レジュメ付き)
+    API-->>Web: COMPLETE イベント (レジュメマークダウン付き)
     
-    Web-->>User: 完成したレジュメを表示
+    Web-->>User: リアルタイムUIと完成レジュメ表示
 ```
+
+## 主要コンポーネントの詳細
+
+### API (apps/api)
+
+APIサーバーは以下の主要エンドポイントを提供しています：
+
+- `GET /api/github/getUser`: ユーザー名からレジュメを生成するシンプルなAPI
+- `GET /api/github/:userId/progress`: レジュメ生成の進捗をSSEで配信するストリーミングAPI
+
+これらのエンドポイントは内部的に共有サービスを利用して以下の処理を行います：
+1. GitHubユーザーのコントリビュートリポジトリの検索
+2. リポジトリのクローンと分析
+3. Google Gemini APIを使用したサマリー生成
+4. サマリーを統合したレジュメの生成
+
+### CLI (apps/cli)
+
+CLIツールは以下の主要コマンドを提供しています：
+
+- `clone repositories <username>`: GitHubユーザーのリポジトリをクローン
+- `pack create <username>`: リポジトリをパッケージ化
+- `summary create <username>`: リポジトリのサマリーを生成
+- `resume create <username>`: サマリーを統合してレジュメを生成
+
+これらのコマンドは同じ共有サービスを使用してAPIと同様の処理を実行します。
+
+### Web (apps/web)
+
+Webフロントエンドは以下の機能を提供しています：
+
+- ホーム画面: ユーザー名入力フォーム
+- レジュメ生成/表示画面: リアルタイム進捗表示とレジュメ表示
+
+レジュメ生成プロセスの視覚的進捗表示には、以下のステップが含まれます：
+1. リポジトリ検索 (GIT_SEARCH)
+2. リポジトリクローン (GIT_CLONE)
+3. コード分析 (ANALYZE)
+4. サマリー生成 (CREATE_SUMMARY)
+5. レジュメ統合 (CREATING_RESUME)
+6. 完了 (COMPLETE)
+
+### データモデル (packages/models)
+
+主要なデータモデルは以下の通りです：
+
+- `User`: GitHubユーザー情報（id, userName, displayName, blog, avatarUrl）
+- `Repository`: リポジトリ情報（id, owner, name, isPrivate）
+- `Pack`: パッケージ化されたリポジトリコード（meta, body）
+- `Summary`: リポジトリのサマリー（string型のマークダウン）
+- `Resume`: 生成されたレジュメ（body: string）
+- `Events`: SSE用のイベント型定義群
+
+### サービス (packages/services)
+
+主要なサービス機能は以下の通りです：
+
+- `github`: GitHubユーザー情報とリポジトリの取得
+- `git`: リポジトリのクローンと管理
+- `pack`: リポジトリのコード解析とパッケージ化
+- `summary`: Google Gemini APIを使用したサマリー生成
+- `resume`: サマリーからレジュメの生成
 
 ## 技術スタック
 
@@ -163,33 +225,6 @@ sequenceDiagram
 - **モノレポ管理**: Turborepo
 - **リント・フォーマット**: Biome
 
-## 主要コンポーネントの責務
-
-### API (apps/api)
-
-- GitHubユーザー情報の取得とレジュメ生成処理
-- SSEを使用したリアルタイム進捗状況の配信
-- GitHubとの認証連携
-
-### CLI (apps/cli)
-
-- ターミナルからのレジュメ生成機能の提供
-- リポジトリのクローン、分析、サマリー生成
-- ローカルファイルシステムでの結果管理
-
-### Web (apps/web)
-
-- ユーザーフレンドリーなインターフェースの提供
-- レジュメ生成プロセスのビジュアライゼーション
-- マークダウン形式のレジュメレンダリング
-
-### サービス (packages/services)
-
-- GitHub API連携
-- Git操作
-- レジュメ生成ロジック
-- AI (Google Gemini) との連携
-
 ## 開発環境
 
 開発環境ではローカルで各コンポーネントを実行します：
@@ -200,9 +235,9 @@ sequenceDiagram
 
 ## セキュリティ考慮事項
 
-- **GitHub Token**: 環境変数として設定され、APIリクエストの認証に使用
-- **AI API Key**: Google Gemini APIとの通信に使用（環境変数で管理）
-- **ローカルデータ**: 生成されたレジュメやパッケージはローカルファイルシステムに保存
+- **GitHub Token**: 環境変数 `GITHUB_TOKEN` として設定され、APIリクエストの認証に使用
+- **AI API Key**: 環境変数 `RESUME_GEMINI_API_KEY` として設定され、Google Gemini APIとの通信に使用
+- **ローカルデータ**: 生成されたレジュメやパッケージは `generated/` ディレクトリに保存
 
 ## 今後の拡張可能性
 
@@ -214,4 +249,5 @@ sequenceDiagram
 
 ## Changelog
 
+- 2025/3/21: コードベース分析に基づき内容を更新
 - 2025/3/21: 初回作成
