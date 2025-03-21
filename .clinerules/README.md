@@ -13,7 +13,6 @@
 ├── important-docs.md   # プロジェクトの重要な資料の場所をまとめたリスト
 ├── commit-rules.md     # プロンプト履歴を記録する際のルール
 ├── repomix.md          # リポジトリコードを効率的に理解するための方法
-├── documentation-guide.md # ドキュメンテーションガイド
 └── prompts/            # Clineへの便利な指示テンプレート
     └── update-docs.md  # ドキュメント更新時のルールとテンプレート
 ```
@@ -29,8 +28,8 @@
 ### [repomix.md](./.clinerules/repomix.md)
 repomix MCP を利用してリポジトリ内のコードを効率的に理解するための方法をまとめたファイルです。トークン使用量を最適化しつつ、コードベースの把握を効率化します。特に特定パッケージの調査時には優先的に使用すべき理由も説明しています。
 
-### [documentation-guide.md](./.clinerules/documentation-guide.md)
-人とLLM（Large Language Model）の両方が参考にすべきプロジェクト/リポジトリのドキュメンテーションの原則、ベストプラクティス、および具体的な手順を提供します。一貫した高品質なドキュメントを作成・維持することで、プロジェクトの理解性と持続可能性を確保します。
+### ドキュメンテーションガイド
+[docs/README.md](/docs/README.md) - 人とLLM（Large Language Model）の両方が参考にすべきプロジェクト/リポジトリのドキュメンテーションの原則、ベストプラクティス、および具体的な手順を提供します。一貫した高品質なドキュメントを作成・維持することで、プロジェクトの理解性と持続可能性を確保します。
 
 ### [prompts/update-docs.md](./.clinerules/prompts/update-docs.md)
 Cline がドキュメントを更新する際のテンプレートと手順をまとめたファイルです。ドキュメント更新の一貫性と品質を確保するためのガイドラインを提供します。
@@ -41,6 +40,7 @@ Cline がドキュメントを更新する際のテンプレートと手順を�
 
 ## Changelog
 
+- 2025/3/21: ドキュメンテーションガイドの参照先を docs/README.md に更新
 - 2025/3/21: documentation-guide.md をリストに追加
 - 2025/3/21: commit-rules.md の説明をコミットメッセージからプロンプト履歴の記録ルールに更新
 - 2025/3/21: repomix.md の説明を拡充

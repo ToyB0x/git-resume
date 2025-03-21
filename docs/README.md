@@ -62,6 +62,7 @@ git-resumeプロジェクトでは、以下のドキュメント構造を採用�
 
 ### docs/ ディレクトリ
 
+- `docs/README.md`: 本ドキュメント（ドキュメンテーションガイド）
 - `docs/guide/`: プロジェクト全般のガイドライン
   - `project-overview.md`: プロジェクトの詳細な概要と目的
   - `onboarding.md`: 新規開発者向けのセットアップガイド
@@ -100,7 +101,6 @@ git-resumeプロジェクトでは、以下のドキュメント構造を採用�
 - `important-docs.md`: プロジェクトの重要な資料の場所をまとめたリスト
 - `commit-rules.md`: プロンプト履歴の記録ルール
 - `repomix.md`: リポジトリコードを効率的に理解するための方法
-- `documentation-guide.md`: 本ドキュメント（ドキュメンテーションガイド）
 - `prompts/update-docs.md`: ドキュメント更新時のルールとテンプレート
 
 ## ドキュメンテーションプロセス
@@ -168,10 +168,10 @@ git-resumeプロジェクトでは、以下のドキュメント構造を採用�
 
 LLM（Clineなど）がプロジェクトを効率的に理解するために：
 
-- `important-docs.md` を最初に参照して全体像を把握
-- `repomix.md` のガイドラインに従ってコードを効率的に分析
+- `.clinerules/important-docs.md` を最初に参照して全体像を把握
+- `.clinerules/repomix.md` のガイドラインに従ってコードを効率的に分析
 - 各ドキュメント間の相互参照リンクを活用して関連情報に素早くアクセス
-- ドキュメント更新時は `prompts/update-docs.md` のテンプレートとルールに従う
+- `.clinerules/prompts/update-docs.md` のテンプレートとルールに従ってドキュメントを更新
 
 ## ベストプラクティスと具体例
 
@@ -250,4 +250,5 @@ LLM（Clineなど）がプロジェクトを効率的に理解するために：
 
 ## Changelog
 
+- 2025/3/21: .clinerules/documentation-guide.md から docs/README.md に移動
 - 2025/3/21: 初回作成

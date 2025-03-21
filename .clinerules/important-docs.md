@@ -125,7 +125,7 @@ git-resumeは以下の主要アプリケーションで構成されています�
 - [.clinerules/important-docs.md](/.clinerules/important-docs.md) - 重要な資料の場所をまとめたリスト（本ファイル）
 - [.clinerules/commit-rules.md](/.clinerules/commit-rules.md) - プロンプト履歴の記録ルール
 - [.clinerules/repomix.md](/.clinerules/repomix.md) - リポジトリコード効率的理解の方法
-- [.clinerules/documentation-guide.md](/.clinerules/documentation-guide.md) - ドキュメンテーションガイド
+- [docs/README.md](/docs/README.md) - ドキュメンテーションガイド
 - [.clinerules/prompts/update-docs.md](/.clinerules/prompts/update-docs.md) - ドキュメント更新時のルールとテンプレート
 
 ## Changelog
