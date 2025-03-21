@@ -16,18 +16,18 @@
 
 アーキテクチャと技術的な設計の詳細については、以下のドキュメントを参照してください：
 
-- [アーキテクチャ概要](/docs/architecture/overview.md)
-- [データモデル](/docs/architecture/data-models.md)
-- [API仕様](/docs/api/README.md)
-- [アーキテクチャ決定記録](/docs/ADR/)
+- [アーキテクチャ概要](./architecture/overview.md)
+- [データモデル](./architecture/data-models.md)
+- [API仕様](/docs/guide/usage/api-guide.md)
+- [アーキテクチャ決定記録](./architecture/adr/)
 
 ## 開発テンプレート
 
 機能開発時に使用するテンプレートは以下を参照してください：
 
-- [Product Requirement Document テンプレート](/docs/templates/prd-template.md)
-- [Technical Design Document テンプレート](/docs/templates/tech-template.md)
-- [機能開発ドキュメントの参考例](/docs/templates/example-feature/)
+- [Product Requirement Document テンプレート](./templates/prd-template.md)
+- [Technical Design Document テンプレート](./templates/tech-template.md)
+- [機能開発ドキュメントの参考例](./templates/example-feature/)
 
 ## Clineでの開発について
 
@@ -40,4 +40,5 @@ Clineを使用した開発については、以下のドキュメントを参照
 
 ## Changelog
 
+- 2025/3/21: ドキュメント構造の変更に合わせてリンクを更新
 - 2025/3/21: 初回作成

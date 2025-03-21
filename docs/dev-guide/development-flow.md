@@ -27,7 +27,7 @@ flowchart LR
 新機能やプロダクト改善の目的、要件、期待される成果を明確化するステップです。ユーザーニーズや事業目標から機能の「なぜ」と「何を」を定義します。
 
 ### 作成するドキュメント
-- **Product Requirement Document (PRD)**: [テンプレート](/docs/templates/prd-template.md)
+- **Product Requirement Document (PRD)**: [テンプレート](/docs/dev-guide/templates/prd-template.md)
   - 機能の背景と目的
   - ユーザーストーリーと機能要件
   - 受け入れ基準
@@ -57,7 +57,7 @@ flowchart LR
 要件を実現するための技術的なアプローチを検討し、実装計画を立てるステップです。アーキテクチャ、データモデル、API設計などの「どのように」を定義します。
 
 ### 作成するドキュメント
-- **Technical Design Document (TDD)**: [テンプレート](/docs/templates/tech-template.md)
+- **Technical Design Document (TDD)**: [テンプレート](/docs/dev-guide/templates/tech-template.md)
   - アーキテクチャ設計
   - データモデル
   - API設計
@@ -231,8 +231,8 @@ flowchart LR
 - 複数人で編集する場合は、競合を避けるためにプルリクエストを使用する
 
 ### テンプレートの活用
-- [PDRテンプレート](/docs/templates/prd-template.md)
-- [TDDテンプレート](/docs/templates/tech-template.md)
+- [PDRテンプレート](/docs/dev-guide/templates/prd-template.md)
+- [TDDテンプレート](/docs/dev-guide/templates/tech-template.md)
 
 ### レビュープロセス
 - ドキュメントには必ずレビュアーを指定する
