@@ -8,18 +8,21 @@
 ## プロジェクト概要ドキュメント
 
 - [README.md](/README.md) - プロジェクトの概要説明
-- [docs/guide/project-overview.md](/docs/guide/project-overview.md) - プロジェクトの詳細な概要と目的
-- [docs/guide/onboarding.md](/docs/guide/onboarding.md) - 新規開発者向けのセットアップガイド
-- [docs/guide/roadmap.md](/docs/guide/roadmap.md) - プロジェクトの開発ロードマップ
-- [docs/guide/development-flow.md](/docs/guide/development-flow.md) - 開発フローとドキュメント作成のタイミング
+- [docs/dev-guide/project-overview.md](/docs/dev-guide/project-overview.md) - プロジェクトの詳細な概要と目的
+- [docs/dev-guide/onboarding.md](/docs/dev-guide/onboarding.md) - 新規開発者向けのセットアップガイド
+- [docs/dev-guide/roadmap.md](/docs/dev-guide/roadmap.md) - プロジェクトの開発ロードマップ
+- [docs/dev-guide/development-flow.md](/docs/dev-guide/development-flow.md) - 開発フローとドキュメント作成のタイミング
 
 ## ユーザー向けドキュメント
 
-- [docs/user-guide/README.md](/docs/user-guide/README.md) - 一般ユーザー向けの操作方法や機能説明
+- [docs/guide/README.md](/docs/guide/README.md) - 一般ユーザー向けの操作方法や機能説明
   - CLI、Web、APIの各インターフェースの利用方法
   - レジュメ生成や管理のワークフロー
   - 各種機能の詳細説明
-- [docs/troubleshooting/README.md](/docs/troubleshooting/README.md) - 一般的な問題とその解決方法
+- [docs/guide/usage/cli-guide.md](/docs/guide/usage/cli-guide.md) - CLIツールの使用方法
+- [docs/guide/usage/web-guide.md](/docs/guide/usage/web-guide.md) - Webアプリケーションの使用方法
+- [docs/guide/features/resume-generation.md](/docs/guide/features/resume-generation.md) - レジュメ生成機能の詳細
+- [docs/guide/troubleshooting.md](/docs/guide/troubleshooting.md) - 一般的な問題とその解決方法
   - 環境変数、GitHub連携、CLI、Webアプリケーション、レジュメ生成の問題解決
   - 開発環境のトラブルシューティング
 - [docs/releases/CHANGELOG.md](/docs/releases/CHANGELOG.md) - バージョンごとの変更点や新機能の説明
@@ -119,6 +122,14 @@ git-resumeは以下の主要アプリケーションで構成されています�
 - [.npmrc](/.npmrc) - npm設定
 - [.env.sample](/.env.sample) - 環境変数サンプル
 
+## 開発者向けドキュメント
+
+- [docs/dev-guide/README.md](/docs/dev-guide/README.md) - 開発者向けガイドのメインページ
+- [docs/dev-guide/project-overview.md](/docs/dev-guide/project-overview.md) - プロジェクトの詳細概要と目的
+- [docs/dev-guide/onboarding.md](/docs/dev-guide/onboarding.md) - 開発環境のセットアップと開発フロー
+- [docs/dev-guide/roadmap.md](/docs/dev-guide/roadmap.md) - 開発ロードマップと今後の計画
+- [docs/dev-guide/development-flow.md](/docs/dev-guide/development-flow.md) - 開発フローとドキュメント作成タイミング
+
 ## .clinerules ガイドライン
 
 - [.clinerules/README.md](/.clinerules/README.md) - .clinerules全体の目次
@@ -130,6 +141,8 @@ git-resumeは以下の主要アプリケーションで構成されています�
 
 ## Changelog
 
+- 2025/3/21: ドキュメント構造の変更を反映（docs/guide/とdocs/dev-guide/の分離）
+- 2025/3/21: 開発者向けドキュメントセクションを追加
 - 2025/3/21: .clinerules ガイドラインセクションを追加し、documentation-guide.mdを参照に追加
 - 2025/3/21: ユーザー向けドキュメント、アーキテクチャドキュメント、API仕様書を充実化
 - 2025/3/21: 実際の実装に基づいて各ドキュメントを更新
