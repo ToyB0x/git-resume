@@ -75,8 +75,6 @@ git-resumeプロジェクトでは、以下のドキュメント構造を採用�
   - `troubleshooting.md`: 一般的な問題とその解決方法
   - `releases/`: リリース情報
     - `CHANGELOG.md`: バージョンごとの変更点や新機能の説明
-  - `examples/`: ユーザー向けドキュメントの参考例
-    - `user-guide/`: ユーザーガイドの例
 
 - `docs/dev-guide/`: 開発者向けガイドライン
   - `README.md`: 開発者向けガイドのメインページ

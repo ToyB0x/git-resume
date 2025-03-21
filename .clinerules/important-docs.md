@@ -30,8 +30,6 @@
   - リリースバージョン履歴（v0.1.0、v0.2.0）
   - 開発中の機能と今後の計画
   - 各バージョンの開発要件
-- [docs/guide/examples/](/docs/guide/examples/) - ユーザー向けドキュメントの参考例
-  - [docs/guide/examples/user-guide/](/docs/guide/examples/user-guide/) - ユーザーガイドの例
 
 ## アーキテクチャと設計
 
@@ -144,11 +142,12 @@ git-resumeは以下の主要アプリケーションで構成されています�
 
 ## Changelog
 
+- 2025/3/21: docs/guide/examples/ディレクトリを削除し、ドキュメント構造を簡素化
 - 2025/3/21: ディレクトリ構造の変更を反映
   - docs/api/ → docs/guide/usage/api-guide.md, docs/dev-guide/api-implementation.md に分割
   - docs/ADR/ → docs/dev-guide/adr/
   - docs/architecture/ → docs/dev-guide/architecture/
-  - docs/templates/ → docs/dev-guide/templates/（開発者向け）と docs/guide/examples/（ユーザー向け）に分割
+  - docs/templates/ → docs/dev-guide/templates/（開発者向け）に変更
   - docs/releases/ → docs/guide/releases/
 - 2025/3/21: ドキュメント構造の変更を反映（docs/guide/とdocs/dev-guide/の分離）
 - 2025/3/21: 開発者向けドキュメントセクションを追加
