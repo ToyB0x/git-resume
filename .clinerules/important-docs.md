@@ -13,8 +13,17 @@
 - [docs/guide/roadmap.md](/docs/guide/roadmap.md) - プロジェクトの開発ロードマップ
 - [docs/guide/development-flow.md](/docs/guide/development-flow.md) - 開発フローとドキュメント作成のタイミング
 
+## ユーザー向けドキュメント
+
+- [docs/user-guide/README.md](/docs/user-guide/README.md) - 一般ユーザー向けの操作方法や機能説明
+- [docs/troubleshooting/README.md](/docs/troubleshooting/README.md) - 一般的な問題とその解決方法
+- [docs/releases/CHANGELOG.md](/docs/releases/CHANGELOG.md) - バージョンごとの変更点や新機能の説明
+
 ## アーキテクチャと設計
 
+- [docs/architecture/overview.md](/docs/architecture/overview.md) - システム構成、コンポーネント間の関係、技術スタック
+- [docs/architecture/data-models.md](/docs/architecture/data-models.md) - データモデルと関連性の説明
+- [docs/api/README.md](/docs/api/README.md) - API仕様書（エンドポイント、リクエスト/レスポンス形式）
 - [docs/ADR/](/docs/ADR/) - アーキテクチャ決定記録（Architecture Decision Records）
 - [docs/ADR/001-spa-mode/README.md](/docs/ADR/001-spa-mode/README.md) - SPAモードに関する設計決定
 - [docs/templates/prd-template.md](/docs/templates/prd-template.md) - Product Requirement Document テンプレート
@@ -78,6 +87,7 @@ git-resumeは以下の主要アプリケーションで構成されています�
 
 ## Changelog
 
+- 2025/3/21: ユーザー向けドキュメント、アーキテクチャドキュメント、API仕様書を追加
 - 2025/3/21: 機能開発ドキュメントの包括的な参考例を追加
 - 2025/3/21: 新規作成した開発ロードマップとテンプレートドキュメントを追加
 - 2025/3/21: 初回作成
