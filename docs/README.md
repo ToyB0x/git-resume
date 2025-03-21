@@ -88,7 +88,7 @@ git-resumeプロジェクトでは、以下のドキュメント構造を採用�
     - `README.md`: アーキテクチャ概要
     - `overview.md`: システム構成、コンポーネント間の関係
     - `data-models.md`: データモデルと関連性の説明
-  - `adr/`: アーキテクチャ決定記録
+  - `architecture/adr/`: アーキテクチャ決定記録
     - `README.md`: ADRの目的と一覧
     - `001-spa-mode/`: SPAモードに関する決定記録
   - `templates/`: 開発ドキュメントテンプレート

@@ -13,6 +13,7 @@
 
 - [システム概要](./overview.md) - システム構成、コンポーネント間の関係、技術スタックの詳細
 - [データモデル](./data-models.md) - プロジェクトで使用されるデータモデルと関連性の説明
+- [アーキテクチャ決定記録](./adr/) - 重要な技術的決定とその理由の記録
 
 ## アーキテクチャ概要
 
@@ -51,7 +52,7 @@ graph TD
 - **インフラ**: Cloudflare Pages, Firebase (計画中)
 - **ビルドツール**: Turborepo, pnpm
 
-詳細な情報については、各ドキュメントを参照してください。アーキテクチャに関する決定記録は [ADR](/docs/dev-guide/adr/) ディレクトリで確認できます。
+詳細な情報については、各ドキュメントを参照してください。アーキテクチャに関する決定記録は [ADR](./adr/) ディレクトリで確認できます。
 
 ## アーキテクチャドキュメントの更新
 
@@ -64,10 +65,12 @@ graph TD
 
 ## 関連資料
 
-- [API実装詳細](/docs/dev-guide/api-implementation.md)
+- [API実装詳細](/apps/api/README.md)
 - [開発フロー](/docs/dev-guide/development-flow.md)
 - [テンプレート](/docs/dev-guide/templates/)
 
 ## Changelog
 
+- 2025/3/21: ADRディレクトリを本ディレクトリ配下に移動し統合
+- 2025/3/21: API実装詳細への参照を更新（実装コード側に移動されたため）
 - 2025/3/21: 初回作成（docs/architecture/ から移動・再構成）

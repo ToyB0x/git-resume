@@ -50,8 +50,8 @@
   - リクエスト/レスポンス処理
   - 内部処理フロー
   - エラー処理
-- [docs/dev-guide/adr/](/docs/dev-guide/adr/) - アーキテクチャ決定記録
-  - [docs/dev-guide/adr/001-spa-mode/README.md](/docs/dev-guide/adr/001-spa-mode/README.md) - SPAモードに関する設計決定
+- [docs/dev-guide/architecture/adr/](/docs/dev-guide/architecture/adr/) - アーキテクチャ決定記録
+  - [docs/dev-guide/architecture/adr/001-spa-mode/README.md](/docs/dev-guide/architecture/adr/001-spa-mode/README.md) - SPAモードに関する設計決定
 - [docs/dev-guide/templates/prd-template.md](/docs/dev-guide/templates/prd-template.md) - Product Requirement Document テンプレート
 - [docs/dev-guide/templates/tech-template.md](/docs/dev-guide/templates/tech-template.md) - Technical Design Document テンプレート
 
