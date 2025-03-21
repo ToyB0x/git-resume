@@ -119,8 +119,18 @@ git-resumeは以下の主要アプリケーションで構成されています�
 - [.npmrc](/.npmrc) - npm設定
 - [.env.sample](/.env.sample) - 環境変数サンプル
 
+## .clinerules ガイドライン
+
+- [.clinerules/README.md](/.clinerules/README.md) - .clinerules全体の目次
+- [.clinerules/important-docs.md](/.clinerules/important-docs.md) - 重要な資料の場所をまとめたリスト（本ファイル）
+- [.clinerules/commit-rules.md](/.clinerules/commit-rules.md) - プロンプト履歴の記録ルール
+- [.clinerules/repomix.md](/.clinerules/repomix.md) - リポジトリコード効率的理解の方法
+- [.clinerules/documentation-guide.md](/.clinerules/documentation-guide.md) - ドキュメンテーションガイド
+- [.clinerules/prompts/update-docs.md](/.clinerules/prompts/update-docs.md) - ドキュメント更新時のルールとテンプレート
+
 ## Changelog
 
+- 2025/3/21: .clinerules ガイドラインセクションを追加し、documentation-guide.mdを参照に追加
 - 2025/3/21: ユーザー向けドキュメント、アーキテクチャドキュメント、API仕様書を充実化
 - 2025/3/21: 実際の実装に基づいて各ドキュメントを更新
 - 2025/3/21: アプリケーションの詳細構成と主要ファイルへの参照を追加
