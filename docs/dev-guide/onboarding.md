@@ -81,7 +81,7 @@ git-resume/
 
 ### コミットメッセージ
 
-コミットメッセージは[コミットルール](/.clinerules/commit-rules.md)に従ってください。
+コミットメッセージは[コミットルール](./.clinerules/commit-rules.md)に従ってください。
 
 例：
 ```
@@ -150,7 +150,7 @@ pnpm lint:fix
 ## 関連ドキュメント
 
 - [プロジェクト概要](./project-overview.md) - プロジェクトの目的と構成
-- [重要なドキュメント一覧](/.clinerules/important-docs.md) - プロジェクト関連ドキュメントの一覧
+- [重要なドキュメント一覧](./.clinerules/important-docs.md) - プロジェクト関連ドキュメントの一覧
 
 ## サポート
 
@@ -158,5 +158,4 @@ pnpm lint:fix
 
 ## Changelog
 
-- 2025/3/21: docs/guide/ から docs/dev-guide/ に移動
 - 2025/3/21: 初回作成

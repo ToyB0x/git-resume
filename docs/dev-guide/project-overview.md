@@ -63,5 +63,4 @@ git-resume/
 
 ## Changelog
 
-- 2025/3/21: docs/guide/ から docs/dev-guide/ に移動
 - 2025/3/21: 初回作成
