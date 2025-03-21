@@ -5,278 +5,127 @@
 
 ## 概要
 
-git-resumeプロジェクトのAPIサービスは、GitHubユーザー情報の取得、リポジトリデータの分析、レジュメ生成などの機能を提供します。このドキュメントでは、利用可能なAPIエンドポイント、リクエスト/レスポンス形式、認証方法、エラー処理などについて説明します。
+git-resumeプロジェクトのAPIサービスは、GitHubユーザー情報の取得、リポジトリデータの分析、レジュメ生成などの機能を提供します。このドキュメントでは、現在実装済みのAPIエンドポイント、リクエスト/レスポンス形式、エラー処理などについて説明します。
 
 ## ベースURL
 
 ```
 開発環境: http://localhost:3001
-本番環境: https://api.git-resume.example.com
 ```
 
 ## 認証
 
 現在のバージョンでは、以下の認証方法をサポートしています：
 
-- **GitHub Token**: 一部のエンドポイントでは、GitHub APIへのアクセスにGitHub Tokenが必要です
-- **APIキー認証**: 将来実装予定
+- **GitHub Token**: 環境変数として設定され、サーバー側でGitHub APIへのアクセスに使用されます
 
 ## エンドポイント一覧
 
 ### GitHub関連エンドポイント
 
-#### ユーザー情報の取得
+#### レジュメの生成
 
 ```
 GET /api/github/getUser
 ```
 
-指定されたGitHubユーザーの情報を取得します。
+GitHubユーザーの活動データからレジュメを生成します。このエンドポイントは内部的にリポジトリのクローン、解析、サマリー生成、レジュメ生成の一連のプロセスを実行します。
 
 **パラメータ**:
 
 | 名前 | 必須 | 説明 |
 |------|------|------|
-| `userName` | 必須 | GitHubユーザー名 |
+| `userName` | 必須 | GitHubユーザー名（最低3文字） |
 
 **レスポンス例**:
 
 ```json
 {
-  "id": 12345,
-  "userName": "example-user",
-  "displayName": "Example User",
-  "blog": "https://example.com",
-  "avatarUrl": "https://github.com/example-user.png"
+  "markdown": "# ジョン・ドゥのレジュメ\n\n## スキル\n\nTypeScript, React, Node.js..."
 }
 ```
 
-#### ユーザーコミットリポジトリの取得
+**特記事項**:
+- "demo"ユーザー名を使用するとモックデータが返されます
 
-```
-GET /api/github/getUserCommitedRepositories
-```
-
-ユーザーがコミットしたリポジトリの一覧を取得します。
-
-**パラメータ**:
-
-| 名前 | 必須 | 説明 |
-|------|------|------|
-| `userName` | 必須 | GitHubユーザー名 |
-| `limit` | オプション | 取得するリポジトリの最大数（デフォルト: 10） |
-
-**レスポンス例**:
-
-```json
-[
-  {
-    "id": 98765,
-    "name": "example-repo",
-    "fullName": "example-user/example-repo",
-    "description": "An example repository",
-    "url": "https://github.com/example-user/example-repo",
-    "language": "TypeScript",
-    "stars": 42,
-    "forks": 10,
-    "lastUpdated": "2025-03-15T10:00:00Z"
-  }
-]
-```
-
-#### 最近のリポジトリの取得
-
-```
-GET /api/github/getUserRecentRepositories
-```
-
-ユーザーの最近活動のあったリポジトリを取得します。
-
-**パラメータ**:
-
-| 名前 | 必須 | 説明 |
-|------|------|------|
-| `userName` | 必須 | GitHubユーザー名 |
-| `limit` | オプション | 取得するリポジトリの最大数（デフォルト: 5） |
-
-**レスポンス例**: getUserCommitedRepositoriesと同様
-
-#### ユーザー情報のSSE（Server-Sent Events）
+#### レジュメ生成プロセスのリアルタイム更新 (SSE)
 
 ```
 GET /api/github/getUserSse
 ```
 
-Server-Sent Eventsを使用して、GitHubユーザー情報をリアルタイムに配信します。
+Server-Sent Events (SSE)を使用して、レジュメ生成プロセスの進捗状況をリアルタイムに配信します。以下の順序でプロセスが実行され、各ステップの進捗状況がイベントとして送信されます:
+
+1. GitHubからリポジトリ情報の取得
+2. リポジトリのクローン/更新
+3. リポジトリの分析
+4. リポジトリのサマリー生成
+5. 最終的なレジュメの生成
 
 **パラメータ**:
 
 | 名前 | 必須 | 説明 |
 |------|------|------|
-| `userName` | 必須 | GitHubユーザー名 |
+| `userName` | 必須 | GitHubユーザー名（最低3文字） |
 
 **レスポンス**:
 
-SSEストリームとして、以下のようなイベントを配信します：
+SSEストリームとして、以下のようなイベントタイプを配信します：
 
-```
-event: user
-data: {"id":12345,"userName":"example-user",...}
+- `CONNECTED`: ストリーム接続確立
+- `RESUME_PROGRESS`: 進捗状況の更新
+  - `GIT_SEARCH`: リポジトリ検索状況
+  - `GIT_CLONE`: リポジトリクローン状況
+  - `ANALYZE`: リポジトリ分析状況
+  - `CREATE_SUMMARY`: サマリー生成状況
+  - `CREATING_RESUME`: レジュメ生成中
+  - `COMPLETE`: レジュメ生成完了（最終的なマークダウンを含む）
 
-event: repositories
-data: [{"id":98765,"name":"example-repo",...}]
+**特記事項**:
+- "demo"ユーザー名を使用するとモックプロセスが実行され、固定のモックレジュメが返されます
+- 実際のプロセスでは、Google Gemini APIを使用してサマリーとレジュメが生成されます
 
-event: complete
-data: {"status":"success"}
-```
+## 内部処理の流れ
 
-### レジュメ関連エンドポイント
+レジュメ生成の内部処理は以下の流れで実行されます：
 
-#### レジュメの生成
+1. GitHubユーザーとそのコミット履歴を持つリポジトリの情報を取得
+2. 該当リポジトリをローカルにクローンまたは更新
+3. リポジトリの内容を解析してパッケージ化
+4. パッケージ化されたコードからサマリーを生成 (Google Gemini API使用)
+5. サマリーから最終的なレジュメを生成 (Google Gemini API使用)
+6. 生成されたマークダウン形式のレジュメを返却
 
-```
-POST /api/resume/create
-```
+## 開発中または計画中の機能
 
-GitHubユーザーの活動データからレジュメを生成します。
+以下の機能は現在開発中または計画中です：
 
-**リクエスト本文**:
+- レジュメのPDF形式でのエクスポート
+- レジュメの保存と管理
+- 複数のレジュメテンプレート
+- APIキー認証の導入
+- エンドポイントのバージョニング
+- 追加のレジュメフォーマットとカスタマイズオプション
 
-```json
-{
-  "userName": "example-user",
-  "options": {
-    "includePrivateRepos": false,
-    "format": "markdown"
-  }
-}
-```
+## エラー処理
 
-**レスポンス例**:
+APIはエラーが発生した場合、適切なHTTPステータスコードとエラーメッセージを含むJSONレスポンスを返します。SSEストリームの場合は、エラーメッセージがイベントとして送信されます。
 
-```json
-{
-  "id": "resume-12345",
-  "userName": "example-user",
-  "generatedAt": "2025-03-21T09:00:00Z",
-  "content": "# Example User\n\n## Skills\n\nTypeScript, React, Node.js...",
-  "metadata": {
-    "repositoriesAnalyzed": 15,
-    "commitsAnalyzed": 500
-  }
-}
-```
+一般的なエラー：
 
-#### レジュメの取得
+- ユーザー名の検証エラー（3文字未満）
+- GitHubユーザーの情報取得エラー
+- リポジトリクローン中のエラー
+- AIサービス（Google Gemini API）との通信エラー
 
-```
-GET /api/resume/get
-```
+## 技術情報
 
-既に生成されたレジュメを取得します。
+このAPIは以下の技術で実装されています：
 
-**パラメータ**:
-
-| 名前 | 必須 | 説明 |
-|------|------|------|
-| `id` | 必須 | レジュメID |
-
-**レスポンス例**: レジュメ生成と同様
-
-### サマリー関連エンドポイント
-
-#### サマリーの生成
-
-```
-POST /api/summary/create
-```
-
-リポジトリのコードや活動データからサマリーを生成します。
-
-**リクエスト本文**:
-
-```json
-{
-  "repositoryUrl": "https://github.com/example-user/example-repo",
-  "options": {
-    "includeCodeAnalysis": true,
-    "includeContributionAnalysis": true
-  }
-}
-```
-
-**レスポンス例**:
-
-```json
-{
-  "id": "summary-12345",
-  "repositoryName": "example-repo",
-  "generatedAt": "2025-03-21T09:30:00Z",
-  "languages": {
-    "TypeScript": 60,
-    "JavaScript": 30,
-    "CSS": 10
-  },
-  "codeMetrics": {
-    "linesOfCode": 5000,
-    "functions": 120,
-    "classes": 15
-  },
-  "topContributors": [
-    {
-      "userName": "example-user",
-      "contributions": 150
-    }
-  ]
-}
-```
-
-## エラーレスポンス
-
-APIはエラーが発生した場合、適切なHTTPステータスコードと以下の形式のJSONレスポンスを返します：
-
-```json
-{
-  "error": {
-    "code": "NOT_FOUND",
-    "message": "User not found",
-    "details": "GitHub user 'non-existent-user' does not exist"
-  }
-}
-```
-
-一般的なエラーコード：
-
-| コード | 説明 |
-|--------|------|
-| `INVALID_REQUEST` | リクエストパラメータが無効 |
-| `NOT_FOUND` | 要求されたリソースが見つからない |
-| `GITHUB_API_ERROR` | GitHub APIとの通信中にエラーが発生 |
-| `RATE_LIMIT_EXCEEDED` | APIレート制限を超過 |
-| `INTERNAL_ERROR` | 内部サーバーエラー |
-
-## レート制限
-
-APIの安定性を確保するため、以下のレート制限が適用されます：
-
-- 認証なし: 60リクエスト/時間
-- APIキー認証: 1000リクエスト/時間
-
-レート制限に関する情報はレスポンスヘッダーに含まれます：
-
-```
-X-RateLimit-Limit: 60
-X-RateLimit-Remaining: 59
-X-RateLimit-Reset: 1616876400
-```
-
-## バージョニング
-
-APIのバージョニングは現在URLパスに含まれていませんが、将来的には以下の形式が採用される予定です：
-
-```
-/api/v1/github/getUser
-```
+- **Hono.js**: Webフレームワーク
+- **Valibot**: バリデーション
+- **Google Gemini API**: AI生成機能
+- **GitHub API**: ユーザーとリポジトリの情報取得
 
 ## Changelog
 

@@ -107,63 +107,93 @@ GitHubの活動データを詳細に確認できます：
 
 CLIツールでは、コマンドラインから以下の主要機能を利用できます：
 
-### ユーザー情報の取得
-
-```bash
-# GitHubユーザー情報の取得
-git-resume github <username>
-
-# 例
-git-resume github ToyB0x
-```
-
 ### リポジトリのクローン
 
 ```bash
-# リポジトリのクローンまたは更新
-git-resume clone <username/repository>
+# GitHubユーザーの関連リポジトリを検索してクローン
+git-resume clone repositories <username> [options]
 
-# 例
-git-resume clone ToyB0x/git-resume
-```
+# 例: パブリックリポジトリのみをクローン
+git-resume clone repositories ToyB0x --public-only
 
-### レジュメの生成
-
-```bash
-# レジュメの生成
-git-resume resume create --user <username> [options]
-
-# 例: Markdown形式でレジュメを生成
-git-resume resume create --user ToyB0x --format markdown
-
-# 例: 特定のリポジトリのみを分析
-git-resume resume create --user ToyB0x --repos repo1,repo2,repo3
+# 例: GitHubのghコマンドを使用してクローン（認証問題回避用）
+git-resume clone repositories ToyB0x --with-gh-command
 ```
 
 利用可能なオプション：
 
 | オプション | 説明 | デフォルト値 |
 |---------|------|------------|
-| `--format` | 出力フォーマット（markdown, pdf, html） | `markdown` |
-| `--output` | 出力ファイルパス | `./resume-{username}.md` |
-| `--repos` | 分析対象のリポジトリ（カンマ区切り） | すべてのリポジトリ |
-| `--private` | プライベートリポジトリも含める | `false` |
+| `--public-only`, `--pb` | パブリックリポジトリのみをクローン | `false` |
+| `--with-gh-command`, `--gh` | GitHubのghコマンドを使用してクローン | `false` |
 
-### リポジトリの分析
+### リポジトリのパッケージ化
 
 ```bash
-# リポジトリのコード分析
-git-resume pack create --repository <path>
+# ユーザーのリポジトリをパッケージ化（コード分析）
+git-resume pack create <username>
 
 # 例
-git-resume pack create --repository ./my-project
-
-# リポジトリのサマリー生成
-git-resume summary create --repository <path>
-
-# 例
-git-resume summary create --repository ./my-project
+git-resume pack create ToyB0x
 ```
+
+### リポジトリのサマリー生成
+
+```bash
+# ユーザーのリポジトリからサマリーを生成
+git-resume summary create <username> [options]
+
+# 例: 確認をスキップして実行
+git-resume summary create ToyB0x --skip-confirm
+```
+
+利用可能なオプション：
+
+| オプション | 説明 | デフォルト値 |
+|---------|------|------------|
+| `--skip-confirm`, `-y` | 確認プロンプトをスキップ | `false` |
+
+### レジュメの生成
+
+```bash
+# ユーザーのレジュメを生成
+git-resume resume create <username> [options]
+
+# 例: 確認をスキップして実行
+git-resume resume create ToyB0x --skip-confirm
+```
+
+利用可能なオプション：
+
+| オプション | 説明 | デフォルト値 |
+|---------|------|------------|
+| `--skip-confirm`, `-y` | 確認プロンプトをスキップ | `false` |
+
+### コマンド実行の流れ
+
+レジュメを生成するための一般的な実行順序：
+
+1. **リポジトリのクローン**:
+   ```bash
+   git-resume clone repositories <username> --public-only
+   ```
+
+2. **リポジトリのパッケージ化**:
+   ```bash
+   git-resume pack create <username>
+   ```
+
+3. **サマリーの生成**:
+   ```bash
+   git-resume summary create <username>
+   ```
+
+4. **レジュメの生成**:
+   ```bash
+   git-resume resume create <username>
+   ```
+
+生成されたレジュメは`../cli-github/generated/resumes/<username>.md`パスに保存されます。
 
 ## レジュメの生成と管理
 

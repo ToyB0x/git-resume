@@ -30,15 +30,9 @@ GitHubリポジトリの情報を表すモデルです。
 ```typescript
 type Repository = {
   id: number;           // リポジトリID
+  owner: string;        // オーナー名
   name: string;         // リポジトリ名
-  fullName: string;     // 所有者/リポジトリ名の形式
-  description: string | null; // リポジトリの説明
-  url: string;          // リポジトリのURL
-  language: string | null; // 主要プログラミング言語
-  stars: number;        // スター数
-  forks: number;        // フォーク数
-  lastUpdated: string;  // 最終更新日時
-  owner: User;          // リポジトリ所有者
+  isPrivate: boolean;   // プライベートリポジトリかどうか
 };
 ```
 
@@ -48,15 +42,7 @@ type Repository = {
 
 ```typescript
 type Resume = {
-  id: string;           // レジュメID
-  userName: string;     // GitHubユーザー名
-  generatedAt: string;  // 生成日時
-  content: string;      // レジュメの内容
-  metadata: {           // メタデータ
-    repositoriesAnalyzed: number; // 分析したリポジトリ数
-    commitsAnalyzed: number;     // 分析したコミット数
-    skillsDetected: string[];    // 検出したスキル
-  };
+  body: string;         // レジュメの内容(マークダウン形式)
 };
 ```
 
@@ -66,58 +52,52 @@ type Resume = {
 
 ```typescript
 type Pack = {
-  id: string;           // パックID
-  repositoryId: number; // リポジトリID
-  createdAt: string;    // 作成日時
-  files: Array<{        // 含まれるファイル
-    path: string;       // ファイルパス
-    language: string;   // プログラミング言語
-    loc: number;        // コード行数
-  }>;
-  metrics: {            // コードメトリクス
-    totalLoc: number;   // 総コード行数
-    languages: Record<string, number>; // 言語別の割合
+  meta: {               // メタデータ
+    owner: string;      // リポジトリオーナー
+    repo: string;       // リポジトリ名
   };
+  body: string;         // パッケージ化されたコード内容
 };
 ```
 
 ### Summary
 
-リポジトリやユーザー活動のサマリー情報を表すモデルです。
+リポジトリのサマリー情報を表すモデルです。
 
 ```typescript
-type Summary = {
-  id: string;           // サマリーID
-  repositoryName: string; // リポジトリ名
-  generatedAt: string;  // 生成日時
-  languages: Record<string, number>; // 言語別の割合
-  codeMetrics: {        // コードメトリクス
-    linesOfCode: number; // コード行数
-    functions: number;   // 関数数
-    classes: number;     // クラス数
-  };
-  topContributors: Array<{  // 主要貢献者
-    userName: string;    // ユーザー名
-    contributions: number; // 貢献数
-  }>;
-};
+type Summary = string;  // リポジトリのサマリー内容(マークダウン形式)
 ```
 
 ### Events
 
-システム内のイベント情報を表すモデルです。
+レジュメ生成プロセスの状態管理に使用されるイベント型です。Server-Sent Events (SSE)でクライアントに進捗状況をリアルタイムに配信するために使用されます。
 
 ```typescript
-type EventType = 'RESUME_GENERATED' | 'SUMMARY_CREATED' | 'REPOSITORY_ANALYZED';
+// イベントタイプの列挙型
+enum EventType {
+  CONNECTED = "connected",
+  RESUME_PROGRESS = "resume_progress"
+}
 
-type Event = {
-  id: string;           // イベントID
-  type: EventType;      // イベントタイプ
-  timestamp: string;    // タイムスタンプ
-  data: any;            // イベントデータ
-  userId?: string;      // 関連ユーザーID（オプション）
-};
+// レジュメ生成プロセスの状態タイプの列挙型
+enum ResumeEventType {
+  GIT_SEARCH = "GitSearch",
+  GIT_CLONE = "GitClone",
+  ANALYZE = "Analyze",
+  CREATE_SUMMARY = "CreateSummary",
+  CREATING_RESUME = "CreatingResume",
+  COMPLETE = "Complete"
+}
 ```
+
+主な状態型:
+
+1. **GitSearchState**: リポジトリ検索状態
+2. **GitCloneState**: リポジトリクローン状態
+3. **AnalyzeState**: リポジトリ分析状態
+4. **CreateSummaryState**: サマリー生成状態
+5. **CreatingResumeState**: レジュメ生成状態
+6. **ResumeCompletedEvent**: レジュメ生成完了状態
 
 ## データモデル関連図
 
@@ -125,57 +105,53 @@ type Event = {
 
 ```mermaid
 erDiagram
-    User ||--o{ Repository : "owns"
-    User ||--o{ Resume : "has"
-    Repository ||--o{ Pack : "packaged_as"
-    Repository ||--o{ Summary : "summarized_as"
-    User ||--o{ Event : "triggers"
-    Repository ||--o{ Event : "associated_with"
-    Resume ||--o{ Event : "associated_with"
+    User ||--o{ Repository : "検索対象"
+    Repository ||--o| Pack : "パッケージ化"
+    Repository ||--o| Summary : "サマリー生成"
+    User ||--o| Resume : "レジュメ生成"
+    Pack ||--o{ Summary : "使用"
+    Summary ||--o| Resume : "使用"
 ```
 
 ### モデル関連性の説明
 
 - **User** (ユーザー)
-  - 一人のユーザーは複数のリポジトリを所有できます
-  - 一人のユーザーは複数のレジュメを持つことができます
-  - ユーザーは様々なイベントをトリガーします
+  - ユーザーのGitHubアカウント情報を保持します
+  - ユーザー名に基づいて関連リポジトリが検索されます
 
 - **Repository** (リポジトリ)
-  - 各リポジトリは一人のオーナーを持ちます
-  - リポジトリはパッケージ化してPackとして保存できます
-  - リポジトリの分析結果はSummaryとして保存できます
-  - リポジトリに関連する様々なイベントが発生します
-
-- **Resume** (レジュメ)
-  - レジュメはユーザーのGitHub活動から生成されます
-  - レジュメの生成はイベントとして記録されます
+  - ユーザーが所有またはコントリビュートしているリポジトリの情報を保持します
+  - パッケージ化やサマリー生成の対象となります
 
 - **Pack** (パッケージ)
-  - パックはリポジトリのコード分析結果です
-  - 一つのリポジトリは複数のパックを持つことができます（異なる時点での分析）
+  - リポジトリのコードをパッケージ化した結果です
+  - サマリー生成の入力として使用されます
 
 - **Summary** (サマリー)
-  - サマリーはリポジトリの要約情報です
-  - 一つのリポジトリは複数のサマリーを持つことができます（更新による変化）
+  - リポジトリのコード内容を要約したテキストです
+  - レジュメ生成の入力として使用されます
 
-- **Event** (イベント)
-  - システム内の様々なアクションを記録します
-  - ユーザー、リポジトリ、レジュメなどと関連付けられます
+- **Resume** (レジュメ)
+  - サマリーをもとに生成されたレジュメです
+  - 最終的な出力物として提供されます
+
+- **Events** (イベント)
+  - レジュメ生成プロセス全体の進捗状況を追跡するために使用されます
+  - クライアントへのリアルタイム更新のために使用されます
 
 ## 実装上の考慮事項
 
-1. **型安全性**
-   - すべてのモデルはTypeScriptの型定義により、型安全性を確保しています
-   - 共有パッケージとして実装されているため、アプリケーション間で一貫した型定義が維持されます
+1. **シンプルなデータモデル**
+   - 現在の実装では、各モデルは必要最小限のプロパティを持つシンプルな構造になっています
+   - 多くのデータはマークダウン形式の文字列として保存され、複雑なデータ構造は避けられています
 
-2. **拡張性**
-   - 将来的な機能追加に対応できるよう、モデルは拡張性を考慮して設計されています
-   - 破壊的変更を行う場合は、影響範囲の評価とマイグレーション計画が必要です
+2. **イベント駆動型設計**
+   - レジュメ生成プロセスは複数のステップから構成され、各ステップの進捗状況はイベントとして通知されます
+   - SSEを使用することで、長時間のプロセスでもユーザーに進捗状況をリアルタイムに伝えることができます
 
-3. **バリデーション**
-   - モデルには型以外のバリデーションルールも含まれる場合があります
-   - 実際の実装ではZodなどのスキーマバリデーションライブラリの使用が推奨されます
+3. **拡張性**
+   - 現在はシンプルなモデルですが、将来的な機能拡張に対応できる設計になっています
+   - 例えばResume型は現在単純なbodyプロパティのみですが、必要に応じてメタデータやカスタマイズオプションを追加できます
 
 ## Changelog
 

@@ -5,6 +5,261 @@
 
 ## 概要
 
+git-resumeを使用する際に発生する可能性のある一般的な問題とその解決方法をまとめたガイドです。現在の実装に基づき、開発段階で遭遇しやすい問題に焦点を当てています。
+
+## 目次
+
+- [環境変数の問題](#環境変数の問題)
+- [GitHubとの連携問題](#githubとの連携問題)
+- [CLIツールの問題](#cliツールの問題)
+- [Webアプリケーションの問題](#webアプリケーションの問題)
+- [レジュメ生成の問題](#レジュメ生成の問題)
+- [開発環境の問題](#開発環境の問題)
+- [サポート情報](#サポート情報)
+
+## 環境変数の問題
+
+### 必要な環境変数が設定されていない
+
+**症状**: 以下のようなエラーメッセージが表示される
+- `GitHub Token not provided`
+- `RESUME_GEMINI_API_KEY not set`
+
+**解決策**:
+
+1. `.env.sample`を参考に`.env`ファイルを作成
+   ```bash
+   cp .env.sample .env
+   ```
+
+2. 環境変数が正しく設定されているか確認
+   ```bash
+   # GitHub APIトークン
+   export GITHUB_TOKEN=ghp_your_github_token
+   
+   # Google Gemini APIキー 
+   export RESUME_GEMINI_API_KEY=your_gemini_api_key
+   ```
+
+3. ターミナルを再起動してセッションを更新
+
+**原因**: 環境変数の設定が不足しているか、正しく読み込まれていません。
+
+### GitHubトークンの権限不足
+
+**症状**: `GitHub API returned: 401 Unauthorized`などのエラーメッセージが表示される
+
+**解決策**:
+
+1. GitHubの個人アクセストークンが有効で、正しいスコープを持っているか確認
+2. 必要なスコープ: `repo`（パブリックリポジトリのみなら`public_repo`）
+3. 新しいトークンを生成して試す: [GitHub Personal Access Tokens](https://github.com/settings/tokens)
+
+**原因**: トークンの権限不足、有効期限切れ、または無効なトークンが使用されています。
+
+## GitHubとの連携問題
+
+### リポジトリのクローンに失敗する
+
+**症状**: 
+```
+Error cloning repository: Error: Command failed: git clone https://github.com/...
+```
+
+**解決策**:
+
+1. GitHubトークンが正しく設定されているか確認
+2. リポジトリの存在とアクセス権を確認
+3. パブリックリポジトリのみにアクセスする場合は`--public-only`オプションを使用
+   ```bash
+   git-resume clone repositories <username> --public-only
+   ```
+4. Gitの認証情報が正しく設定されているか確認
+
+**原因**: 認証の問題、ネットワーク接続の問題、またはリポジトリのアクセス権の問題が考えられます。
+
+### GitHubのAPIレート制限
+
+**症状**: `GitHub API rate limit exceeded`というエラーメッセージが表示される
+
+**解決策**:
+
+1. GitHubトークンを使用する（認証済みユーザーは非認証ユーザーより高いレート制限を持つ）
+2. しばらく待ってから再試行
+3. 一度に処理するリポジトリの数を減らす
+
+**原因**: GitHubのAPIリクエスト制限に達しました。[GitHubのレート制限](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting)
+
+## CLIツールの問題
+
+### コマンドの実行に失敗する
+
+**症状**: コマンド実行時にエラーが発生する
+
+**解決策**:
+
+1. CLIツールが正しくインストールされているか確認
+   ```bash
+   # モノレポ内で
+   pnpm build --filter=cli
+   
+   # CLIコマンドのヘルプを表示
+   pnpm --filter @resume/cli resume --help
+   ```
+
+2. コマンドとパラメータが正しいか確認
+   ```bash
+   # 正しい形式の例
+   git-resume clone repositories <username>
+   git-resume pack create <username>
+   git-resume resume create <username>
+   ```
+
+**原因**: コマンド構文の誤り、パッケージのインストール問題、または依存関係の問題が考えられます。
+
+### 生成されたファイルが見つからない
+
+**症状**: レジュメ生成が成功したが、ファイルが見つからない
+
+**解決策**:
+
+1. ファイルの出力先を確認
+   ```
+   ../cli-github/generated/resumes/<username>.md
+   ```
+
+2. 必要なディレクトリが存在するか確認
+   ```bash
+   mkdir -p ../cli-github/generated/resumes/
+   ```
+
+**原因**: 出力ディレクトリが存在しないか、予期しない場所にファイルが生成されている可能性があります。
+
+## Webアプリケーションの問題
+
+### API接続エラー
+
+**症状**: WebアプリからAPIに接続できない
+
+**解決策**:
+
+1. APIサーバーが実行中か確認
+   ```bash
+   pnpm dev --filter=api
+   ```
+
+2. APIエンドポイントが正しいか確認
+   ```
+   http://localhost:3001/api/github/getUser?userName=<username>
+   ```
+
+3. CORSの問題がないか確認
+   - 開発環境では同一オリジンからのリクエストを確認
+   - 別ポートから接続している場合はCORS設定を確認
+
+**原因**: APIサーバーが実行されていない、URLが間違っている、またはCORSの問題が考えられます。
+
+### Server-Sent Events (SSE) の接続問題
+
+**症状**: リアルタイム更新が表示されない、またはエラーが発生する
+
+**解決策**:
+
+1. APIサーバーが実行中か確認
+2. SSEエンドポイントが正しいか確認
+   ```
+   http://localhost:3001/api/github/<username>/progress
+   ```
+3. ブラウザのコンソールでエラーを確認（開発者ツール > Console）
+4. ネットワークタブでSSE接続の状態を確認（開発者ツール > Network）
+
+**原因**: サーバー接続の問題、SSEサポートの問題、またはイベントハンドリングの問題が考えられます。
+
+## レジュメ生成の問題
+
+### AI生成に関するエラー
+
+**症状**: サマリーやレジュメの生成中にエラーが発生する
+```
+Error: Failed to generate summary with Gemini API
+```
+
+**解決策**:
+
+1. Google Gemini APIキーが正しく設定されているか確認
+2. APIキーの有効性と使用制限を確認
+3. ネットワーク接続を確認
+4. しばらく待ってから再試行
+
+**原因**: API認証の問題、サービスの一時的な障害、またはレート制限に達した可能性があります。
+
+### 生成されたレジュメの内容が不十分
+
+**症状**: 生成されたレジュメが期待より薄い内容、または情報が不足している
+
+**解決策**:
+
+1. より多くのパブリックリポジトリを用意する
+2. 有意義なコミット履歴とプロジェクト説明を持つリポジトリを使用する
+3. `demo`ユーザー名を使用してモックデータでテスト
+   ```
+   git-resume resume create demo
+   ```
+
+**原因**: 分析対象のリポジトリが少ない、分析に十分な情報がない、またはAIモデルの制限が考えられます。
+
+## 開発環境の問題
+
+### 依存関係のインストールエラー
+
+**症状**: `pnpm install`コマンドがエラーで失敗する
+
+**解決策**:
+
+1. pnpmのバージョンを確認（v10.4.1以上が必要）
+   ```bash
+   pnpm --version
+   ```
+
+2. Node.jsのバージョンを確認（v22.x以上が必要）
+   ```bash
+   node --version
+   ```
+
+3. ロックファイルを更新
+   ```bash
+   pnpm install --force
+   ```
+
+**原因**: バージョンの不一致、破損したロックファイル、またはパッケージの互換性の問題が考えられます。
+
+### ビルドエラー
+
+**症状**: `pnpm build`コマンドがエラーで失敗する
+
+**解決策**:
+
+1. 特定のパッケージのみをビルド
+   ```bash
+   pnpm build --filter=@resume/models
+   pnpm build --filter=@resume/services
+   ```
+
+2. リントエラーを修正
+   ```bash
+   pnpm lint
+   ```
+
+3. TypeScriptエラーを確認
+   ```bash
+   p
+# トラブルシューティングガイド
+
+**更新日**: 2025/3/21
+**確認日**: 2025/3/21
+
+## 概要
+
 git-resumeを使用する際に発生する可能性のある一般的な問題とその解決方法をまとめたガイドです。Web、CLI、API など各インターフェースでの問題解決方法を説明します。
 
 ## 目次
