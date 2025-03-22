@@ -19,6 +19,7 @@
 ```
 docs/
 ├── README.md                         # ドキュメンテーションシステムのガイドライン
+├── PLAN.md                           # ドキュメントルールの適用計画
 ├── PROGRESS.md                       # ドキュメントルールの適用状況
 ├── guide/                            # ユーザー向けガイド
 │   ├── README.md                     # ユーザーガイド全体の目次
@@ -52,6 +53,14 @@ docs/
 │       └── example-feature/          # 機能開発ドキュメントの包括的な参考例
 └── rules/                            # ドキュメントルール
     ├── README.md                     # ドキュメントルール一覧と概要
+    ├── ai/                           # AI関連ドキュメントルール
+    │   ├── README.md                 # AI関連ルールの概要
+    │   ├── commit.md                 # AIのコミットルール
+    │   └── config-files.md           # AIの設定ファイルルール
+    ├── documents/                    # ドキュメント全般ルール
+    │   ├── README.md                 # ドキュメント全般ルールの概要
+    │   ├── meta-data.md              # ドキュメントメタデータ標準
+    │   └── relations.md              # ドキュメント依存関係管理
     ├── format/                       # フォーマットに関するルール
     │   ├── README.md                 # フォーマットルールの概要
     │   └── links.md                  # リンク方法に関するルール
@@ -100,10 +109,10 @@ docs/
 │   ├── README.md                     # ドキュメントルール一覧と概要
 │   ├── ai/                           # AI関連ドキュメントルール
 │   │   ├── README.md                 # AI関連ルールの概要
-│   │   ├── config/                   # AIの設定ファイル確認
+│   │   ├── commit.md                 # AIのコミットルール
+│   │   ├── config-files.md           # AIの設定ファイルルール
 │   │   ├── minimum-change/           # 最小変更ルール
 │   │   ├── ask/                      # 質問ルール
-│   │   ├── commit/                   # コミットメッセージルール
 │   │   ├── tools/                    # ツール活用ルール
 │   │   ├── maintenance/              # ドキュメント更新ルール
 │   │   └── preparation/              # AI利用準備ルール
@@ -117,12 +126,10 @@ docs/
 │   │   └── users/                    # ユーザー向けルール
 │   ├── documents/                    # ドキュメント全般ルール
 │   │   ├── README.md                 # 概要
+│   │   ├── meta-data.md              # メタデータ標準
+│   │   ├── relations.md              # 依存関係管理
 │   │   ├── maintenance/              # 更新ルール
-│   │   └── metadata/                 # メタデータルール
-│   │       ├── changelog/            # Changelogルール
-│   │       ├── maintenance-date/     # メンテナンス日付ルール
-│   │       ├── relations/            # 参照関係ルール
-│   │       └── ...
+│   │   └── navigation/               # ナビゲーション構造ルール
 │   └── product/                      # プロダクト関連ルール
 └── product/                          # プロダクト情報
     ├── README.md                     # プロダクト概要
@@ -153,10 +160,10 @@ docs/
 - [x] ドキュメント検証システムの概念設計（`docs/rules/validation.md`）
 - [x] ドキュメントルールの適用計画（`docs/PLAN.md`）
 - [x] ドキュメントルールの適用状況（`docs/PROGRESS.md`）
-- [ ] ルールディレクトリの再構成
-  - [ ] `docs/rules/ai/` ディレクトリの作成
+- [x] ルールディレクトリの再構成
+  - [x] `docs/rules/ai/` ディレクトリの作成
+  - [x] `docs/rules/documents/` ディレクトリの作成
   - [ ] `docs/rules/guide/` ディレクトリの作成
-  - [ ] `docs/rules/documents/` ディレクトリの作成
   - [ ] `docs/rules/product/` ディレクトリの作成
 
 ### フェーズ2: ディレクトリ構造の再編成（2025/4/1 - 2025/4/15）
@@ -177,12 +184,12 @@ docs/
 ### フェーズ3: ルールの拡充（2025/4/16 - 2025/4/30）
 
 - [ ] AI関連ルールの作成
-  - [ ] コミットメッセージルール（`docs/rules/ai/commit/README.md`）
-  - [ ] 設定ファイルルール（`docs/rules/ai/config/README.md`）
+  - [x] コミットメッセージルール（`docs/rules/ai/commit.md`）
+  - [x] 設定ファイルルール（`docs/rules/ai/config-files.md`）
   - [ ] ツール活用ルール（`docs/rules/ai/tools/README.md`）
 - [ ] ドキュメント全般ルールの作成
-  - [ ] メタデータルール（`docs/rules/documents/metadata/README.md`）
-  - [ ] 依存関係管理ルール（`docs/rules/documents/relations/README.md`）
+  - [x] メタデータルール（`docs/rules/documents/meta-data.md`）
+  - [x] 依存関係管理ルール（`docs/rules/documents/relations.md`）
   - [ ] ナビゲーション構造ルール（`docs/rules/documents/navigation/README.md`）
 
 ### フェーズ4: コンテンツの充実（2025/5/1 - 2025/5/31）
@@ -250,4 +257,5 @@ docs/
 
 ## Changelog
 
+- 2025/3/23: 現状のディレクトリ構造を更新し、完了したタスクをマーク
 - 2025/3/23: 初回作成
