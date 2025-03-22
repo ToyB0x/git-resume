@@ -166,30 +166,23 @@ git-resumeプロジェクトでは、以下のドキュメント構造を採用�
 
 - `docs/guide/`: ユーザー向けガイドライン
   - `README.md`: 一般ユーザー向けの操作方法や機能説明の概要
-  - `usage/`: インターフェース別の使用方法
-    - `cli-guide.md`: CLIツールの使用方法
-    - `web-guide.md`: Webアプリケーションの使用方法
-    - `api-guide.md`: APIの使用方法
+  - `developer/`: 開発者向けガイド
+    - `README.md`: 開発者向けガイドのメインページ
+  - `operator/`: 運用者向けガイド
+    - `README.md`: 運用者向けガイドのメインページ
+  -  `users/`: ユーザー向けガイド
+    - `README.md`: ユーザー向けガイドのメインページ
   - `features/`: 機能詳細説明
     - `resume-generation.md`: レジュメ生成機能の詳細
+  - `usage/`: インターフェース別の使用方法
+    - `api-guide.md`: APIの使用方法
+    - `cli-guide.md`: CLIツールの使用方法
+    - `web-guide.md`: Webアプリケーションの使用方法
   - `troubleshooting.md`: 一般的な問題とその解決方法
   - `releases/`: リリース情報
     - `CHANGELOG.md`: バージョンごとの変更点や新機能の説明
 
-- `docs/dev-guide/`: 開発者向けガイドライン
-  - `README.md`: 開発者向けガイドのメインページ
-  - `project-overview.md`: プロジェクトの詳細な概要と目的
-  - `onboarding.md`: 新規開発者向けのセットアップガイド
-  - `roadmap.md`: 開発ロードマップ
-  - `development-flow.md`: 開発フローとドキュメント作成のタイミング
-  - `architecture/`: 技術的な設計文書
-    - `README.md`: アーキテクチャ概要
-    - `overview.md`: システム構成、コンポーネント間の関係
-    - `data-models.md`: データモデルと関連性の説明
-  - `architecture/adr/`: アーキテクチャ決定記録
-    - `README.md`: ADRの目的と一覧
-    - `001-spa-mode/`: SPAモードに関する決定記録
-  - `templates/`: 開発ドキュメントテンプレート
+- `docs/templates/`: 開発ドキュメントテンプレート
     - `README.md`: テンプレートの概要と使用方法
     - `prd-template.md`: Product Requirement Document テンプレート
     - `tech-template.md`: Technical Design Document テンプレート
@@ -395,9 +388,9 @@ LLM（Clineなど）がプロジェクトを効率的に理解するために：
 - [ドキュメント種別](docs/rules/types.md): プロジェクトに必要なドキュメントの種別を定義
 - [ドキュメント配置構造](docs/rules/structure.md): ドキュメントの配置構造を定義
 - [ドキュメントフォーマット](docs/rules/format/README.md): ドキュメントのフォーマットを定義
-- [ドキュメントの更新ルール](docs/rules/content/update-rules.md): ドキュメントの更新ルールを定義
-- [ドキュメント依存関係管理](docs/rules/documents/relations/README.md): ドキュメント間の依存関係を管理するルールを定義
-- [ドキュメントメタデータ標準](docs/rules/documents/metadata/README.md): ドキュメントのメタデータ標準を定義
+- [ドキュメントの更新ルール](docs/rules/documents/meta-data.md): ドキュメントの更新ルールを定義
+- [ドキュメント依存関係管理](docs/rules/documents/relations.md): ドキュメント間の依存関係を管理するルールを定義
+- [ドキュメントメタデータ標準](docs/rules/documents/meta-data.md): ドキュメントのメタデータ標準を定義
 - [ドキュメント検証システム](docs/rules/validation.md): ドキュメントの検証と自動修正の仕組みを定義
 
 ## Changelog
