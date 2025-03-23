@@ -85,7 +85,6 @@ docs/
 │   │   └── users/                    # ユーザー向けルール
 │   ├── documents/                    # ドキュメント全般ルール
 │   │   ├── code-doc-sync.md          # コードとドキュメントの同期ルール
-│   │   ├── meta-data.md              # メタデータルール（旧）
 │   │   ├── metadata.md               # メタデータルール
 │   │   ├── navigation.md             # ナビゲーションルール
 │   │   ├── README.md                 # 概要
