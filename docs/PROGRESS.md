@@ -273,6 +273,7 @@ gantt
 
 - [ドキュメントガイドライン](../../README.md)
 - [ドキュメントルールの適用計画](../PLAN.md)
+- [ドキュメントルール](./rules/README.md)
 
 ## Changelog
 

@@ -166,6 +166,8 @@ gantt
 ## 関連ドキュメント
 
 - [ドキュメントガイドライン](../README.md)
+- [ドキュメントルール](./rules/README.md)
+- [ドキュメントルールの適用状況](./PROGRESS.md)
 
 ## Changelog
 
