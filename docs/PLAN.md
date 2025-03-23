@@ -66,6 +66,10 @@
     - [x] `rules/ai/config.md`と`docs/rules/ai/config-files.md`を後者に統合
     - [x] `docs/rules/ai/meta-directory.md` を `docs/rules/ai/index.md` にリネーム
     - [x] `docs/rules/ai/tools`に`README.md`を作成
+  - [ ] ドキュメント構造の重複を解消
+    - [ ] `docs/rules/structure.md`、`docs/README.md`、`.clinerules` でディレクトリ構造の説明が重複しているので1箇所(`docs/rules/structure.md`)にまとめる
+    - [ ] 重複していたものは、上記に統一した場所へのリンクを追加しておきかえる
+    - [ ] 上記で統合したディレクトリ構造にはpackages/, /apps などの重要なディレクトリとその直下のREADME.mdなどの重要ファイルを明示的に記載する
 
 #### フェーズ5: 高度な自動化と継続的改善 (未着手)
 
