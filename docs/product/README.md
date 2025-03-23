@@ -12,6 +12,10 @@
 - [開発メンバー](./members.md)
 - [機能一覧](./features/README.md)
 - [ロードマップ](./roadmaps/README.md)
+- [用語集](./glossary/README.md)
+- [ユーザーペルソナ](./personas/README.md)
+- [ユーザージャーニー](./user-journey/README.md)
+- [製品メトリクス](./metrics/README.md)
 
 ## メタデータ
 

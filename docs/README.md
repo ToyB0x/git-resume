@@ -180,6 +180,9 @@ graph TB
 - [ドキュメントメタデータ標準](./rules/documents/metadata.md): ドキュメントのメタデータ標準を定義
 - [ドキュメントナビゲーション](./rules/documents/navigation.md): ドキュメント間の移動を容易にするルールを定義
 - [ドキュメント検証システム](./rules/validation.md): ドキュメントの検証と自動修正の仕組みを定義
+- [最小変更ルール](./rules/ai/minimum-change.md): AIによるドキュメント変更時の最小変更ルールを定義
+- [質問ルール](./rules/ai/ask.md): AIが質問を行う際のルールを定義
+- [ドキュメント更新ルール](./rules/ai/maintenance.md): AIによるドキュメント更新ルールを定義
 
 ## ドキュメント構造の移行計画
 
@@ -191,6 +194,18 @@ graph TB
     -   例: `rules/format/links.md`
 3.  メタデータ関連のルールを統合・整理
     -   `rules/documents/metadata.md`と`rules/documents/meta-data.md`を統合
+4.  AI関連ドキュメントルールを拡充
+    -   `docs/rules/ai/minimum-change.md` (最小変更ルール)
+    -   `docs/rules/ai/ask.md` (質問ルール)
+    -   `docs/rules/ai/maintenance.md` (ドキュメント更新ルール)
+5.  プロダクト情報ディレクトリを追加
+    -   `docs/product/glossary/` (用語集)
+    -   `docs/product/personas/` (ユーザーペルソナ)
+    -   `docs/product/user-journey/` (ユーザージャーニー)
+    -   `docs/product/metrics/` (製品メトリクス)
+    -   `docs/product/features/[機能名]/` (個別機能ディレクトリ)
+6.  機能開発ライフサイクル管理ドキュメントを追加
+    -   `docs/product/roadmaps/[予定機能名]/`
 
 詳細な移行計画と進捗状況については、以下のドキュメントを参照してください：
 
