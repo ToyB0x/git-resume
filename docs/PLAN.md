@@ -32,29 +32,29 @@
 
 ### フェーズ2: 主要ドキュメントの整備 (2025/04/01 - 2025/06/30)
 
-- [ ] 開発者ガイドの改訂
-  - [ ] `docs/guide/developer/README.md`の作成
-  - [ ] `docs/guide/developer/getting-started/README.md`の作成
-  - [ ] `docs/guide/developer/development-flow/README.md`の作成
-  - [ ] `docs/guide/developer/packages/README.md`の作成
-  - [ ] `docs/guide/developer/architecture/README.md`の作成
-  - [ ] `docs/guide/developer/architecture/adr/README.md`の作成
-- [ ] 運用ガイドの改訂
-  - [ ] `docs/guide/operator/README.md`の作成
-  - [ ] `docs/guide/operator/deployment/README.md`の作成
-  - [ ] `docs/guide/operator/monitoring/README.md`の作成
-  - [ ] `docs/guide/operator/maintenance/README.md`の作成
-- [ ] ユーザーガイドの改訂
-  - [ ] `docs/guide/users/README.md`の作成
-  - [ ] `docs/guide/users/basics/README.md`の作成
-  - [ ] `docs/guide/users/integration/README.md`の作成
-- [ ] プロダクト情報の整備
-  - [ ] `docs/product/README.md`の作成
-  - [ ] `docs/product/vision.md`の作成
-  - [ ] `docs/product/product-goal.md`の作成
-  - [ ] `docs/product/value-proposition.md`の作成
-  - [ ] `docs/product/members.md`の作成
-  - [ ] `docs/product/features/README.md`の作成
+- [x] 開発者ガイドの改訂
+  - [x] `docs/guide/developer/README.md`の作成
+  - [x] `docs/guide/developer/getting-started/README.md`の作成
+  - [x] `docs/guide/developer/development-flow/README.md`の作成
+  - [x] `docs/guide/developer/packages/README.md`の作成
+  - [x] `docs/guide/developer/architecture/README.md`の作成
+  - [x] `docs/guide/developer/architecture/adr/README.md`の作成
+- [x] 運用ガイドの改訂
+  - [x] `docs/guide/operator/README.md`の作成
+  - [x] `docs/guide/operator/deployment/README.md`の作成
+  - [x] `docs/guide/operator/monitoring/README.md`の作成
+  - [x] `docs/guide/operator/maintenance/README.md`の作成
+- [x] ユーザーガイドの改訂
+  - [x] `docs/guide/users/README.md`の作成
+  - [x] `docs/guide/users/basics/README.md`の作成
+  - [x] `docs/guide/users/integration/README.md`の作成
+- [x] プロダクト情報の整備
+  - [x] `docs/product/README.md`の作成
+  - [x] `docs/product/vision.md`の作成
+  - [x] `docs/product/product-goal.md`の作成
+  - [x] `docs/product/value-proposition.md`の作成
+  - [x] `docs/product/members.md`の作成
+  - [x] `docs/product/features/README.md`の作成
 - [x] テンプレートの作成
   - [x] 各ドキュメント種別のテンプレート作成
   - [x] テンプレート使用ガイドラインの作成
@@ -70,7 +70,7 @@
 - [ ] CI/CDパイプラインへの統合
   - [ ] コミット前フックの実装
   - [ ] CI/CDパイプラインでの検証実装
-- [ ] ナビゲーション構造の最適化
+- [x] ナビゲーション構造の最適化
   - [x] 相互参照の最適化（既存ドキュメントへの相互参照追加）
 - [ ] フィードバックループの確立
   - [ ] ドキュメント品質評価プロセスの確立
@@ -107,20 +107,20 @@ gantt
     メタデータ標準策定    :done, g3, 2025-03-23, 1d
     基本検証ルール定義    :done, g4, 2025-03-23, 1d
     section フェーズ2：主要ドキュメント
-    開発者ガイド改訂      :active, g5, 2025-04-01, 90d
-    運用ガイド改訂        :g6, 2025-04-01, 90d
-    ユーザーガイド改訂    :g7, 2025-04-01, 90d
-    プロダクト情報整備    :g8, 2025-04-01, 90d
-    テンプレート作成      :g9, 2025-04-01, 90d
-    依存関係メタデータ追加 :g10, 2025-04-01, 90d
+    開発者ガイド改訂      :done, g5, 2025-04-01, 90d
+    運用ガイド改訂        :done, g6, 2025-04-01, 90d
+    ユーザーガイド改訂    :done, g7, 2025-04-01, 90d
+    プロダクト情報整備    :done, g8, 2025-04-01, 90d
+    テンプレート作成      :done, g9, 2025-04-01, 90d
+    依存関係メタデータ追加 :done, g10, 2025-04-01, 90d
     section フェーズ3：拡張・最適化
     検証システム実装      :g11, 2025-07-01, 90d
     CI/CD統合             :g12, 2025-07-01, 90d
-    ナビゲーション最適化  :g13, 2025-07-01, 90d
+    ナビゲーション最適化  :active, g13, 2025-07-01, 90d
     フィードバックループ  :g14, 2025-07-01, 90d
     section フェーズ4：構造再編成
-    ディレクトリ構造再編成 :g15, 2025-10-01, 90d
-    ファイル移動と統合     :g16, 2025-10-01, 90d
+    ディレクトリ構造再編成 :active, g15, 2025-10-01, 90d
+    ファイル移動と統合     :active, g16, 2025-10-01, 90d
     リンク更新と検証       :g17, 2025-10-01, 90d
 ```
 
@@ -169,9 +169,10 @@ gantt
 
 ## Changelog
 
+- 2025/3/23: [変更] フェーズ2のタスクを完了としてマーク
+- 2025/3/23: [変更] ガントチャートを更新
 - 2025/3/23: [追加] メタデータと関連ドキュメントセクションを追加
 - 2025/3/23: [変更] フェーズ2, 3, 4のタスクと日付を更新
-- 2025/3/23: [変更] ガントチャートを更新
 - 2025/3/23: [変更] AIインストラクションを更新
 - 2025/3/23: [追加] フェーズ4：ドキュメント構造の再編成を追加
 - 2025/3/23: [追加] メタデータを追加
