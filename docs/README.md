@@ -44,9 +44,10 @@ graph TB
     B6["ルール: メタデータ標準"]
     B7["ルール: ナビゲーション"]
     B8["ルール: 検証システム"]
+    B9["ルール: 自己チェック"]
   end
   
-  subgraph "レベル 3"
+ subgraph "レベル 3"
     D["ドキュメント検証システム (Linter)"]
   end
   
@@ -63,6 +64,7 @@ graph TB
   A --> B6
   A --> B7
   A --> B8
+  A --> B9
   
   D -.-> |"参照"| B1
   D -.-> |"参照"| B2
@@ -72,6 +74,7 @@ graph TB
   D -.-> |"参照"| B6
   D -.-> |"参照"| B7
   D -.-> |"参照"| B8
+  D -.-> |"参照"| B9
   
   D -.-> |"ルールを使って検証 & 修正"| E1
   D -.-> |"ルールを使って検証 & 修正"| E2
@@ -85,6 +88,7 @@ graph TB
   style B6 fill:#bbf,stroke:#333,stroke-width:1px
   style B7 fill:#bbf,stroke:#333,stroke-width:1px
   style B8 fill:#bbf,stroke:#333,stroke-width:1px
+  style B9 fill:#bbf,stroke:#333,stroke-width:1px
   style D fill:#fbb,stroke:#333,stroke-width:2px
   style E1 fill:#ddd,stroke:#333,stroke-width:1px
   style E2 fill:#ddd,stroke:#333,stroke-width:1px
@@ -98,6 +102,7 @@ graph TB
 - [ルール: メタデータ標準](./rules/documents/metadata.md)
 - [ルール: ナビゲーション](./rules/documents/navigation.md)
 - [ルール: 検証システム](./rules/validation.md)
+  - [自己チェック](./rules/self-check/README.md)
 
 ### 主要コンポーネント
 
@@ -231,6 +236,7 @@ graph TB
 -   既存のドキュメント構造と内容を理解した上で、更新計画を提示し、人間の承認を得てから実行する
 -   メタデータの更新、Changelogの記録、相互参照の維持など、ドキュメント管理のベストプラクティスを実践する
 -   ドキュメント間の依存関係を把握し、変更の影響範囲を明確にする
+-   ドキュメント検証システムの自己テストを活用し、自身のドキュメントルール理解度を評価する
 -   人間との協働を前提とし、それぞれの強みを活かした役割分担を意識する
 
 ## Changelog
@@ -241,6 +247,7 @@ graph TB
 -   2025/3/23: [追加] ドキュメントガイドラインの利用フローを詳細化
 -   2025/3/23: [追加] ドキュメント構造の移行計画を追加
 -   2025/3/23: [変更] リンクを相対パスに修正
+-   2025/3/23: [追加] ドキュメント検証システムの自己テストに関する記述を追加
 -   2025/3/23: [追加] メタデータを追加
 -   2025/3/20: 初回作成
 
