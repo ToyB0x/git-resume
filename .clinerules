@@ -34,7 +34,6 @@
 - [AIツール連携概要](docs/rules/ai/README.md) - AIツールとの連携概要
 - [コミットメッセージ規約](docs/rules/ai/commit.md) - AIツールと連携するコミットメッセージ規約
 - [コラボレーション方法](docs/rules/ai/collaboration.md) - AIツールとのコラボレーション方法
-- [設定ファイル](docs/rules/ai/config-files.md) - AIツール連携のための設定ファイル
 - [Repomixの活用](docs/rules/ai/tools/repomix.md) - AIによるRepomixの効果的な活用方法
 
 ### 検証システム
