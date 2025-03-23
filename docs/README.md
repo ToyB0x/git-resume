@@ -43,6 +43,7 @@
    - `rules/documents/metadata.md`と`rules/documents/meta-data.md`を統合
 
 詳細な移行計画と進捗状況については、以下のドキュメントを参照してください：
+
 - [ドキュメントルールの適用計画](./PLAN.md)
 - [ドキュメントルールの適用状況](./PROGRESS.md)
 

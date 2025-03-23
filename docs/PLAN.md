@@ -83,6 +83,9 @@
   - [ ] 関連するサブルールを専用ディレクトリ内に配置
   - [x] メタデータ関連のルールを統合・整理
   - [x] AIルール関連の再編成
+    - [x] `rules/ai/config.md`と`docs/rules/ai/config-files.md`を後者に統合
+    - [x] `docs/rules/ai/meta-directory.md` を `docs/rules/ai/index.md` にリネーム
+    - [x] `docs/rules/ai/tools`に`README.md`を作成
   - [ ] ドキュメント関連の再編成
 
 ## 優先順位付けの基準
