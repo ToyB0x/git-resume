@@ -86,6 +86,9 @@ docs/
 │   │   ├── config-files.md           # AIの設定ファイル確認
 │   │   ├── commit.md                 # コミットメッセージルール
 │   │   ├── collaboration.md          # AIとの協働ルール
+│   │   ├── minimum-change.md         # 最小変更ルール (追加予定)
+│   │   ├── ask.md                    # 質問ルール (追加予定)
+│   │   ├── maintenance.md            # ドキュメント更新ルール (追加予定)
 │   │   ├── index.md                  # LLM向けIndex
 │   │   ├── tools/                    # ツール活用ルール
 │   │   │   ├── README.md             # ツール活用ルール一覧
