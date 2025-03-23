@@ -37,44 +37,44 @@ docs/
 ├── README.md                         # ドキュメントガイドライン
 ├── PLAN.md                           # ドキュメントルールの適用計画
 ├── PROGRESS.md                       # ドキュメントルールの適用状況
-├── guide/                            # すべてのガイドのIndex
-│   ├── README.md                     # ガイド全体の目次と導入
-│   ├── developer/                    # 開発者向けガイド
-│   │   ├── README.md                 # 開発者向けガイド目次
-│   │   ├── getting-started/          # 開発環境構築等
-│   │   ├── development-flow/         # 開発フロー関連
-│   │   ├── packages/                 # モノレポ内のパッケージ概要
-│   │   ├── architecture/             # アーキテクチャ関連
-│   │   │   ├── adr/                  # アーキテクチャ決定記録
+├── guide/                            # すべてのガイドのIndex (今後作成予定)
+│   ├── README.md                     # ガイド全体の目次と導入 (今後作成予定)
+│   ├── developer/                    # 開発者向けガイド (今後作成予定)
+│   │   ├── README.md                 # 開発者向けガイド目次 (今後作成予定)
+│   │   ├── getting-started/          # 開発環境構築等 (今後作成予定)
+│   │   ├── development-flow/         # 開発フロー関連 (今後作成予定)
+│   │   ├── packages/                 # モノレポ内のパッケージ概要 (今後作成予定)
+│   │   ├── architecture/             # アーキテクチャ関連 (今後作成予定)
+│   │   │   ├── adr/                  # アーキテクチャ決定記録 (今後作成予定)
 │   │   │   └── ...
 │   │   └── ...
-│   ├── operator/                     # 運用者向けガイド
-│   │   ├── README.md
-│   │   ├── deployment/               # デプロイメント関連
-│   │   ├── monitoring/               # 監視関連
-│   │   ├── maintenance/              # メンテナンス関連
+│   ├── operator/                     # 運用者向けガイド (今後作成予定)
+│   │   ├── README.md                 # (今後作成予定)
+│   │   ├── deployment/               # デプロイメント関連 (今後作成予定)
+│   │   ├── monitoring/               # 監視関連 (今後作成予定)
+│   │   ├── maintenance/              # メンテナンス関連 (今後作成予定)
 │   │   └── ...
-│   └── users/                        # ユーザー向けガイド
-│       ├── README.md                 # ユーザー向けガイド目次
-│       ├── basics/                   # 基本操作ガイド
-│       ├── integration/              # 連携関連ガイド
+│   └── users/                        # ユーザー向けガイド (今後作成予定)
+│       ├── README.md                 # ユーザー向けガイド目次 (今後作成予定)
+│       ├── basics/                   # 基本操作ガイド (今後作成予定)
+│       ├── integration/              # 連携関連ガイド (今後作成予定)
 │       └── ...
-├── templates/                        # すべてのテンプレートを集約
-│   ├── README.md                     # テンプレート全体の説明と使い方
-│   ├── documents/                    # ドキュメント作成用テンプレート
-│   ├── development/                  # 開発用テンプレート
-│   └── operations/                   # 運用用テンプレート
+├── templates/                        # すべてのテンプレートを集約 (今後作成予定)
+│   ├── README.md                     # テンプレート全体の説明と使い方 (今後作成予定)
+│   ├── documents/                    # ドキュメント作成用テンプレート (今後作成予定)
+│   ├── development/                  # 開発用テンプレート (今後作成予定)
+│   └── operations/                   # 運用用テンプレート (今後作成予定)
 ├── rules/                            # ドキュメントルール
 │   ├── README.md                     # ドキュメントルール一覧と概要
 │   ├── ai/                           # AI関連ドキュメントルール
 │   │   ├── README.md                 # AI関連ルールの概要
-│   │   ├── config/                   # AIの設定ファイル確認
-│   │   ├── minimum-change/           # 最小変更ルール
-│   │   ├── ask/                      # 質問ルール
-│   │   ├── commit/                   # コミットメッセージルール
+│   │   ├── config-files.md           # AIの設定ファイル確認
+│   │   ├── commit.md                 # コミットメッセージルール
+│   │   ├── collaboration.md          # AIとの協働ルール
+│   │   ├── config.md                 # AI設定ルール
+│   │   ├── meta-directory.md         # メタディレクトリの利用
 │   │   ├── tools/                    # ツール活用ルール
-│   │   ├── maintenance/              # ドキュメント更新ルール
-│   │   └── preparation/              # AI利用準備ルール
+│   │   │   └── repomix.md            # Repomix活用ルール
 │   ├── guide/
 │   │   ├── developer/                # 開発者向けドキュメントルール
 │   │   │   ├── code/                 # コードファイルルール
@@ -84,47 +84,49 @@ docs/
 │   │   ├── operator/                 # 運用者向けルール
 │   │   └── users/                    # ユーザー向けルール
 │   ├── documents/                    # ドキュメント全般ルール
+│   │   ├── code-doc-sync.md          # コードとドキュメントの同期ルール
+│   │   ├── meta-data.md              # メタデータルール（旧）
+│   │   ├── metadata.md               # メタデータルール
+│   │   ├── navigation.md             # ナビゲーションルール
 │   │   ├── README.md                 # 概要
-│   │   ├── maintenance/              # 更新ルール
-│   │   └── metadata/                 # メタデータルール
-│   │       ├── changelog/            # Changelogルール
-│   │       ├── maintenance-date/     # メンテナンス日付ルール
-│   │       ├── relations/            # 参照関係ルール
-│   │       └── ...
-│   └── product/                      # プロダクト関連ルール
-└── product/                          # プロダクト情報
-    ├── README.md                     # プロダクト概要
-    ├── vision.md                     # ビジョン・ミッション
-    ├── product-goal.md               # 製品目標
-    ├── value-proposition.md          # 価値提案
-    ├── members.md                    # 開発メンバー
-    ├── features/                     # リリース済み機能
-    │   ├── README.md                 # 機能一覧と概要
-    │   └── [機能名]/                 # 個別機能ディレクトリ
-    │       ├── overview.md           # 機能概要（ユーザー向け）
-    │       ├── technical-details.md  # 技術詳細（開発者向け）
-    │       └── specs.md              # 仕様
-    └── roadmaps/                     # 未来の機能計画
-        ├── README.md                 # ロードマップ概要
-        └── [予定機能名]/             # 予定機能の詳細計画
-            ├── README.md             # 概要とドキュメント構造
-            ├── requirements/         # 非エンジニア向け
-            │   ├── README.md         # 要件ドキュメントガイド
-            │   ├── PRD.md            # 製品要件定義書
-            │   └── images/           # 図表・モックアップ
-            └── systems/              # エンジニア向け
-                ├── README.md         # システムドキュメントガイド
-                ├── overview-specs/   # システム全体設計
-                │   ├── README.md     # 全体設計概要
-                │   └── system.md     # システム全体設計書
-                ├── package-specs/    # パッケージ仕様書
-                │   ├── README.md     # パッケージ仕様概要
-                │   ├── [パッケージ名]/ # 各パッケージ仕様
+│   │   └── relations.md              # 関連ドキュメント
+│   ├── links.md                      # リンク集
+│   ├── structure.md                  # ドキュメント構造
+│   ├── types.md                      # ドキュメント種別
+│   └── validation.md                 # ドキュメント検証ルール
+└── product/                          # プロダクト情報 (今後作成予定)
+    ├── README.md                     # プロダクト概要 (今後作成予定)
+    ├── vision.md                     # ビジョン・ミッション (今後作成予定)
+    ├── product-goal.md               # 製品目標 (今後作成予定)
+    ├── value-proposition.md          # 価値提案 (今後作成予定)
+    ├── members.md                    # 開発メンバー (今後作成予定)
+    ├── features/                     # リリース済み機能 (今後作成予定)
+    │   ├── README.md                 # 機能一覧と概要 (今後作成予定)
+    │   └── [機能名]/                 # 個別機能ディレクトリ (今後作成予定)
+    │       ├── overview.md           # 機能概要（ユーザー向け） (今後作成予定)
+    │       ├── technical-details.md  # 技術詳細（開発者向け） (今後作成予定)
+    │       └── specs.md              # 仕様 (今後作成予定)
+    ├── roadmaps/                     # 未来の機能計画 (今後作成予定)
+        ├── README.md                 # ロードマップ概要 (今後作成予定)
+        └── [予定機能名]/             # 予定機能の詳細計画 (今後作成予定)
+            ├── README.md             # 概要とドキュメント構造 (今後作成予定)
+            ├── requirements/         # 非エンジニア向け (今後作成予定)
+            │   ├── README.md         # 要件ドキュメントガイド (今後作成予定)
+            │   ├── PRD.md            # 製品要件定義書 (今後作成予定)
+            │   └── images/           # 図表・モックアップ (今後作成予定)
+            └── systems/              # エンジニア向け (今後作成予定)
+                ├── README.md         # システムドキュメントガイド (今後作成予定)
+                ├── overview-specs/   # システム全体設計 (今後作成予定)
+                │   ├── README.md     # 全体設計概要 (今後作成予定)
+                │   └── system.md     # システム全体設計書 (今後作成予定)
+                ├── package-specs/    # パッケージ仕様書 (今後作成予定)
+                │   ├── README.md     # パッケージ仕様概要 (今後作成予定)
+                │   ├── [パッケージ名]/ # 各パッケージ仕様 (今後作成予定)
                 │   └── ...
-                └── test-specs/       # テスト仕様書
-                    ├── README.md     # テスト戦略概要
-                    ├── e2e-tests.md  # E2Eテスト仕様
-                    └── unit-tests.md # ユニットテスト仕様
+                └── test-specs/       # テスト仕様書 (今後作成予定)
+                    ├── README.md     # テスト戦略概要 (今後作成予定)
+                    ├── e2e-tests.md  # E2Eテスト仕様 (今後作成予定)
+                    └── unit-tests.md # ユニットテスト仕様 (今後作成予定)
 ```
 
 ### アプリケーションとパッケージのREADME
