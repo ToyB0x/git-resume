@@ -90,37 +90,18 @@
 - [価値提案](docs/product/value-proposition.md) - 価値提案
 - [メンバー](docs/product/members.md) - チームメンバー
 - [機能一覧](docs/product/features/README.md) - 機能一覧
+- [用語集](docs/product/glossary/README.md) - 用語集
+- [ユーザーペルソナ](docs/product/personas/README.md) - ユーザーペルソナ
+- [ユーザージャーニー](docs/product/user-journey/README.md) - ユーザージャーニー
+- [製品メトリクス](docs/product/metrics/README.md) - 製品メトリクス
 
+### AIツール連携（追加）
+- [最小変更ルール](docs/rules/ai/minimum-change.md) - 最小変更ルール
+- [質問ルール](docs/rules/ai/ask.md) - 質問ルール
+- [ドキュメント更新ルール](docs/rules/ai/maintenance.md) - ドキュメント更新ルール
 ## ドキュメント構造
 
-```
-docs/
-├── README.md                 # ドキュメントガイドライン
-├── PLAN.md                   # 適用計画
-├── PROGRESS.md               # 適用状況
-├── guide/                    # ユーザーガイド
-│   ├── developer/            # 開発者向け
-│   ├── operator/             # 運用者向け
-│   └── users/                # エンドユーザー向け
-├── product/                  # プロダクト情報
-│   ├── features/             # 機能一覧
-│   ├── members.md            # メンバー
-│   ├── product-goal.md       # ゴール
-│   ├── README.md             # 概要
-│   ├── value-proposition.md  # 価値提案
-│   └── vision.md             # ビジョン
-├── rules/                    # ドキュメントルール
-│   ├── ai/                   # AIツール連携
-│   ├── documents/            # ドキュメント関連
-│   ├── self-check/           # 自己チェック
-│   ├── links.md              # リンク方法
-│   ├── README.md             # 概要
-│   ├── structure.md          # 構造
-│   ├── types.md              # 種別
-│   └── validation.md         # 検証システム
-└── templates/                # テンプレート
-    ├── documents/            # ドキュメント
-    └── README.md             # 概要
+プロジェクトの詳細なディレクトリ構造については、[ドキュメント配置構造](docs/rules/structure.md)を参照してください。
 ```
 
 ## AIツール利用ガイドライン
