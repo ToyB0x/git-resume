@@ -1,5 +1,8 @@
 # ドキュメントルールの適用計画
 
+**更新日**: 2025/3/23
+**確認日**: 2025/3/23
+
 ## 目的
 
 - ドキュメントルールの適用計画を人とLLMが把握しやすくする
@@ -21,9 +24,9 @@
   - [x] 基本方針の策定 (docs/README.md)
   - [x] ドキュメント種別の定義 (docs/rules/types.md)
   - [x] ドキュメント配置構造の定義 (docs/rules/structure.md)
-  - [x] ドキュメントフォーマットの定義 (docs/rules/format.md)
+  - [x] ドキュメントリンク方法の定義 (docs/rules/links.md)
 - [ ] メタデータ標準の策定
-  - [x] メタデータ標準の定義 (docs/rules/documents/metadata.md)
+  - [x] メタデータ標準の定義 (docs/rules/documents/meta-data.md)
   - [ ] メタデータ検証ルールの実装
 - [ ] テンプレートの作成
   - [ ] 各ドキュメント種別のテンプレート作成
@@ -73,6 +76,27 @@
   - [ ] ドキュメント品質評価プロセスの確立
   - [ ] ユーザーフィードバック収集の仕組み構築
 
+### フェーズ4: ドキュメント構造の再編成 (2025/12/01 - 2026/01/31)
+
+- [ ] ドキュメント構造の再編成
+  - [ ] 各ルールを専用ディレクトリに移動し、README.mdとして再編成
+    - [ ] `rules/types.md` → `rules/types/README.md`
+    - [ ] `rules/structure.md` → `rules/structure/README.md`
+    - [ ] `rules/links.md` → `rules/format/links.md`
+    - [ ] `rules/validation.md` → `rules/meta/validation.md`
+  - [ ] 関連するサブルールを専用ディレクトリ内に配置
+  - [ ] メタデータ関連のルールを統合・整理
+    - [ ] `rules/documents/metadata.md`と`rules/documents/meta-data.md`を統合
+  - [ ] AIルール関連の再編成
+    - [ ] `rules/ai/commit.md` → `rules/ai/commit/README.md`
+    - [ ] `rules/ai/config.md` → `rules/ai/config/README.md`
+  - [x] AIルール関連の再編成
+    - [x] `docs/rules/ai/tools`に`README.md`を作成
+    - [ ] `rules/ai/config.md`と`docs/rules/ai/config-files.md`を後者に統合
+  - [ ] ドキュメント関連の再編成
+    - [ ] `rules/documents/relations.md` → `rules/documents/relations/README.md`
+    - [ ] `rules/documents/metadata.md` → `rules/documents/metadata/README.md`
+
 ## 優先順位付けの基準
 
 1. **影響範囲**: より多くのステークホルダーに影響するドキュメントを優先
@@ -102,6 +126,10 @@ gantt
     ナビゲーション最適化  :g11, 2025-10-15, 30d
     検索機能強化          :g12, 2025-11-01, 30d
     フィードバックループ  :g13, 2025-11-15, 30d
+    section フェーズ4：構造再編成
+    ディレクトリ構造再編成 :g14, 2025-12-01, 30d
+    ファイル移動と統合     :g15, 2025-12-15, 30d
+    リンク更新と検証       :g16, 2026-01-01, 31d
 ```
 
 ## 実装計画の進捗管理
@@ -118,6 +146,7 @@ gantt
 - **参照頻度**: ドキュメントの参照頻度
 - **フィードバック**: ドキュメントに対するユーザーフィードバック
 - **時間削減**: ドキュメント作成・更新にかかる時間の削減
+- **構造整合性**: ドキュメント構造の一貫性と整合性
 
 ## AIインストラクション
 
@@ -127,3 +156,11 @@ gantt
 - 優先順位基準に従って、次に取り組むべきタスクを提案する
 - 実装計画の進捗を定期的に確認し、必要に応じて調整を提案する
 - 成功指標に基づいて、改善活動の効果を評価し、さらなる改善を提案する
+- ドキュメント構造の再編成計画を理解し、移行作業を支援する
+
+## Changelog
+
+- 2025/3/23: [追加] フェーズ4：ドキュメント構造の再編成を追加
+- 2025/3/23: [追加] メタデータを追加
+- 2025/3/23: [変更] ドキュメントリンク方法の定義を追加
+- 2025/3/20: 初回作成

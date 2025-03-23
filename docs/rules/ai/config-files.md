@@ -36,6 +36,66 @@ Roo Codeを使用する場合は、以下の設定ファイルの存在と内容
 2. **VSCode拡張の設定**
    - VSCodeの設定で `roo.code.*` 関連の設定
 
+
+### .clinerules.md の標準構造
+
+```markdown
+# Cline Rules
+
+## プロジェクト概要
+
+このプロジェクトは...（プロジェクトの簡単な説明）
+
+## 重要ドキュメント
+
+- [プロジェクト概要](./README.md)
+- [開発者ガイド](./docs/guide/developer/README.md)
+- [アーキテクチャ概要](./docs/guide/developer/architecture/README.md)
+
+## コーディング規約
+
+- インデントはスペース2つを使用
+- 変数名はキャメルケースを使用
+- 関数名はキャメルケースを使用
+- クラス名はパスカルケースを使用
+
+## コミットメッセージ規約
+
+- コミットメッセージは「種類: 要約」の形式で記述
+- 詳細は[コミットルール](./docs/rules/ai/commit.md)を参照
+
+## AIインストラクション
+
+このプロジェクトでAIを使用する際は以下のルールに従ってください：
+
+1. コードを変更する前に、関連するドキュメントを確認する
+2. 大きな変更を行う場合は、事前に計画を提示し承認を得る
+3. コード変更と同時にドキュメントも更新する
+4. コミットメッセージは規約に従って記述する
+```
+
+### .roomodes の標準構造
+
+```json
+{
+  "customModes": [
+    {
+      "slug": "developer",
+      "name": "Developer",
+      "roleDefinition": "You are Roo, a software developer specializing in this project. Your expertise includes:\n- Writing clean, maintainable code\n- Following the project's coding standards\n- Implementing features according to specifications\n- Writing comprehensive tests",
+      "groups": [
+        "read",
+        "edit",
+        "browser",
+        "command",
+        "mcp"
+      ],
+      "customInstructions": "Follow the project's coding standards as defined in docs/guide/developer/coding-standards.md. Always update documentation when changing code."
+    }
+  ]
+}
+```
+
 ### MCP（Model Context Protocol）サーバーの設定
 
 MCPサーバーを使用する場合は、以下の設定を確認してください：
@@ -124,4 +184,5 @@ MCPサーバーを使用する場合は、以下の設定を確認してくだ�
 
 ## Changelog
 
+- 2025/3/23: [追加] config.mdの内容を統合
 - 2025/3/23: 初回作成
