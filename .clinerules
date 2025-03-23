@@ -1,6 +1,28 @@
 # ドキュメント管理システム
 
-このファイルは、Cline/RooCodeがドキュメントを理解・評価する際のエントリポイントとなります。重要なドキュメントの概要とリンク一覧を提供し、AIが効率的にプロジェクトのドキュメント構造を把握できるようにします。
+このファイルは、Cline/RooCodeがドキュメントを理解・評価する際のエントリポイントです。重要なドキュメントの概要とリンク一覧を提供し、AIがプロジェクトのドキュメント構造を効率的に把握できるようにします。
+
+## 重要ルール
+
+- **コンテキスト最適化**:
+  - 初期段階では必要最小限の情報のみを読み込み、詳細は必要に応じて遅延読み込みする
+  - ユーザーが特定の機能やドキュメントについて質問した場合のみ、関連ドキュメントを読み込む
+  - 大量のコードやドキュメントを一度に読み込まず、必要な部分のみを参照する
+  - 読み込んだ情報の要点を把握し、不要な詳細は省略する
+
+- **更新と検証**:
+  - プロジェクト構造や重要ドキュメントの変更を検出した場合、関連する設定ファイルを即時更新する
+  - ドキュメント間のリンクが有効かを確認し、無効なリンクを発見した場合は修正を提案する
+  - 設定ファイル間で矛盾する情報を発見した場合、一貫性のある情報に更新する
+  - 古い情報や廃止された参照を発見した場合、最新の情報に基づいて更新を提案する
+
+- **Repomix活用**:
+  - **最優先で検討**: 大規模コードベースの分析が必要な場合は、常にRepomixの使用を最初に検討する
+  - **新規プロジェクト理解**: 初めて触れるコードベースでは、手動分析の前にRepomixを実行し、主要コンポーネント、依存関係、アーキテクチャを短時間で把握する（例：`pack_codebase`ツールで全体構造を分析後、重要な部分を特定）
+  - **特定機能調査**: 機能やモジュールの調査では、関連コードを手動で探す前にRepomixで効率的に特定する（例：特定の機能に関連するファイルを`includePatterns`で絞り込み分析）
+  - **バグ修正・機能追加**: コード変更前に必ずRepomixで依存関係を分析し、影響範囲を予測する（例：変更予定のコンポーネントを分析し、依存するすべてのモジュールを特定）
+  - **継続的活用**: プロジェクトの進行に合わせて定期的にRepomixを実行し、コードベースの変化を追跡する
+  - **最適な設定**: 目的に応じて圧縮レベルを調整（全体把握には高圧縮、詳細分析には低圧縮）し、includePatterns/ignorePatterns引数で分析対象を最適化する
 
 ## プロジェクト概要
 
@@ -10,119 +32,121 @@
 
 ### 基本ガイドライン
 
-- [ドキュメントガイドライン](docs/README.md) - ドキュメント作成・管理の基本方針
-- [ドキュメントルールの適用計画](docs/PLAN.md) - ドキュメントルールの段階的実装計画
-- [ドキュメントルールの適用状況](docs/PROGRESS.md) - ドキュメントルール適用の進捗状況
+- [ドキュメントガイドライン](docs/README.md) - 基本方針
+- [ドキュメントルールの適用計画](docs/PLAN.md) - 段階的実装計画
+- [ドキュメントルールの適用状況](docs/PROGRESS.md) - 進捗状況
 
 ### ドキュメントルール
 
-- [ドキュメントルール概要](docs/rules/README.md) - ドキュメントルールの概要と目的
-- [ドキュメント種別](docs/rules/types.md) - ドキュメントの種別と特徴
-- [ドキュメント構造](docs/rules/structure.md) - ドキュメントの配置構造
-- [ドキュメントリンク方法](docs/rules/links.md) - ドキュメント間のリンク方法
-- [ドキュメント検証システム](docs/rules/validation.md) - ドキュメントの検証方法
+- [ドキュメントルール概要](docs/rules/README.md) - 概要と目的
+- [ドキュメント種別](docs/rules/types.md) - 種別と特徴
+- [ドキュメント構造](docs/rules/structure.md) - 配置構造
+- [ドキュメントリンク方法](docs/rules/links.md) - リンク方法
+- [ドキュメント検証システム](docs/rules/validation.md) - 検証方法
 
 ### メタデータと関連性
 
-- [メタデータ標準](docs/rules/documents/metadata.md) - ドキュメントのメタデータ標準
-- [ドキュメント間の関連性](docs/rules/documents/relations.md) - ドキュメント間の関連付け方法
-- [ナビゲーション構造](docs/rules/documents/navigation.md) - ドキュメントのナビゲーション構造
-- [コードとドキュメントの同期](docs/rules/documents/code-doc-sync.md) - コードとドキュメントの同期方法
+- [メタデータ標準](docs/rules/documents/metadata.md) - メタデータ標準
+- [ドキュメント間の関連性](docs/rules/documents/relations.md) - 関連付け方法
+- [ナビゲーション構造](docs/rules/documents/navigation.md) - ナビゲーション構造
+- [コードとドキュメントの同期](docs/rules/documents/code-doc-sync.md) - 同期方法
 
 ### AIツール連携
 
-- [AIツール連携概要](docs/rules/ai/README.md) - AIツールとの連携概要
-- [コミットメッセージ規約](docs/rules/ai/commit.md) - AIツールと連携するコミットメッセージ規約
-- [コラボレーション方法](docs/rules/ai/collaboration.md) - AIツールとのコラボレーション方法
-- [Repomixの活用](docs/rules/ai/tools/repomix.md) - AIによるRepomixの効果的な活用方法
+- [AIツール連携概要](docs/rules/ai/README.md) - 連携概要
+- [コミットメッセージ規約](docs/rules/ai/commit.md) - コミットメッセージ規約
+- [コラボレーション方法](docs/rules/ai/collaboration.md) - コラボレーション方法
+- [Repomixの活用](docs/rules/ai/tools/repomix.md) - 効果的な活用方法
 
 ### 検証システム
 
-- [自己チェックシステム](docs/rules/self-check/README.md) - ドキュメント検証の自己チェックシステム
-- [機能仕様書（正しい例）](docs/rules/self-check/test/feature-spec/correct.md) - 正しい機能仕様書の例
-- [機能仕様書（誤った例）](docs/rules/self-check/test/feature-spec/wrong.md) - 誤った機能仕様書の例
-- [API仕様書（正しい例）](docs/rules/self-check/test/api-doc/correct.md) - 正しいAPI仕様書の例
-- [API仕様書（誤った例）](docs/rules/self-check/test/api-doc/wrong.md) - 誤ったAPI仕様書の例
+- [自己チェックシステム](docs/rules/self-check/README.md) - 自己チェックシステム
+- [機能仕様書（正しい例）](docs/rules/self-check/test/feature-spec/correct.md) - 正しい例
+- [機能仕様書（誤った例）](docs/rules/self-check/test/feature-spec/wrong.md) - 誤った例
+- [API仕様書（正しい例）](docs/rules/self-check/test/api-doc/correct.md) - 正しい例
+- [API仕様書（誤った例）](docs/rules/self-check/test/api-doc/wrong.md) - 誤った例
 
 ### テンプレート
 
-- [テンプレート概要](docs/templates/README.md) - ドキュメントテンプレートの概要と使用方法
-- [プロダクト要求仕様書テンプレート](docs/templates/documents/prd-template.md) - PRDのテンプレート
-- [テスト計画書テンプレート](docs/templates/documents/test-plan-template.md) - テスト計画書のテンプレート
-- [リリースノートテンプレート](docs/templates/documents/release-note-template.md) - リリースノートのテンプレート
-- [議事録テンプレート](docs/templates/documents/meeting-minutes-template.md) - 議事録のテンプレート
-- [振り返りテンプレート](docs/templates/documents/retrospective-template.md) - 振り返りのテンプレート
-- [TDDテンプレート](docs/templates/documents/tdd-template.md) - TDDのテンプレート
+- [テンプレート概要](docs/templates/README.md) - 概要と使用方法
+- [プロダクト要求仕様書](docs/templates/documents/prd-template.md) - PRD
+- [テスト計画書](docs/templates/documents/test-plan-template.md) - テスト計画
+- [リリースノート](docs/templates/documents/release-note-template.md) - リリースノート
+- [議事録](docs/templates/documents/meeting-minutes-template.md) - 議事録
+- [振り返り](docs/templates/documents/retrospective-template.md) - 振り返り
+- [TDD](docs/templates/documents/tdd-template.md) - TDD
 
 ### ユーザーガイド
 
-- [開発者ガイド](docs/guide/developer/README.md) - 開発者向けガイド
-- [運用者ガイド](docs/guide/operator/README.md) - 運用者向けガイド
-- [ユーザーガイド](docs/guide/users/README.md) - エンドユーザー向けガイド
+- [開発者ガイド](docs/guide/developer/README.md) - 開発者向け
+- [運用者ガイド](docs/guide/operator/README.md) - 運用者向け
+- [ユーザーガイド](docs/guide/users/README.md) - エンドユーザー向け
 
 ### プロダクト情報
 
-- [プロダクト概要](docs/product/README.md) - プロダクトの概要
-- [ビジョン](docs/product/vision.md) - プロダクトのビジョン
-- [プロダクトゴール](docs/product/product-goal.md) - プロダクトのゴール
-- [価値提案](docs/product/value-proposition.md) - プロダクトの価値提案
-- [メンバー](docs/product/members.md) - プロダクトチームのメンバー
-- [機能一覧](docs/product/features/README.md) - プロダクトの機能一覧
+- [プロダクト概要](docs/product/README.md) - 概要
+- [ビジョン](docs/product/vision.md) - ビジョン
+- [プロダクトゴール](docs/product/product-goal.md) - ゴール
+- [価値提案](docs/product/value-proposition.md) - 価値提案
+- [メンバー](docs/product/members.md) - チームメンバー
+- [機能一覧](docs/product/features/README.md) - 機能一覧
 
 ## ドキュメント構造
 
 ```
 docs/
 ├── README.md                 # ドキュメントガイドライン
-├── PLAN.md                   # ドキュメントルールの適用計画
-├── PROGRESS.md               # ドキュメントルールの適用状況
+├── PLAN.md                   # 適用計画
+├── PROGRESS.md               # 適用状況
 ├── guide/                    # ユーザーガイド
-│   ├── developer/            # 開発者向けガイド
-│   ├── operator/             # 運用者向けガイド
-│   └── users/                # エンドユーザー向けガイド
+│   ├── developer/            # 開発者向け
+│   ├── operator/             # 運用者向け
+│   └── users/                # エンドユーザー向け
 ├── product/                  # プロダクト情報
 │   ├── features/             # 機能一覧
 │   ├── members.md            # メンバー
-│   ├── product-goal.md       # プロダクトゴール
-│   ├── README.md             # プロダクト概要
+│   ├── product-goal.md       # ゴール
+│   ├── README.md             # 概要
 │   ├── value-proposition.md  # 価値提案
 │   └── vision.md             # ビジョン
 ├── rules/                    # ドキュメントルール
 │   ├── ai/                   # AIツール連携
-│   ├── documents/            # ドキュメント関連ルール
-│   ├── self-check/           # 自己チェックシステム
-│   ├── links.md              # ドキュメントリンク方法
-│   ├── README.md             # ドキュメントルール概要
-│   ├── structure.md          # ドキュメント構造
-│   ├── types.md              # ドキュメント種別
-│   └── validation.md         # ドキュメント検証システム
+│   ├── documents/            # ドキュメント関連
+│   ├── self-check/           # 自己チェック
+│   ├── links.md              # リンク方法
+│   ├── README.md             # 概要
+│   ├── structure.md          # 構造
+│   ├── types.md              # 種別
+│   └── validation.md         # 検証システム
 └── templates/                # テンプレート
-    ├── documents/            # ドキュメントテンプレート
-    └── README.md             # テンプレート概要
+    ├── documents/            # ドキュメント
+    └── README.md             # 概要
 ```
 
 ## AIツール利用ガイドライン
 
-AIツールを利用する際は、以下のガイドラインに従ってください：
+### 設定ファイル検証と活用
 
-1. **ドキュメント参照**: 上記の重要ドキュメント一覧を参照し、必要な情報を取得してください。
-2. **構造理解**: ドキュメント構造を理解し、適切なドキュメントを参照してください。
-3. **メタデータ活用**: ドキュメントのメタデータを活用して、関連ドキュメントを特定してください。
-4. **検証支援**: ドキュメントの検証を支援し、問題点を指摘してください。
-5. **改善提案**: ドキュメントの改善案を提案してください。
+- **基本情報の完全性**: プロジェクト目的・概要の明確な記述、構造概要、重要リンクの分類
+- **リンクの有効性**: 参照リンクの確認、相対パスの正確性、リンクの網羅性
+- **指示の明確性**: AIへの具体的指示、プロジェクト固有ルールの明示
+- **最新性**: 最終更新日の記録、現状との一致、古い情報の排除
+- **ツールセットアップ**: RepomixとPuppetierのMCP経由利用確認
+- **コンテキスト最適化**: 遅延読み込みの実践、誤りや古い情報発見時の更新提案
+- **ドキュメント活用**: 重要ドキュメント参照、構造理解、メタデータ活用、検証支援、改善提案
 
 ### Repomixの活用
 
 Repomixは以下のシナリオで活用してください：
 
-1. **新規プロジェクト理解**: 初めて触れるコードベースの全体構造を把握する場合
-2. **特定機能の調査**: 特定の機能やモジュールを詳細に分析する場合
-3. **バグ修正・機能追加**: 修正や追加の影響範囲を特定する場合
+1. **新規プロジェクト理解**: コードベースの全体構造把握
+2. **特定機能の調査**: 機能やモジュールの詳細分析
+3. **バグ修正・機能追加**: 修正や追加の影響範囲特定
 
-詳細な使用方法や設定パラメータについては、[Repomixの活用](docs/rules/ai/tools/repomix.md)を参照してください。
+詳細は[Repomixの活用](docs/rules/ai/tools/repomix.md)を参照。
 
 ## 更新履歴
 
-- 2025/3/23: Repomixの活用ガイドラインを追加し、AIによる大規模コードベース分析を支援
-- 2025/3/23: .clinerules ファイルをマークダウン形式に変更し、AIの知識のエントリポイントとして機能するように更新
-- 2025/3/23: AIツール統合のためのルール整備の一環として .clinerules ファイルを実装
+- 2025/3/23: Repomixの活用ガイドライン追加、AIによる大規模コードベース分析支援
+- 2025/3/23: .clinerules ファイルをマークダウン形式に変更、AIの知識のエントリポイントとして機能するよう更新
+- 2025/3/23: AIツール統合のためのルール整備の一環として .clinerules ファイル実装
