@@ -71,9 +71,9 @@ docs/
 │   │   ├── config-files.md           # AIの設定ファイル確認
 │   │   ├── commit.md                 # コミットメッセージルール
 │   │   ├── collaboration.md          # AIとの協働ルール
-│   │   ├── config.md                 # AI設定ルール
 │   │   ├── meta-directory.md         # メタディレクトリの利用
 │   │   ├── tools/                    # ツール活用ルール
+│   │   │   ├── README.md             # ツール活用ルール一覧
 │   │   │   └── repomix.md            # Repomix活用ルール
 │   ├── guide/
 │   │   ├── developer/                # 開発者向けドキュメントルール
