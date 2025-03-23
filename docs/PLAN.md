@@ -79,23 +79,13 @@
 ### フェーズ4: ドキュメント構造の再編成 (2025/12/01 - 2026/01/31)
 
 - [ ] ドキュメント構造の再編成
-  - [ ] 各ルールを専用ディレクトリに移動し、README.mdとして再編成
-    - [ ] `rules/types.md` → `rules/types/README.md`
-    - [ ] `rules/structure.md` → `rules/structure/README.md`
-    - [ ] `rules/links.md` → `rules/format/links.md`
-    - [ ] `rules/validation.md` → `rules/meta/validation.md`
+  - [x] 各ルールを専用ディレクトリに移動し、README.mdとして再編成 (一部完了)
   - [ ] 関連するサブルールを専用ディレクトリ内に配置
-  - [ ] メタデータ関連のルールを統合・整理
-    - [ ] `rules/documents/metadata.md`と`rules/documents/meta-data.md`を統合
-  - [ ] AIルール関連の再編成
-    - [ ] `rules/ai/commit.md` → `rules/ai/commit/README.md`
-    - [ ] `rules/ai/config.md` → `rules/ai/config/README.md`
+  - [x] メタデータ関連のルールを統合・整理
   - [x] AIルール関連の再編成
     - [x] `docs/rules/ai/tools`に`README.md`を作成
-    - [ ] `rules/ai/config.md`と`docs/rules/ai/config-files.md`を後者に統合
+    - [x] `rules/ai/config.md`と`docs/rules/ai/config-files.md`を後者に統合
   - [ ] ドキュメント関連の再編成
-    - [ ] `rules/documents/relations.md` → `rules/documents/relations/README.md`
-    - [ ] `rules/documents/metadata.md` → `rules/documents/metadata/README.md`
 
 ## 優先順位付けの基準
 
