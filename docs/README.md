@@ -27,7 +27,7 @@
 - [ドキュメントリンク方法](./rules/links.md): ドキュメント内のリンク方法を定義
 - [ドキュメントの更新ルール](./rules/documents/code-doc-sync.md): ドキュメントの更新ルールを定義
 - [ドキュメント依存関係管理](./rules/documents/relations.md): ドキュメント間の依存関係を管理するルールを定義
-- [ドキュメントメタデータ標準](./rules/documents/meta-data.md): ドキュメントのメタデータ標準を定義
+- [ドキュメントメタデータ標準](./rules/documents/metadata.md): ドキュメントのメタデータ標準を定義
 - [ドキュメントナビゲーション](./rules/documents/navigation.md): ドキュメント間の移動を容易にするルールを定義
 - [ドキュメント検証システム](./rules/validation.md): ドキュメントの検証と自動修正の仕組みを定義
 
