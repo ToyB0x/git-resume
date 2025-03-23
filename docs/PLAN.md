@@ -78,15 +78,13 @@
 
 #### フェーズ4: ドキュメント構造の再編成 (2025/10/01 - 2025/12/31)
 
-- [x] ドキュメント構造の再編成 (一部完了)
-  - [x] 各ルールを専用ディレクトリに移動し、README.mdとして再編成 (一部完了)
+- [ ] ドキュメント構造の再編成
   - [ ] 関連するサブルールを専用ディレクトリ内に配置
   - [x] メタデータ関連のルールを統合・整理 (`rules/documents/metadata.md`と`rules/documents/meta-data.md`を統合完了)
   - [x] AIルール関連の再編成
     - [x] `rules/ai/config.md`と`docs/rules/ai/config-files.md`を後者に統合
     - [x] `docs/rules/ai/meta-directory.md` を `docs/rules/ai/index.md` にリネーム
     - [x] `docs/rules/ai/tools`に`README.md`を作成
-  - [ ] ドキュメント関連の再編成
 
 ## 優先順位付け
 
