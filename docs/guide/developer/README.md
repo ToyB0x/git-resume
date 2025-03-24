@@ -13,6 +13,7 @@
 - [開発フロー](./development-flow/README.md)
 - [パッケージ構成](./packages/README.md)
 - [アーキテクチャ](./architecture/README.md)
+- [プロンプトガイド](./prompts/README.md)
 
 ## メタデータ
 
