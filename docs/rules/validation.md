@@ -70,9 +70,13 @@ LLM（大規模言語モデル）を活用したドキュメント検証と管�
 
 - [ドキュメントガイドライン](../../README.md)
 - [ドキュメントメタデータ標準](./documents/metadata.md)
+- [ドキュメント検証プロンプトガイド](../guide/developer/prompts/validation.md)
 
 ## Changelog
 
+- 2025/03/24: [変更] 検証システムの詳細ドキュメントを`docs/guide/developer/prompts/validation.md`に移動し、リンクを更新
+- 2025/03/24: [変更] 検証システムの詳細ドキュメントを`docs/guide/developer/validation/`に移動し、リンクを更新
+- 2025/03/24: [追加] 検証システムの詳細ドキュメント（利用ガイド、プロンプト実践ガイド）へのリンクを追加
 - 2025/03/24: [変更] PLAN.mdとPROGRESS.mdの参照をPLAN_AND_PROGRESS.mdに更新、AIインストラクションにプロンプトの性質に関する説明を追加
 - 2025/03/23: [追加] メタデータと関連ドキュメントセクションを追加
 - 2025/03/23: [変更] AIインストラクションを更新

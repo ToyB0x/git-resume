@@ -28,80 +28,27 @@
 
 このプロジェクトは、ドキュメント管理システムを構築し、一貫性のあるドキュメント作成・管理を実現するためのものです。ドキュメントガイドライン、ルール、検証システムの3層構造で構成されています。
 
-## 重要ドキュメント一覧
+## 重要ドキュメント
 
-### 基本ガイドライン
+ドキュメントの詳細な一覧と構造については、[ドキュメントガイドライン](docs/README.md)を参照してください。このドキュメントには、プロジェクトの全体像、重要なドキュメントへのリンク、ドキュメント構造の説明が含まれています。
 
-- [ドキュメントガイドライン](docs/README.md) - 基本方針
-- [ドキュメントルールの適用計画](docs/PLAN.md) - 段階的実装計画
-- [ドキュメントルールの適用状況](docs/PROGRESS.md) - 進捗状況
-
-### ドキュメントルール
-
-- [ドキュメントルール概要](docs/rules/README.md) - 概要と目的
-- [ドキュメント種別](docs/rules/types.md) - 種別と特徴
-- [ドキュメント構造](docs/rules/structure.md) - 配置構造
-- [ドキュメントリンク方法](docs/rules/links.md) - リンク方法
-- [ドキュメント検証システム](docs/rules/validation.md) - 検証方法
-
-### メタデータと関連性
-
-- [メタデータ標準](docs/rules/documents/metadata.md) - メタデータ標準
-- [ドキュメント間の関連性](docs/rules/documents/relations.md) - 関連付け方法
-- [ナビゲーション構造](docs/rules/documents/navigation.md) - ナビゲーション構造
-- [コードとドキュメントの同期](docs/rules/documents/code-doc-sync.md) - 同期方法
-
-### AIツール連携
-
-- [AIツール連携概要](docs/rules/ai/README.md) - 連携概要
-- [コミットメッセージ規約](docs/rules/ai/commit.md) - コミットメッセージ規約
-- [コラボレーション方法](docs/rules/ai/collaboration.md) - コラボレーション方法
-- [Repomixの活用](docs/rules/ai/tools/repomix.md) - 効果的な活用方法
-
-### 検証システム
-
-- [自己チェックシステム](docs/rules/self-check/README.md) - 自己チェックシステム
-- [機能仕様書（正しい例）](docs/rules/self-check/test/feature-spec/correct.md) - 正しい例
-- [機能仕様書（誤った例）](docs/rules/self-check/test/feature-spec/wrong.md) - 誤った例
-- [API仕様書（正しい例）](docs/rules/self-check/test/api-doc/correct.md) - 正しい例
-- [API仕様書（誤った例）](docs/rules/self-check/test/api-doc/wrong.md) - 誤った例
-
-### テンプレート
-
-- [テンプレート概要](docs/templates/README.md) - 概要と使用方法
-- [プロダクト要求仕様書](docs/templates/documents/prd-template.md) - PRD
-- [テスト計画書](docs/templates/documents/test-plan-template.md) - テスト計画
-- [リリースノート](docs/templates/documents/release-note-template.md) - リリースノート
-- [議事録](docs/templates/documents/meeting-minutes-template.md) - 議事録
-- [振り返り](docs/templates/documents/retrospective-template.md) - 振り返り
-- [TDD](docs/templates/documents/tdd-template.md) - TDD
-
-### ユーザーガイド
-
-- [開発者ガイド](docs/guide/developer/README.md) - 開発者向け
-- [運用者ガイド](docs/guide/operator/README.md) - 運用者向け
-- [ユーザーガイド](docs/guide/users/README.md) - エンドユーザー向け
-
-### プロダクト情報
-
-- [プロダクト概要](docs/product/README.md) - 概要
-- [ビジョン](docs/product/vision.md) - ビジョン
-- [プロダクトゴール](docs/product/product-goal.md) - ゴール
-- [価値提案](docs/product/value-proposition.md) - 価値提案
-- [メンバー](docs/product/members.md) - チームメンバー
-- [機能一覧](docs/product/features/README.md) - 機能一覧
-- [用語集](docs/product/glossary/README.md) - 用語集
-- [ユーザーペルソナ](docs/product/personas/README.md) - ユーザーペルソナ
-- [ユーザージャーニー](docs/product/user-journey/README.md) - ユーザージャーニー
-- [製品メトリクス](docs/product/metrics/README.md) - 製品メトリクス
-
-### AIツール連携（追加）
-- [最小変更ルール](docs/rules/ai/minimum-change.md) - 最小変更ルール
-- [質問ルール](docs/rules/ai/ask.md) - 質問ルール
-- [ドキュメント更新ルール](docs/rules/ai/maintenance.md) - ドキュメント更新ルール
+特に以下のセクションを参照すると効率的です：
+- [クイックアクセスガイド](docs/README.md#クイックアクセスガイド) - 対象読者別エントリーポイントと主要カテゴリ
+- [重要ドキュメント一覧](docs/README.md#重要ドキュメント一覧) - 基本ガイドライン、ドキュメントルール、メタデータと関連性、AIツール連携など
 ## ドキュメント構造
 
 プロジェクトの詳細なディレクトリ構造については、[ドキュメント配置構造](docs/rules/structure.md)を参照してください。
+
+このプロジェクトでは、ドキュメントを以下の主要なディレクトリに整理しています：
+
+- `/docs/`: すべてのドキュメントのルートディレクトリ
+  - `/docs/guide/`: 対象者別のガイド（開発者、運用者、ユーザー向け）
+  - `/docs/rules/`: ドキュメント作成・管理のルール
+  - `/docs/templates/`: 各種ドキュメントのテンプレート
+  - `/docs/product/`: プロダクト情報（ビジョン、機能、ロードマップなど）
+- `/apps/`: アプリケーションコード
+- `/packages/`: 共有パッケージ（モノレポ構造）
+- `/infra/`: インフラストラクチャ関連ファイル
 ```
 
 ## AIツール利用ガイドライン
@@ -128,6 +75,7 @@ Repomixは以下のシナリオで活用してください：
 
 ## 更新履歴
 
+- 2025/3/24: 重要ドキュメント一覧を`docs/README.md`に統合し、重複を解消
 - 2025/3/23: Repomixの活用ガイドライン追加、AIによる大規模コードベース分析支援
 - 2025/3/23: .clinerules ファイルをマークダウン形式に変更、AIの知識のエントリポイントとして機能するよう更新
 - 2025/3/23: AIツール統合のためのルール整備の一環として .clinerules ファイル実装

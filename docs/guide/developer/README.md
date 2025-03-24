@@ -13,6 +13,7 @@
 - [開発フロー](./development-flow/README.md)
 - [パッケージ構成](./packages/README.md)
 - [アーキテクチャ](./architecture/README.md)
+- [プロンプトガイド](./prompts/README.md)
 
 ## メタデータ
 
@@ -32,4 +33,4 @@
 
 ### 被参照ドキュメント
 
-- [LLM向けIndex](../../rules/ai/index.md)
+- [AI関連ドキュメントルール](../../rules/ai/README.md)
