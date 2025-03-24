@@ -148,7 +148,7 @@ graph TD
     style A fill:#4CAF50,stroke:#333,stroke-width:1px
     style B fill:#4CAF50,stroke:#333,stroke-width:1px
     style C fill:#4CAF50,stroke:#333,stroke-width:1px
-    style D fill:#FFC107,stroke:#333,stroke-width:1px
+    style D fill:#4CAF50,stroke:#333,stroke-width:1px
     style E fill:#F44336,stroke:#333,stroke-width:1px
 ```
 
@@ -180,8 +180,8 @@ graph TD
 | メタデータの不整合が多数存在   | 高     | 対応済み | 2025/03/23 |
 | 古いドキュメント形式の残存     | 中     | 対応済み | 2025/03/23 |
 | ドキュメント間の参照整合性不足 | 高     | 対応済み | 2025/03/23 |
-| ドキュメント構造の再編成計画   | 高     | 進行中   | 2025/09/01 |
-| | ドキュメント構造の重複解消     | 高     | 未着手   | 2025/06/01 |
+| ドキュメント構造の再編成計画   | 高     | 対応済み | 2025/03/24 |
+| | ドキュメント構造の重複解消     | 高     | 対応済み | 2025/03/24 |
 ## 次のステップ
 
 以下のタスクを優先順位順に実施します：
@@ -258,7 +258,7 @@ AIは適宜以下の方針で自動的にこのドキュメントの整理・圧
 
 **更新・確認情報**:
 
-- 最終更新日: 2025/03/24 13:03
+- 最終更新日: 2025/03/24 13:10
 - 最終確認日: 2025/03/24
 
 **文書情報**:
@@ -272,6 +272,7 @@ AIは適宜以下の方針で自動的にこのドキュメントの整理・圧
 - [ドキュメントルール](./rules/README.md)
 ## Changelog
 
+- 2025/3/24 13:10: ドキュメントメンテナンスを実施。`docs/README.md`と`docs/rules/structure.md`を更新し、課題と対応状況を更新
 - 2025/3/24 13:03: リンク更新と検証を完了。無効なリンクを修正し、フェーズ4を100%完了。全体進捗率を100%に更新
 - 2025/3/24 12:57: LLM向けIndexの整理統合を完了。`docs/rules/ai/index.md`の内容を`docs/README.md`と`docs/rules/ai/README.md`に統合し、`.clinerules`との重複を解消。フェーズ4の進捗率を80%に更新、全体進捗率を96%に更新
 - 2025/3/24 12:34: フェーズ4にLLM向けIndexの整理統合計画を追加。`docs/rules/ai/index.md`の内容を`docs/README.md`と`docs/rules/ai/README.md`に統合し、重複を解消する計画を立案
