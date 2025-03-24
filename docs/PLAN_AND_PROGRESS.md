@@ -168,34 +168,13 @@ graph TD
 `docs/rules/validation.md`に記載されているAIプロンプトベースの検証システムを活用して、以下のタスクを優先順位順に実施します：
 
 1. **高優先度**: 既存のAIプロンプトベースの検証システムの活用（影響範囲大・実装容易性高）
-   - メタデータ検証プロンプトの活用：
      ```
-     @docs/rules/documents/metadata/validate @docs/
-     メタデータを検証し、警告レベル以上の問題を修正してください。
-     ```
-   - リンク切れチェックプロンプトの活用：
-     ```
-     @docs/rules/orphans/find @docs/
-     README.mdを除く、参照されていないドキュメントと参照先が存在しないドキュメントを検出してください。
-     ```
-   - ドキュメント全体の整合性チェックプロンプトの活用：
-     ```
-     @docs/rules/validation.md @docs/
-     docs配下のドキュメント全体の整合性をチェックし、PLAN_AND_PROGRESS.md, README.md, rules/structure.md, rules/README.md間の矛盾、およびrules配下のファイル間の参照関係の矛盾を修正してください。
+     @/docs/rules/README.md の全ルールを @docs/rules/validation.md の方針に従い @docs/ docs配下のドキュメント全体に適用してください
      ```
 
 2. **中優先度**: AIプロンプトベースの検証システムの利用方法のドキュメント化（技術的依存中・実装容易性高）
    - 検証プロンプトの使用例と結果の解釈方法のガイド作成
    - 定期的な検証プロセスの確立と自動化の検討
-
-3. **低優先度**: ドキュメントポータルの最適化（実装容易性中・更新頻度低）
-   - `docs/index.md`の作成
-   - カテゴリ別ナビゲーションの実装（AIプロンプトを活用した索引生成）：
-     ```
-     @docs/rules/navigation/generate-index @docs/
-     目次形式の索引を生成し、docs/index.mdに出力してください。
-     ```
-   - カテゴリ別ナビゲーションの実装
 
 ## 各ルールへの適用状況
 
