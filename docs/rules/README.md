@@ -3,16 +3,15 @@
 このディレクトリには、プロジェクトのドキュメントに関するルールが格納されています。
 
 ## ルール一覧
-
 - [AI関連ドキュメントルール](./ai/README.md)
   - [AIの設定ファイル確認](./ai/config-files.md)
   - [コミットメッセージルール](./ai/commit.md)
   - [AIとの協働ルール](./ai/collaboration.md)
-  - [LLM向けIndex](./ai/index.md)
   - [ツール活用ルール](./ai/tools/README.md)
     - [Repomix活用ルール](./ai/tools/repomix.md)
   - [最小変更ルール](./ai/minimum-change.md)
   - [質問ルール](./ai/ask.md)
+  - [ドキュメント更新ルール](./ai/maintenance.md)
   - [ドキュメント更新ルール](./ai/maintenance.md)
 - [ドキュメント全般ルール](./documents/README.md)
   - [コードとドキュメントの同期ルール](./documents/code-doc-sync.md)

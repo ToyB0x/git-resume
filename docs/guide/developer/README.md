@@ -33,4 +33,4 @@
 
 ### 被参照ドキュメント
 
-- [LLM向けIndex](../../rules/ai/index.md)
+- [AI関連ドキュメントルール](../../rules/ai/README.md)
