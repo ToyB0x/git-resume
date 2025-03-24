@@ -184,34 +184,22 @@ graph TB
 - [質問ルール](./rules/ai/ask.md): AIが質問を行う際のルールを定義
 - [ドキュメント更新ルール](./rules/ai/maintenance.md): AIによるドキュメント更新ルールを定義
 
-## ドキュメント構造の移行計画
-
-現在のドキュメント構造を以下のように再編成する計画があります：
-
-1.  各ルールを専用ディレクトリに移動し、README.mdとして再編成
-    -   例: `rules/types.md` → `rules/types/README.md`
-2.  関連するサブルールを専用ディレクトリ内に配置
-    -   例: `rules/format/links.md`
-3.  メタデータ関連のルールを統合・整理
-    -   `rules/documents/metadata.md`と`rules/documents/meta-data.md`を統合
-4.  AI関連ドキュメントルールを拡充
-    -   `docs/rules/ai/minimum-change.md` (最小変更ルール)
-    -   `docs/rules/ai/ask.md` (質問ルール)
-    -   `docs/rules/ai/maintenance.md` (ドキュメント更新ルール)
-5.  プロダクト情報ディレクトリを追加
-    -   `docs/product/glossary/` (用語集)
-    -   `docs/product/personas/` (ユーザーペルソナ)
-    -   `docs/product/user-journey/` (ユーザージャーニー)
-    -   `docs/product/metrics/` (製品メトリクス)
-    -   `docs/product/features/[機能名]/` (個別機能ディレクトリ)
-6.  機能開発ライフサイクル管理ドキュメントを追加
-    -   `docs/product/roadmaps/[予定機能名]/`
-7.  ドキュメント構造の重複を解消
-    -   `docs/rules/structure.md`、`docs/README.md`、`.clinerules` でディレクトリ構造の説明が重複しているので1箇所(`docs/rules/structure.md`)にまとめる
-    -   重複していたものは、上記に統一した場所へのリンクを追加しておきかえる
-    -   上記で統合したディレクトリ構造にはpackages/, /apps などの重要なディレクトリとその直下のREADME.mdなどの重要ファイルを明示的に記載する
+## ドキュメント構造
 
 プロジェクトの詳細なディレクトリ構造については、[ドキュメント配置構造](./rules/structure.md)を参照してください。
+
+このプロジェクトでは、ドキュメントを以下の主要なディレクトリに整理しています：
+
+- `/docs/`: すべてのドキュメントのルートディレクトリ
+  - `/docs/guide/`: 対象者別のガイド（開発者、運用者、ユーザー向け）
+  - `/docs/rules/`: ドキュメント作成・管理のルール
+  - `/docs/templates/`: 各種ドキュメントのテンプレート
+  - `/docs/product/`: プロダクト情報（ビジョン、機能、ロードマップなど）
+- `/apps/`: アプリケーションコード
+- `/packages/`: 共有パッケージ（モノレポ構造）
+- `/infra/`: インフラストラクチャ関連ファイル
+
+> 注: ドキュメント構造の詳細と各ディレクトリの役割については、[ドキュメント配置構造](./rules/structure.md)を参照してください。
 
 詳細な移行計画と進捗状況については、以下のドキュメントを参照してください：
 
