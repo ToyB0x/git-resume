@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Research - ヘルプ</title>
+    <title>Deep Research - Help</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <style>
@@ -50,7 +50,7 @@
 </head>
 
 <body class="bg-gradient-dark min-h-screen flex flex-col text-white">
-    <!-- ヘッダー -->
+    <!-- Header -->
     <header class="glass border-b border-gray-800 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
@@ -66,23 +66,23 @@
         </div>
     </header>
 
-    <!-- メインコンテンツ -->
+    <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-10">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl font-bold mb-8 text-gradient">ヘルプ & サポート</h2>
+            <h2 class="text-3xl font-bold mb-8 text-gradient">Help & Support</h2>
 
-            <!-- タブナビゲーション -->
+            <!-- Tab Navigation -->
             <div class="flex border-b border-gray-700 mb-8">
-                <button class="px-4 py-2 font-medium text-white tab-active">使い方ガイド</button>
+                <button class="px-4 py-2 font-medium text-white tab-active">User Guide</button>
                 <button
-                    class="px-4 py-2 font-medium text-gray-400 hover:text-white transition-all duration-300">よくある質問</button>
+                    class="px-4 py-2 font-medium text-gray-400 hover:text-white transition-all duration-300">FAQ</button>
                 <button
-                    class="px-4 py-2 font-medium text-gray-400 hover:text-white transition-all duration-300">お問い合わせ</button>
+                    class="px-4 py-2 font-medium text-gray-400 hover:text-white transition-all duration-300">Contact</button>
             </div>
 
-            <!-- 使い方ガイド -->
+            <!-- User Guide -->
             <div class="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
-                <h3 class="text-xl font-semibold mb-4">Deep Researchの基本的な使い方</h3>
+                <h3 class="text-xl font-semibold mb-4">Basic Usage of Deep Research</h3>
 
                 <div class="space-y-6">
                     <div class="glass rounded-lg p-5 border border-gray-800">
@@ -91,10 +91,12 @@
                                 class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3 flex-shrink-0">
                                 1</div>
                             <div>
-                                <h4 class="font-medium text-lg mb-2">GitHub User名を入力</h4>
-                                <p class="text-gray-300">ホーム画面でGitHub User名を入力し、「調査を開始」ボタンをクリックします。</p>
+                                <h4 class="font-medium text-lg mb-2">Enter GitHub Username</h4>
+                                <p class="text-gray-300">Enter a GitHub username on the home screen and click the "Start
+                                    Research" button.</p>
                                 <div class="mt-3 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
-                                    <p class="text-sm text-gray-400">ヒント: 公開プロフィールを持つGitHubユーザー名であれば誰でも分析できます。</p>
+                                    <p class="text-sm text-gray-400">Tip: You can analyze any GitHub username with a
+                                        public profile.</p>
                                 </div>
                             </div>
                         </div>
@@ -106,11 +108,13 @@
                                 class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3 flex-shrink-0">
                                 2</div>
                             <div>
-                                <h4 class="font-medium text-lg mb-2">調査計画を確認</h4>
-                                <p class="text-gray-300">入力したGitHub
-                                    User名の基本情報と調査計画が表示されます。内容を確認し、「調査を実行」ボタンをクリックして詳細分析を開始します。</p>
+                                <h4 class="font-medium text-lg mb-2">Review Research Plan</h4>
+                                <p class="text-gray-300">Basic information and research plan for the entered GitHub
+                                    username will be displayed. Review the content and click the "Execute Research"
+                                    button to start detailed analysis.</p>
                                 <div class="mt-3 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
-                                    <p class="text-sm text-gray-400">ヒント: この段階では軽量な情報のみを取得しているため、10秒以内に結果が表示されます。</p>
+                                    <p class="text-sm text-gray-400">Tip: At this stage, only lightweight information is
+                                        retrieved, so results are displayed within 10 seconds.</p>
                                 </div>
                             </div>
                         </div>
@@ -122,11 +126,13 @@
                                 class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3 flex-shrink-0">
                                 3</div>
                             <div>
-                                <h4 class="font-medium text-lg mb-2">調査の進捗を確認</h4>
+                                <h4 class="font-medium text-lg mb-2">Check Research Progress</h4>
                                 <p class="text-gray-300">
-                                    詳細分析の進捗状況がリアルタイムで表示されます。この処理はバックグラウンドで実行されるため、いつでも安全に画面を離れることができます。</p>
+                                    The progress of detailed analysis is displayed in real-time. This process runs in
+                                    the background, so you can safely leave the screen at any time.</p>
                                 <div class="mt-3 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
-                                    <p class="text-sm text-gray-400">ヒント: 分析にはリポジトリ数に応じて数分から数十分かかる場合があります。</p>
+                                    <p class="text-sm text-gray-400">Tip: Analysis may take from a few minutes to tens
+                                        of minutes depending on the number of repositories.</p>
                                 </div>
                             </div>
                         </div>
@@ -138,12 +144,15 @@
                                 class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3 flex-shrink-0">
                                 4</div>
                             <div>
-                                <h4 class="font-medium text-lg mb-2">結果を確認</h4>
+                                <h4 class="font-medium text-lg mb-2">View Results</h4>
                                 <p class="text-gray-300">
-                                    分析が完了すると、マークダウン形式のレジュメが表示されます。「エクスポート」ボタンでPDFやテキスト形式で保存したり、「共有」ボタンで結果を共有することができます。
+                                    When the analysis is complete, a resume in Markdown format will be displayed. You
+                                    can save it in PDF or text format using the "Export" button, or share the results
+                                    using the "Share" button.
                                 </p>
                                 <div class="mt-3 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
-                                    <p class="text-sm text-gray-400">ヒント: 分析結果は30日間保存され、同じユーザー名で再検索すると即座に表示されます。</p>
+                                    <p class="text-sm text-gray-400">Tip: Analysis results are stored for 30 days and
+                                        will be displayed immediately when searching for the same username again.</p>
                                 </div>
                             </div>
                         </div>
@@ -151,34 +160,39 @@
                 </div>
             </div>
 
-            <!-- 2段階調査プロセスの説明 -->
+            <!-- Two-Stage Research Process Explanation -->
             <div class="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
-                <h3 class="text-xl font-semibold mb-4">2段階調査プロセスについて</h3>
+                <h3 class="text-xl font-semibold mb-4">About the Two-Stage Research Process</h3>
 
                 <div class="space-y-6">
                     <div>
-                        <h4 class="font-medium text-lg mb-2 text-gradient inline-block">1次調査（調査計画段階）</h4>
-                        <p class="text-gray-300 mt-1">GitHub
-                            User名を入力してから10秒以内に基本的なプロフィール情報を取得し、調査計画を生成します。この段階では軽量な処理のみを行い、キャッシュは使用しません。</p>
+                        <h4 class="font-medium text-lg mb-2 text-gradient inline-block">Primary Research (Planning
+                            Stage)</h4>
+                        <p class="text-gray-300 mt-1">Within 10 seconds of entering a GitHub
+                            username, basic profile information is retrieved and a research plan is generated. At this
+                            stage, only lightweight processing is performed and no cache is used.</p>
                     </div>
 
                     <div>
-                        <h4 class="font-medium text-lg mb-2 text-gradient inline-block">2次調査（詳細分析段階）</h4>
+                        <h4 class="font-medium text-lg mb-2 text-gradient inline-block">Secondary Research (Detailed
+                            Analysis Stage)</h4>
                         <p class="text-gray-300 mt-1">
-                            「調査を実行」ボタンをクリックすると、詳細なGitHub活動の分析とレジュメ生成を行います。この処理は重いため、バックグラウンドで実行され、結果は30日間キャッシュされます。</p>
+                            When you click the "Execute Research" button, detailed analysis of GitHub activities and
+                            resume generation are performed. Since this process is resource-intensive, it runs in the
+                            background and results are cached for 30 days.</p>
                         <ul class="list-disc list-inside text-gray-300 mt-2 space-y-1">
-                            <li>リポジトリの検索: 過去1年間にコミットしたリポジトリを検索</li>
-                            <li>リポジトリのClone: 検索結果に基づきリポジトリをClone</li>
-                            <li>リポジトリの活動分析: ユーザーのコミットのみを抽出し分析</li>
-                            <li>Resumeの作成: 分析結果からマークダウン形式のResumeを生成</li>
+                            <li>Repository Search: Search for repositories committed to in the past year</li>
+                            <li>Repository Clone: Clone repositories based on search results</li>
+                            <li>Repository Activity Analysis: Extract and analyze only the user's commits</li>
+                            <li>Resume Creation: Generate a resume in Markdown format from analysis results</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- サポート情報 -->
+            <!-- Support Information -->
             <div class="glass rounded-xl border border-gray-800 shadow-xl p-6">
-                <h3 class="text-xl font-semibold mb-4">サポート情報</h3>
+                <h3 class="text-xl font-semibold mb-4">Support Information</h3>
 
                 <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
                     <div class="glass rounded-lg p-5 border border-gray-800 flex-1">
@@ -189,12 +203,12 @@
                                     d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
                                     clip-rule="evenodd"></path>
                             </svg>
-                            よくある質問
+                            Frequently Asked Questions
                         </h4>
-                        <p class="text-gray-300 mb-3">一般的な質問への回答を確認できます。</p>
+                        <p class="text-gray-300 mb-3">You can check answers to common questions.</p>
                         <a href="/faq"
                             class="text-blue-400 hover:text-blue-300 transition-all duration-300 inline-flex items-center">
-                            FAQを見る
+                            View FAQ
                             <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -211,12 +225,13 @@
                                 <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
                                 <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
                             </svg>
-                            お問い合わせ
+                            Contact Us
                         </h4>
-                        <p class="text-gray-300 mb-3">質問や問題がある場合はお気軽にお問い合わせください。</p>
+                        <p class="text-gray-300 mb-3">If you have any questions or issues, please feel free to contact
+                            us.</p>
                         <a href="/contact"
                             class="text-blue-400 hover:text-blue-300 transition-all duration-300 inline-flex items-center">
-                            お問い合わせフォーム
+                            Contact Form
                             <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -234,12 +249,12 @@
                                     d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z"
                                     clip-rule="evenodd"></path>
                             </svg>
-                            最新情報
+                            Latest Information
                         </h4>
-                        <p class="text-gray-300 mb-3">新機能や更新情報を確認できます。</p>
+                        <p class="text-gray-300 mb-3">You can check new features and update information.</p>
                         <a href="/news"
                             class="text-blue-400 hover:text-blue-300 transition-all duration-300 inline-flex items-center">
-                            ニュースを見る
+                            View News
                             <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -253,7 +268,7 @@
         </div>
     </main>
 
-    <!-- フッター -->
+    <!-- Footer -->
     <footer class="glass border-t border-gray-800 mt-auto">
         <div class="container mx-auto px-4 py-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -262,11 +277,13 @@
                 </div>
                 <div class="flex space-x-6">
                     <a href="/terms"
-                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">利用規約</a>
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Terms of
+                        Service</a>
                     <a href="/privacy"
-                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">プライバシーポリシー</a>
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Privacy
+                        Policy</a>
                     <a href="/help"
-                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">ヘルプ</a>
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Help</a>
                 </div>
             </div>
         </div>

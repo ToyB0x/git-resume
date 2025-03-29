@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Research - 調査計画</title>
+    <title>Deep Research - Research Plan</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <style>
@@ -61,7 +61,7 @@
 </head>
 
 <body class="bg-gradient-dark min-h-screen flex flex-col text-white">
-    <!-- ヘッダー -->
+    <!-- Header -->
     <header class="glass border-b border-gray-800 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
@@ -77,10 +77,10 @@
         </div>
     </header>
 
-    <!-- メインコンテンツ -->
+    <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-10">
         <div class="max-w-3xl mx-auto">
-            <!-- 基本情報セクション -->
+            <!-- Basic Information Section -->
             <div class="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
                 <div class="flex items-center">
                     <img src="https://avatars.githubusercontent.com/u/583231" alt="GitHub Avatar"
@@ -112,74 +112,77 @@
                 </div>
             </div>
 
-            <!-- 調査計画概要 -->
+            <!-- Research Plan Overview -->
             <div class="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
-                <h3 class="text-xl font-semibold mb-4">調査計画概要</h3>
+                <h3 class="text-xl font-semibold mb-4">Research Plan Overview</h3>
 
                 <div class="space-y-4">
                     <div class="step-item glass rounded-lg p-4 border border-gray-800">
                         <div class="flex items-center">
                             <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3">1</div>
-                            <h4 class="font-medium">リポジトリの検索</h4>
+                            <h4 class="font-medium">Repository Search</h4>
                         </div>
-                        <p class="text-gray-300 mt-2 ml-11">過去1年間にコミットしたリポジトリを検索します</p>
+                        <p class="text-gray-300 mt-2 ml-11">Search for repositories committed to in the past year</p>
                     </div>
 
                     <div class="step-item glass rounded-lg p-4 border border-gray-800">
                         <div class="flex items-center">
                             <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3">2</div>
-                            <h4 class="font-medium">リポジトリのClone</h4>
+                            <h4 class="font-medium">Repository Clone</h4>
                         </div>
-                        <p class="text-gray-300 mt-2 ml-11">検索結果に基づき、約15個のリポジトリをCloneします</p>
+                        <p class="text-gray-300 mt-2 ml-11">Clone about 15 repositories based on search results</p>
                     </div>
 
                     <div class="step-item glass rounded-lg p-4 border border-gray-800">
                         <div class="flex items-center">
                             <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3">3</div>
-                            <h4 class="font-medium">リポジトリの活動分析</h4>
+                            <h4 class="font-medium">Repository Activity Analysis</h4>
                         </div>
-                        <p class="text-gray-300 mt-2 ml-11">各リポジトリでのコミット内容を詳細に分析します</p>
+                        <p class="text-gray-300 mt-2 ml-11">Analyze commit content in each repository in detail</p>
                     </div>
 
                     <div class="step-item glass rounded-lg p-4 border border-gray-800">
                         <div class="flex items-center">
                             <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3">4</div>
-                            <h4 class="font-medium">Resumeの作成</h4>
+                            <h4 class="font-medium">Resume Creation</h4>
                         </div>
-                        <p class="text-gray-300 mt-2 ml-11">分析結果からマークダウン形式のResumeを生成します</p>
+                        <p class="text-gray-300 mt-2 ml-11">Generate a resume in Markdown format from analysis results
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- 予想時間表示 -->
+            <!-- Estimated Time Display -->
             <div class="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
-                <h3 class="text-xl font-semibold mb-4">予想所要時間</h3>
+                <h3 class="text-xl font-semibold mb-4">Estimated Time</h3>
                 <div class="flex justify-between items-center">
                     <div>
-                        <p class="text-gray-300">リポジトリ数: <span class="text-white font-medium">15</span></p>
-                        <p class="text-gray-300 mt-1">予想時間: <span class="text-white font-medium">約15分</span></p>
+                        <p class="text-gray-300">Number of repositories: <span class="text-white font-medium">15</span>
+                        </p>
+                        <p class="text-gray-300 mt-1">Estimated time: <span class="text-white font-medium">about 15
+                                minutes</span></p>
                     </div>
                     <div class="text-right">
-                        <p class="text-sm text-gray-400">結果は30日間保存されます</p>
+                        <p class="text-sm text-gray-400">Results will be stored for 30 days</p>
                     </div>
                 </div>
             </div>
 
-            <!-- アクションボタン -->
+            <!-- Action Buttons -->
             <div class="flex space-x-4">
                 <button
                     class="flex-1 btn-gradient text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
-                    調査を実行
+                    Execute Research
                 </button>
                 <button
                     class="flex-1 btn-secondary text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700">
-                    キャンセル
+                    Cancel
                 </button>
             </div>
         </div>
     </main>
 
-    <!-- フッター -->
+    <!-- Footer -->
     <footer class="glass border-t border-gray-800 mt-auto">
         <div class="container mx-auto px-4 py-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -188,11 +191,13 @@
                 </div>
                 <div class="flex space-x-6">
                     <a href="/terms"
-                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">利用規約</a>
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Terms of
+                        Service</a>
                     <a href="/privacy"
-                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">プライバシーポリシー</a>
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Privacy
+                        Policy</a>
                     <a href="/help"
-                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">ヘルプ</a>
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Help</a>
                 </div>
             </div>
         </div>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Research - エラー</title>
+    <title>Deep Research - Error</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <style>
@@ -45,7 +45,7 @@
 </head>
 
 <body class="bg-gradient-dark min-h-screen flex flex-col text-white">
-    <!-- ヘッダー -->
+    <!-- Header -->
     <header class="glass border-b border-gray-800 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
@@ -61,7 +61,7 @@
         </div>
     </header>
 
-    <!-- メインコンテンツ -->
+    <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-16 flex items-center justify-center">
         <div class="glass rounded-xl border border-gray-800 shadow-xl p-8 max-w-md w-full text-center">
             <div class="mb-6">
@@ -73,15 +73,16 @@
                 </svg>
             </div>
 
-            <h2 class="text-2xl font-bold mb-4">エラーが発生しました</h2>
+            <h2 class="text-2xl font-bold mb-4">An Error Occurred</h2>
 
             <div class="glass rounded-lg p-4 border border-red-800 bg-opacity-20 bg-red-900 mb-6 text-left">
-                <p class="text-red-300 font-medium">エラーコード: 500</p>
-                <p class="text-gray-300 mt-2">調査処理中に予期せぬエラーが発生しました。しばらく経ってからもう一度お試しください。</p>
+                <p class="text-red-300 font-medium">Error Code: 500</p>
+                <p class="text-gray-300 mt-2">An unexpected error occurred during the research process. Please try again
+                    later.</p>
             </div>
 
             <div class="mb-8">
-                <h3 class="text-lg font-medium mb-3">トラブルシューティング</h3>
+                <h3 class="text-lg font-medium mb-3">Troubleshooting</h3>
                 <ul class="text-left text-gray-300 space-y-2">
                     <li class="flex items-start">
                         <svg class="w-5 h-5 text-blue-400 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20"
@@ -90,7 +91,7 @@
                                 d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        GitHub User名のスペルを確認してください
+                        Check the spelling of your GitHub username
                     </li>
                     <li class="flex items-start">
                         <svg class="w-5 h-5 text-blue-400 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20"
@@ -99,7 +100,7 @@
                                 d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        ブラウザのキャッシュをクリアしてみてください
+                        Try clearing your browser cache
                     </li>
                     <li class="flex items-start">
                         <svg class="w-5 h-5 text-blue-400 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20"
@@ -108,7 +109,7 @@
                                 d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        GitHubのサービス状態を確認してください
+                        Check GitHub service status
                     </li>
                 </ul>
             </div>
@@ -122,7 +123,7 @@
                             d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    ホームに戻る
+                    Return to Home
                 </a>
                 <button
                     class="flex-1 glass text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700 flex items-center justify-center">
@@ -132,13 +133,13 @@
                             d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    再試行
+                    Retry
                 </button>
             </div>
         </div>
     </main>
 
-    <!-- フッター -->
+    <!-- Footer -->
     <footer class="glass border-t border-gray-800 mt-auto">
         <div class="container mx-auto px-4 py-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -147,11 +148,13 @@
                 </div>
                 <div class="flex space-x-6">
                     <a href="/terms"
-                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">利用規約</a>
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Terms of
+                        Service</a>
                     <a href="/privacy"
-                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">プライバシーポリシー</a>
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Privacy
+                        Policy</a>
                     <a href="/help"
-                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">ヘルプ</a>
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Help</a>
                 </div>
             </div>
         </div>
