@@ -13,7 +13,9 @@
       - 以下のプロンプト等でHTMLを生成することができます:
         ```html
         UI.md に合わせて画面案を html でページごとに mocks 出力して下さい
-        (Roo ModeはDesignerで実行して下さい)
+        その際に以下を遵守して下さい
+        - Roo ModeはDesignerで実行して下さい
+        - デザインテイストは既存の apps/web のウェブサイトアプリに合わせて下さい
         ``` 
       - 生成したHTMLはHTMLディレクトリで `pnpm dlx http-server` を実行して閲覧できます
 
