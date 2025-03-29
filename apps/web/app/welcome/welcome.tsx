@@ -1,23 +1,26 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export function Welcome() {
   const [username, setUsername] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would handle the GitHub username search
-    alert(`Searching for: ${username}`);
+    if (username.trim()) {
+      navigate(`/github/${username}/plan`);
+    }
   };
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950 relative overflow-hidden">
-      <div className="relative bg-black/60 backdrop-blur-sm border border-gray-800 rounded-lg shadow-xl max-w-md w-full p-8 z-10">
+    <main className="flex items-center justify-center min-h-screen bg-gradient-dark relative overflow-hidden">
+      <div className="relative glass border border-gray-800 rounded-lg shadow-xl max-w-md w-full p-8 z-10">
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-            GitHub <span className="font-extrabold">Check</span>
+          <h1 className="text-4xl font-bold text-gradient">
+            Git <span className="font-extrabold">Resume</span>
           </h1>
           <p className="text-gray-300 mt-3">
-            Enter a GitHub username to explore their profile
+            Enter a GitHub username to explore the profile
           </p>
         </header>
 
@@ -58,15 +61,16 @@ export function Welcome() {
           >
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-700 rounded-md" />
             <span className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-50 bg-gradient-to-r from-purple-700 via-blue-600 to-cyan-500 rounded-md transition-opacity" />
-            <span className="relative">Search</span>
+            <span className="relative">Start Research</span>
           </button>
         </form>
 
-        <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mt-6 rounded-full" />
-
-        <footer className="text-center text-gray-400 text-xs mt-6">
-          Built with Gemini Flash 2.0
-        </footer>
+        <div className="mt-8">
+          <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full" />
+          <p className="text-sm text-gray-400 text-center mt-4">
+            Proceed to research planning
+          </p>
+        </div>
       </div>
     </main>
   );
