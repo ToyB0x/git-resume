@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Research - 調査計画</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .bg-gradient-custom {
+            background-image: linear-gradient(to bottom right, #0F172A, #172554, #581C87);
+        }
+
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA);
+        }
+
+        .btn-gradient {
+            background-image: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA);
+        }
+
+        .btn-gradient-hover {
+            background-image: linear-gradient(to right, #9333EA, #3B82F6, #22D3EE);
+        }
+
+        .btn-secondary-gradient {
+            background-image: linear-gradient(to right, #6366F1, #8B5CF6, #D946EF);
+        }
+
+        .btn-secondary-gradient-hover {
+            background-image: linear-gradient(to right, #D946EF, #8B5CF6, #6366F1);
+        }
+
+        .border-gradient {
+            border-image: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA) 1;
+        }
+
+        .divider-gradient {
+            height: 2px;
+            background-image: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA);
+        }
+
+        .progress-gradient {
+            background-image: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA);
+        }
+
+        @keyframes countdown {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        .countdown-animation {
+            animation: countdown 30s linear forwards;
+        }
+
+        .step-item {
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .step-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .step-expanded .step-content {
+            max-height: 500px;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-custom min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8 flex flex-col min-h-screen">
+        <!-- ヘッダー -->
+        <header class="py-4 mb-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2 text-blue-500" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <h1 class="text-4xl font-extrabold text-gradient">Deep Research</h1>
+                </div>
+                <nav>
+                    <ul class="flex space-x-6">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">ホーム</a>
+                        </li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">履歴</a>
+                        </li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">設定</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center text-gray-300 hover:text-white transition-colors duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                ユーザー名
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <main class="flex-grow">
+            <div class="max-w-4xl mx-auto">
+                <!-- カウントダウンタイマー -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <p class="text-gray-300">調査計画生成中...</p>
+                        <p class="text-gray-300"><span id="countdown-seconds">23</span>秒</p>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-2.5">
+                        <div class="progress-gradient h-2.5 rounded-full countdown-animation" style="width: 77%"></div>
+                    </div>
+                </div>
+
+                <!-- 基本情報セクション -->
+                <div class="bg-black/60 backdrop-blur-sm border border-gray-800 rounded-lg shadow-xl p-6 mb-8">
+                    <div class="flex items-center">
+                        <img src="https://github.com/identicons/octocat.png" alt="GitHub Avatar"
+                            class="w-16 h-16 rounded-full mr-6">
+                        <div>
+                            <h2 class="text-3xl font-bold">octocat</h2>
+                            <p class="text-gray-300">GitHub User調査計画</p>
+                        </div>
+                    </div>
+
+                    <div class="divider-gradient my-6"></div>
+
+                    <div class="flex flex-wrap -mx-3">
+                        <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                            <div class="bg-gray-900/60 rounded-lg p-4">
+                                <h3 class="text-lg font-semibold mb-2">基本情報</h3>
+                                <p class="text-gray-400 text-sm">ユーザー名: octocat</p>
+                                <p class="text-gray-400 text-sm">アカウント作成: 2011年</p>
+                                <p class="text-gray-400 text-sm">場所: San Francisco, CA</p>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                            <div class="bg-gray-900/60 rounded-lg p-4">
+                                <h3 class="text-lg font-semibold mb-2">リポジトリ</h3>
+                                <p class="text-gray-400 text-sm">公開リポジトリ: 8</p>
+                                <p class="text-gray-400 text-sm">スター数: 1.2k</p>
+                                <p class="text-gray-400 text-sm">フォーク数: 450</p>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3">
+                            <div class="bg-gray-900/60 rounded-lg p-4">
+                                <h3 class="text-lg font-semibold mb-2">アクティビティ</h3>
+                                <p class="text-gray-400 text-sm">コミット: 1,250+</p>
+                                <p class="text-gray-400 text-sm">PR: 320+</p>
+                                <p class="text-gray-400 text-sm">イシュー: 180+</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 調査計画概要 -->
+                <div class="bg-black/60 backdrop-blur-sm border border-gray-800 rounded-lg shadow-xl p-6 mb-8">
+                    <h2 class="text-2xl font-bold mb-6">調査計画概要</h2>
+
+                    <div class="space-y-4">
+                        <!-- 調査ステップ1 -->
+                        <div class="step-item step-expanded bg-gray-900/60 rounded-lg overflow-hidden">
+                            <div class="flex items-center justify-between p-4 cursor-pointer">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-4">
+                                        <span class="font-semibold">1</span>
+                                    </div>
+                                    <h3 class="font-semibold">基本プロフィール情報の収集</h3>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-gray-400 text-sm mr-4">予想時間: 2分</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform rotate-180"
+                                        viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="step-content px-4 pb-4">
+                                <div class="pl-12">
+                                    <ul class="list-disc text-gray-300 space-y-2">
+                                        <li>ユーザー名、フルネーム、所在地、組織</li>
+                                        <li>プロフィール画像、バイオ、ソーシャルリンク</li>
+                                        <li>アカウント作成日、最終活動日</li>
+                                        <li>フォロワー数、フォロー数</li>
+                                        <li>公開リポジトリ数</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 調査ステップ2 -->
+                        <div class="step-item bg-gray-900/60 rounded-lg overflow-hidden">
+                            <div class="flex items-center justify-between p-4 cursor-pointer">
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center mr-4">
+                                        <span class="font-semibold">2</span>
+                                    </div>
+                                    <h3 class="font-semibold">リポジトリ分析</h3>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-gray-400 text-sm mr-4">予想時間: 5分</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 調査ステップ3 -->
+                        <div class="step-item bg-gray-900/60 rounded-lg overflow-hidden">
+                            <div class="flex items-center justify-between p-4 cursor-pointer">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-cyan-600 flex items-center justify-center mr-4">
+                                        <span class="font-semibold">3</span>
+                                    </div>
+                                    <h3 class="font-semibold">コントリビューション傾向の分析</h3>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-gray-400 text-sm mr-4">予想時間: 7分</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 調査ステップ4 -->
+                        <div class="step-item bg-gray-900/60 rounded-lg overflow-hidden">
+                            <div class="flex items-center justify-between p-4 cursor-pointer">
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center mr-4">
+                                        <span class="font-semibold">4</span>
+                                    </div>
+                                    <h3 class="font-semibold">関連ユーザーとの関係性調査</h3>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-gray-400 text-sm mr-4">予想時間: 4分</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 調査ステップ5 -->
+                        <div class="step-item bg-gray-900/60 rounded-lg overflow-hidden">
+                            <div class="flex items-center justify-between p-4 cursor-pointer">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center mr-4">
+                                        <span class="font-semibold">5</span>
+                                    </div>
+                                    <h3 class="font-semibold">技術スタックの推定</h3>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-gray-400 text-sm mr-4">予想時間: 3分</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <div class="flex items-center justify-between mb-2">
+                            <p class="text-gray-300">合計予想時間</p>
+                            <p class="font-semibold">21分</p>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-2.5">
+                            <div class="progress-gradient h-2.5 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- アクションボタン -->
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button
+                        class="relative py-3 px-6 rounded-md font-medium text-white transition-all duration-300 group overflow-hidden flex-grow">
+                        <span class="absolute inset-0 w-full h-full btn-gradient rounded-md"></span>
+                        <span
+                            class="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 btn-gradient-hover rounded-md transition-opacity duration-300"></span>
+                        <span class="relative flex items-center justify-center">
+                            実行
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </button>
+
+                    <button
+                        class="relative py-3 px-6 rounded-md font-medium text-white transition-all duration-300 group overflow-hidden">
+                        <span class="absolute inset-0 w-full h-full btn-secondary-gradient rounded-md"></span>
+                        <span
+                            class="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 btn-secondary-gradient-hover rounded-md transition-opacity duration-300"></span>
+                        <span class="relative flex items-center justify-center">
+                            詳細設定
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </button>
+
+                    <button
+                        class="py-3 px-6 bg-gray-800 hover:bg-gray-700 rounded-md font-medium text-white transition-colors duration-300 flex items-center justify-center">
+                        キャンセル
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- フッター -->
+        <footer class="py-6 mt-12">
+            <div class="divider-gradient mb-6"></div>
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 Deep Research. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">利用規約</a>
+                    <a href="#"
+                        class="text-gray-400 hover:text-white text-sm transition-colors duration-300">プライバシーポリシー</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">サポート</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // カウントダウンタイマーのシミュレーション
+        let seconds = 23;
+        const countdownElement = document.getElementById('countdown-seconds');
+
+        const interval = setInterval(() => {
+            seconds--;
+            countdownElement.textContent = seconds;
+
+            if (seconds <= 0) {
+                clearInterval(interval);
+            }
+        }, 1000);
+
+        // ステップの展開/折りたたみ機能
+        document.querySelectorAll('.step-item').forEach(item => {
+            const header = item.querySelector('.cursor-pointer');
+            header.addEventListener('click', () => {
+                item.classList.toggle('step-expanded');
+                const arrow = header.querySelector('svg');
+                arrow.classList.toggle('rotate-180');
+            });
+        });
+    </script>
+</body>
+
+</html>

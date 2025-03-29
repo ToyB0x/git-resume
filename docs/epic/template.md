@@ -16,6 +16,7 @@
         その際に以下を遵守して下さい
         - Roo ModeはDesignerで実行して下さい
         - デザインテイストは既存の apps/web のウェブサイトアプリに合わせて下さい
+        - Tailwind CSSを使用 (HTMLヘッダで読み込むのみで個別のCSSファイルは使わず単一HTMLで画面表示可能とする)
         ``` 
       - 生成したHTMLはHTMLディレクトリで `pnpm dlx http-server` を実行して閲覧できます
 
