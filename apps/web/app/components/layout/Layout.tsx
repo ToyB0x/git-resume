@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { Header } from "./Header";
 import { Footer } from "./Footer";
 
 interface LayoutProps {
@@ -9,7 +8,6 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-dark">
-      <Header />
       <main className="flex-grow">{children}</main>
       <Footer />
     </div>
