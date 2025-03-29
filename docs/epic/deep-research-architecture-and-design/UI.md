@@ -15,6 +15,8 @@ Deep ResearchのUIは、モダンでイマーシブなユーザー体験を提�
 
 ### 1. ホーム画面
 
+**URL**: `/`
+
 ![ホーム画面](../../assets/images/deep-research-home.png)
 
 **主要コンポーネント:**
@@ -34,6 +36,8 @@ Deep ResearchのUIは、モダンでイマーシブなユーザー体験を提�
 - React Routerによるクライアントサイドルーティング
 
 ### 2. 調査計画画面
+
+**URL**: `/plan/:username`
 
 ![調査計画画面](../../assets/images/deep-research-plan.png)
 
@@ -55,6 +59,8 @@ Deep ResearchのUIは、モダンでイマーシブなユーザー体験を提�
 - 10秒以内のレスポンス時間を保証するための最適化
 
 ### 3. 調査進行画面
+
+**URL**: `/progress/:username`
 
 ![調査進行画面](../../assets/images/deep-research-progress.png)
 
@@ -84,6 +90,8 @@ Deep ResearchのUIは、モダンでイマーシブなユーザー体験を提�
 
 ### 4. 調査結果画面
 
+**URL**: `/results/:username`
+
 ![調査結果画面](../../assets/images/deep-research-results.png)
 
 **主要コンポーネント:**
@@ -107,6 +115,42 @@ Deep ResearchのUIは、モダンでイマーシブなユーザー体験を提�
 - マークダウン形式のResumeのレンダリング
 - データベース（Neon.tech）から取得した2次調査結果の表示
 - 30日間のキャッシュ期間内であれば即時表示
+
+### 5. その他のルート
+
+**エラー画面**: `/error`
+- エラー情報の表示
+- トラブルシューティングのガイダンス
+- ホームに戻るボタン
+
+**ユーザー設定画面**: `/settings`
+- 通知設定
+- 表示設定
+- アカウント情報
+
+**ヘルプ・サポート画面**: `/help`
+- ヘルプドキュメント
+- よくある質問（FAQ）
+- サポート連絡先
+
+## ルーティング設計
+
+React Router（SPA Mode）を使用して、以下のルーティング構造を実装します：
+
+```jsx
+<Routes>
+  <Route path="/" element={<HomePage />} />
+  <Route path="/plan/:username" element={<PlanPage />} />
+  <Route path="/progress/:username" element={<ProgressPage />} />
+  <Route path="/results/:username" element={<ResultsPage />} />
+  <Route path="/error" element={<ErrorPage />} />
+  <Route path="/settings" element={<SettingsPage />} />
+  <Route path="/help" element={<HelpPage />} />
+  <Route path="*" element={<NotFoundPage />} />
+</Routes>
+```
+
+URLパラメータ`:username`はGitHub User名を表し、これによって特定のユーザーの調査計画、進捗状況、結果にアクセスできます。また、ユーザーが直接URLを入力して特定の画面にアクセスした場合も、適切な状態チェックを行い、必要に応じて適切な画面にリダイレクトします。
 
 ## レスポンシブデザイン
 
