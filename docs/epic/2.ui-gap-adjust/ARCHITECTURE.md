@@ -67,12 +67,12 @@ graph TD
 
 ```mermaid
 graph LR
-    A[/] --> B[/github/:username/plan]
-    B --> C[/github/:username/progress]
-    C --> D[/github/:username/results]
-    A --> E[/error]
-    A --> F[/help]
-    A --> G[/github/:userId]
+    A["/"] --> B["/github/:username/plan"]
+    B --> C["/github/:username/progress"]
+    C --> D["/github/:username/results"]
+    A --> E["/error"]
+    A --> F["/help"]
+    A --> G["/github/:userId"]
 ```
 
 - `/`: ホーム画面
@@ -87,4 +87,4 @@ graph LR
 
 このエピックでは、外部通信を行わないモックデータを使用するため、複雑な状態管理は必要ありません。各コンポーネント内でのローカルステートを使用し、必要に応じてpropsを通じてデータを受け渡します。
 
-将来的にはAPIと連携する際に、より適切な状態管理の仕組み（Context API、Redux、Recoilなど）を導入することを検討します。
+将来的にはAPIと連携する際に、より適切な状態管理の仕組み（Context APIなど）を導入することを検討します。
