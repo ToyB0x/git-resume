@@ -147,6 +147,30 @@
 - **PostgreSQL**: 構造化データ、トランザクション、クエリ機能、エコシステム
 - **用途**: 2次調査結果と状態の保存（1次調査結果は保存しない）
 
+## データモデル概要
+
+システムで永続化が必要な最小限のデータモデルは以下の通りです：
+
+```
+ResearchTask
+  - github_username: String (PK) // GitHub User名（検索キー）
+  - status: String // "SEARCHING", "CLONING", "ANALYZING", "CREATING", "COMPLETED", "FAILED"
+  - progress: Integer // 0-100の進捗率
+  - detail: String // 現在の処理の詳細情報（例: "3/10リポジトリ処理中"）
+  - updated_by: String // "worker" または "job"
+  - resume: Text // 完成したマークダウン形式のResume（status=COMPLETEDの場合のみ）
+  - created_at: Timestamp
+  - updated_at: Timestamp
+  - expires_at: Timestamp // 作成から30日後
+```
+
+注:
+1. 1次調査結果はキャッシュせず常に最新データを取得するため、データベースには保存しません。
+2. ユーザー情報（プラン種別など）は認証システムと連携する将来実装のために予約し、現段階では最小限のモデルとします。
+3. 中間結果の詳細保存は将来実装の目標とし、現段階では進捗状態と簡易的な詳細情報のみを保存します。
+4. GitHub User名をプライマリキーとすることで、同一ユーザーの重複調査を防止し、再訪問時の状態復元を容易にします。
+5. 結果データ（resume）を同一テーブルに保存することで、クエリの単純化とデータ整合性を確保します。
+
 ## ユーザーフローとシステムアーキテクチャ
 
 GitHub User名を入力した後、システムは以下の3つの分岐を処理します：
@@ -249,41 +273,6 @@ sequenceDiagram
     
     %% 再訪問時は最初の分岐に戻る
 ```
-
-## データモデル概要
-
-```
-User
-  - id: UUID
-  - created_at: Timestamp
-  - last_login: Timestamp
-  - plan_type: Enum (FREE, PREMIUM) // 無料プラン: 過去1年分、有料プラン: 過去3年分
-
-ResearchTask (2次調査タスク)
-  - id: UUID (PK)
-  - github_username: String
-  - status: Enum (PENDING, IN_PROGRESS, COMPLETED, FAILED)
-  - progress: Integer (0-100)
-  - current_step: Enum (REPO_SEARCH, REPO_CLONE, REPO_ANALYZE, RESUME_CREATE, RESUME_COMPLETED)
-  - current_step_detail: String // 例: "リポジトリをClone中: 10個中3個目", "リポジトリの活動を分析中: octocat/Spoon-Knife"
-  - created_at: Timestamp
-  - updated_at: Timestamp
-  - completed_at: Timestamp
-  - cloud_run_job_id: String
-  - updated_by: String // "worker" または "job" - 最後の更新がCloudFlare WorkersかCloud Run Jobsかを示す
-
-ResearchResult (2次調査結果)
-  - task_id: UUID (FK -> ResearchTask)
-  - github_username: String
-  - resume_markdown: Text // 最終的なマークダウン形式のResume
-  - created_at: Timestamp
-  - expires_at: Timestamp (+30日)
-```
-
-注: 
-1. 1次調査結果はキャッシュされないため、データモデルには含まれていません。1次調査は常に最新のGitHubプロフィール情報を取得します。
-2. 中間結果の詳細保存は将来実装の目標とし、現段階では進捗ステップ（current_step）と簡易的な詳細情報（current_step_detail）のみを保存します。
-3. ResearchTaskに「updated_by」フィールドを追加し、最後の更新がCloudFlare WorkersかCloud Run Jobsかを区別できるようにしています。これにより、2次調査の重複実行を防止するための判断材料となります。
 
 ## 状態遷移設計
 
