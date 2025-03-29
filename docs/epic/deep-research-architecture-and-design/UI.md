@@ -37,7 +37,7 @@ Deep ResearchのUIは、モダンでイマーシブなユーザー体験を提�
 
 ### 2. 調査計画画面
 
-**URL**: `/plan/:username`
+**URL**: `/github/:username/plan`
 
 ![調査計画画面](../../assets/images/deep-research-plan.png)
 
@@ -60,7 +60,7 @@ Deep ResearchのUIは、モダンでイマーシブなユーザー体験を提�
 
 ### 3. 調査進行画面
 
-**URL**: `/progress/:username`
+**URL**: `/github/:username/progress`
 
 ![調査進行画面](../../assets/images/deep-research-progress.png)
 
@@ -90,7 +90,7 @@ Deep ResearchのUIは、モダンでイマーシブなユーザー体験を提�
 
 ### 4. 調査結果画面
 
-**URL**: `/results/:username`
+**URL**: `/github/:username/results`
 
 ![調査結果画面](../../assets/images/deep-research-results.png)
 
@@ -136,13 +136,14 @@ Deep ResearchのUIは、モダンでイマーシブなユーザー体験を提�
 ## ルーティング設計
 
 React Router（SPA Mode）を使用して、以下のルーティング構造を実装します：
+(React Router 7 以降の場合は route.ts などで代替実装をしてください)
 
 ```jsx
 <Routes>
   <Route path="/" element={<HomePage />} />
-  <Route path="/plan/:username" element={<PlanPage />} />
-  <Route path="/progress/:username" element={<ProgressPage />} />
-  <Route path="/results/:username" element={<ResultsPage />} />
+  <Route path="/github/:username/plan" element={<PlanPage />} />
+  <Route path="/github/:username/progress" element={<ProgressPage />} />
+  <Route path="/github/:username/results" element={<ResultsPage />} />
   <Route path="/error" element={<ErrorPage />} />
   <Route path="/settings" element={<SettingsPage />} />
   <Route path="/help" element={<HelpPage />} />
@@ -151,6 +152,15 @@ React Router（SPA Mode）を使用して、以下のルーティング構造を
 ```
 
 URLパラメータ`:username`はGitHub User名を表し、これによって特定のユーザーの調査計画、進捗状況、結果にアクセスできます。また、ユーザーが直接URLを入力して特定の画面にアクセスした場合も、適切な状態チェックを行い、必要に応じて適切な画面にリダイレクトします。
+
+例えば、ユーザーが `/github/octocat/results` にアクセスした場合、システムは以下の処理を行います：
+
+1. データベースで `octocat` の調査結果が存在するか確認
+2. 結果が存在する場合は結果画面を表示
+3. 結果が存在せず進行中の場合は進捗画面 (`/github/octocat/progress`) にリダイレクト
+4. 調査が未実行の場合は計画画面 (`/github/octocat/plan`) にリダイレクト
+
+これにより、ユーザーは常に適切な画面を見ることができ、システムの現在の状態を理解できます。
 
 ## レスポンシブデザイン
 
