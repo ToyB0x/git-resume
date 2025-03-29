@@ -13,3 +13,38 @@ body {
     color-scheme: dark;
   }
 }
+
+/* Background gradient */
+.bg-gradient-dark {
+  @apply bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950;
+}
+
+/* Text gradient */
+.text-gradient {
+  @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent;
+}
+
+/* Button gradient */
+.btn-gradient {
+  @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600;
+}
+
+.btn-gradient:hover {
+  @apply bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-700;
+}
+
+/* Glass morphism */
+.glass {
+  @apply bg-black/60 backdrop-blur-sm;
+}
+
+/* Progress gradient */
+.progress-gradient {
+  @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600;
+}
+
+/* Tab active style */
+.tab-active {
+  border-bottom: 2px solid;
+  border-image: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA) 1;
+}
