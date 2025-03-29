@@ -61,7 +61,7 @@ export function Welcome() {
           >
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-700 rounded-md" />
             <span className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-50 bg-gradient-to-r from-purple-700 via-blue-600 to-cyan-500 rounded-md transition-opacity" />
-            <span className="relative">Start Research</span>
+            <span className="relative">Search</span>
           </button>
         </form>
 
