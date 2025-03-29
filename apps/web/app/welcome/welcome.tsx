@@ -16,7 +16,7 @@ export function Welcome() {
     <main className="flex items-center justify-center min-h-screen bg-gradient-dark relative overflow-hidden">
       <div className="relative glass border border-gray-800 rounded-lg shadow-xl max-w-md w-full p-8 z-10">
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gradient">
+          <h1 className="text-4xl font-bold text-gradient w-fit mx-auto px-4">
             Git <span className="font-extrabold">Resume</span>
           </h1>
           <p className="text-gray-300 mt-3">
