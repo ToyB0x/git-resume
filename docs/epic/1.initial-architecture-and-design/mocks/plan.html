@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Research - Research Plan</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+        :root {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @supports (font-variation-settings: normal) {
+            :root {
+                font-family: 'Inter var', sans-serif;
+            }
+        }
+
+        .bg-gradient-dark {
+            background: linear-gradient(to bottom right, #0F172A, #172554, #581C87);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA);
+        }
+
+        .btn-gradient:hover {
+            background: linear-gradient(to right, #0EA5E9, #2563EB, #7E22CE);
+        }
+
+        .btn-secondary {
+            background: rgba(31, 41, 55, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(31, 41, 55, 0.8);
+        }
+
+        .glass {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .step-item {
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-dark min-h-screen flex flex-col text-white">
+    <!-- Header -->
+    <header class="glass border-b border-gray-800 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-gradient">Git Resume</h1>
+            </div>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="/" class="text-white hover:text-purple-300 transition-all duration-300">Home</a></li>
+                    <li><a href="/history"
+                            class="text-gray-400 hover:text-purple-300 transition-all duration-300">History</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-10">
+        <div class="max-w-3xl mx-auto">
+            <!-- Basic Information Section -->
+            <div class="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+                <div class="flex items-center">
+                    <img src="https://avatars.githubusercontent.com/u/583231" alt="GitHub Avatar"
+                        class="w-16 h-16 rounded-full mr-4">
+                    <div>
+                        <h2 class="text-2xl font-bold">octocat</h2>
+                        <p class="text-gray-300">The Octocat - GitHub Mascot</p>
+                        <div class="flex items-center mt-1">
+                            <span class="text-sm text-gray-400 flex items-center mr-4">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                San Francisco
+                            </span>
+                            <span class="text-sm text-gray-400 flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                github.com/octocat
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research Plan Overview -->
+            <div class="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-4">Research Plan Overview</h3>
+
+                <div class="space-y-4">
+                    <div class="step-item glass rounded-lg p-4 border border-gray-800">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3">1</div>
+                            <h4 class="font-medium">Repository Search</h4>
+                        </div>
+                        <p class="text-gray-300 mt-2 ml-11">Search for repositories committed to in the past year</p>
+                    </div>
+
+                    <div class="step-item glass rounded-lg p-4 border border-gray-800">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3">2</div>
+                            <h4 class="font-medium">Repository Clone</h4>
+                        </div>
+                        <p class="text-gray-300 mt-2 ml-11">Clone about 15 repositories based on search results</p>
+                    </div>
+
+                    <div class="step-item glass rounded-lg p-4 border border-gray-800">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3">3</div>
+                            <h4 class="font-medium">Repository Activity Analysis</h4>
+                        </div>
+                        <p class="text-gray-300 mt-2 ml-11">Analyze commit content in each repository in detail</p>
+                    </div>
+
+                    <div class="step-item glass rounded-lg p-4 border border-gray-800">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3">4</div>
+                            <h4 class="font-medium">Resume Creation</h4>
+                        </div>
+                        <p class="text-gray-300 mt-2 ml-11">Generate a resume in Markdown format from analysis results
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estimated Time Display -->
+            <div class="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-4">Estimated Time</h3>
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-300">Number of repositories: <span class="text-white font-medium">15</span>
+                        </p>
+                        <p class="text-gray-300 mt-1">Estimated time: <span class="text-white font-medium">about 15
+                                minutes</span></p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-400">Results will be stored for 30 days</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex space-x-4">
+                <button
+                    class="flex-1 btn-gradient text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                    Execute Research
+                </button>
+                <button
+                    class="flex-1 btn-secondary text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass border-t border-gray-800 mt-auto">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-sm text-gray-400">&copy; 2025 Git Resume. All rights reserved.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="/terms"
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Terms of
+                        Service</a>
+                    <a href="/privacy"
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Privacy
+                        Policy</a>
+                    <a href="/help"
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Help</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

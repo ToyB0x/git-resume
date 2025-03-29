@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Research - Research Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+        :root {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @supports (font-variation-settings: normal) {
+            :root {
+                font-family: 'Inter var', sans-serif;
+            }
+        }
+
+        .bg-gradient-dark {
+            background: linear-gradient(to bottom right, #0F172A, #172554, #581C87);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA);
+        }
+
+        .btn-gradient:hover {
+            background: linear-gradient(to right, #0EA5E9, #2563EB, #7E22CE);
+        }
+
+        .btn-secondary {
+            background: rgba(31, 41, 55, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(31, 41, 55, 0.8);
+        }
+
+        .glass {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .markdown h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(75, 85, 99, 0.5);
+        }
+
+        .markdown h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .markdown h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .markdown ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown li {
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown code {
+            font-family: monospace;
+            background-color: rgba(31, 41, 55, 0.5);
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+        }
+
+        .markdown pre {
+            background-color: rgba(31, 41, 55, 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .markdown blockquote {
+            border-left: 4px solid #3B82F6;
+            padding-left: 1rem;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-dark min-h-screen flex flex-col text-white">
+    <!-- Header -->
+    <header class="glass border-b border-gray-800 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-gradient">Git Resume</h1>
+            </div>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="/" class="text-white hover:text-purple-300 transition-all duration-300">Home</a></li>
+                    <li><a href="/history"
+                            class="text-gray-400 hover:text-purple-300 transition-all duration-300">History</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-10">
+        <div class="max-w-4xl mx-auto">
+            <!-- Basic Information Section -->
+            <div class="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+                <div class="flex items-center">
+                    <img src="https://avatars.githubusercontent.com/u/583231" alt="GitHub Avatar"
+                        class="w-16 h-16 rounded-full mr-4">
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h2 class="text-2xl font-bold">octocat</h2>
+                                <p class="text-gray-300">The Octocat - GitHub Mascot</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-sm text-gray-400 flex items-center mr-4">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        San Francisco
+                                    </span>
+                                    <span class="text-sm text-gray-400 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        github.com/octocat
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                Analysis completed: 2025/03/29
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume Content -->
+            <div class="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+                <div class="markdown text-gray-200">
+                    <h1>Octocat - GitHub Developer Resume</h1>
+
+                    <h2>Profile Overview</h2>
+                    <p>
+                        Software developer with over 10 years of experience as GitHub's mascot character. Through
+                        activities in the open source community, I have contributed to diverse projects. I am
+                        particularly passionate about version control systems, collaboration tools, and improving
+                        developer experience.
+                    </p>
+
+                    <h2>Technical Skills</h2>
+                    <ul>
+                        <li><strong>Programming Languages:</strong> JavaScript, TypeScript, Python, Ruby, Go</li>
+                        <li><strong>Frameworks:</strong> React, Vue.js, Node.js, Django, Ruby on Rails</li>
+                        <li><strong>Tools:</strong> Git, Docker, Kubernetes, GitHub Actions, CI/CD</li>
+                        <li><strong>Cloud:</strong> AWS, Azure, Google Cloud Platform</li>
+                    </ul>
+
+                    <h2>Key Projects</h2>
+
+                    <h3>GitHub CLI (github.com/cli/cli)</h3>
+                    <p>
+                        Contributed to the development of the official tool for operating GitHub from the command line.
+                        Focused primarily on implementing core features and improving user experience.
+                    </p>
+                    <ul>
+                        <li>Design and implementation of cross-platform CLI tools using Go language</li>
+                        <li>Development of efficient workflow automation features through integration with GitHub API
+                        </li>
+                        <li>Continuous feature improvement and optimization based on user feedback</li>
+                    </ul>
+
+                    <h3>Octokit (github.com/octokit)</h3>
+                    <p>
+                        Development of client libraries that make GitHub API easily accessible from various languages.
+                    </p>
+                    <ul>
+                        <li>SDK design and implementation for multiple languages including JavaScript, Ruby, .NET</li>
+                        <li>Comprehensive support for REST and GraphQL APIs</li>
+                        <li>Abstraction of complex processes such as authentication, rate limiting, and pagination</li>
+                    </ul>
+
+                    <h3>GitHub Actions (github.com/actions)</h3>
+                    <p>
+                        Contributed to the development of GitHub's CI/CD and workflow automation platform.
+                    </p>
+                    <ul>
+                        <li>Design and implementation of container-based actions</li>
+                        <li>Development of orchestration features for complex workflows</li>
+                        <li>Enhancement of security and permission management</li>
+                    </ul>
+
+                    <h2>Open Source Contributions</h2>
+                    <p>
+                        Contributed to over 150 open source repositories in the past year. Mainly focused on bug fixes,
+                        documentation improvements, and proposing and implementing new features. Particularly focused on
+                        improving developer tools and ecosystem.
+                    </p>
+
+                    <h2>Communication and Collaboration</h2>
+                    <p>
+                        As GitHub's mascot, I serve as a bridge to the developer community. I focus not only on solving
+                        technical problems but also on promoting effective communication and collaboration.
+                    </p>
+                    <ul>
+                        <li>Code review and mentoring in multiple open source projects</li>
+                        <li>Creation and improvement of technical documentation</li>
+                        <li>Speaking and knowledge sharing at community events</li>
+                    </ul>
+
+                    <h2>Future Goals</h2>
+                    <p>
+                        I aim to contribute to further improving developer experience and revitalizing the open source
+                        community. I am particularly interested in developing AI-powered development support tools and
+                        building sustainable open source ecosystems.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex space-x-4 mb-8">
+                <button
+                    class="flex-1 btn-gradient text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    Export
+                </button>
+                <button
+                    class="flex-1 btn-secondary text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z">
+                        </path>
+                    </svg>
+                    Share
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass border-t border-gray-800 mt-auto">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-sm text-gray-400">&copy; 2025 Git Resume. All rights reserved.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="/terms"
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Terms of
+                        Service</a>
+                    <a href="/privacy"
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Privacy
+                        Policy</a>
+                    <a href="/help"
+                        class="text-sm text-gray-400 hover:text-purple-300 transition-all duration-300">Help</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
