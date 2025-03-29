@@ -9,26 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-        }
-
-        .bg-gradient-custom {
             background-image: linear-gradient(to bottom right, #0F172A, #172554, #581C87);
         }
 
@@ -47,18 +30,6 @@
             background-image: linear-gradient(to right, #9333EA, #3B82F6, #22D3EE);
         }
 
-        .btn-secondary-gradient {
-            background-image: linear-gradient(to right, #6366F1, #8B5CF6, #D946EF);
-        }
-
-        .btn-secondary-gradient-hover {
-            background-image: linear-gradient(to right, #D946EF, #8B5CF6, #6366F1);
-        }
-
-        .border-gradient {
-            border-image: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA) 1;
-        }
-
         .divider-gradient {
             height: 2px;
             background-image: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA);
@@ -70,80 +41,13 @@
             border-radius: 1.5px;
         }
 
-        .chart-bar-1 {
-            background-image: linear-gradient(to right, #22D3EE, #3B82F6);
-        }
-
-        .chart-bar-2 {
-            background-image: linear-gradient(to right, #3B82F6, #9333EA);
-        }
-
-        .chart-bar-3 {
-            background-image: linear-gradient(to right, #9333EA, #D946EF);
-        }
-
-        .chart-bar-4 {
-            background-image: linear-gradient(to right, #6366F1, #8B5CF6);
-        }
-
-        .chart-bar-5 {
-            background-image: linear-gradient(to right, #8B5CF6, #D946EF);
-        }
-
-        .donut-chart {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: conic-gradient(#22D3EE 0% 25%,
-                    #3B82F6 25% 45%,
-                    #9333EA 45% 60%,
-                    #D946EF 60% 75%,
-                    #6366F1 75% 100%);
-            position: relative;
-        }
-
-        .donut-chart::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background-color: #0F172A;
-            border-radius: 50%;
-        }
-
-        .network-node {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            position: absolute;
-            transition: all 0.3s ease;
-        }
-
-        .network-node:hover {
-            transform: scale(1.5);
-        }
-
-        .network-line {
-            height: 1px;
-            background-color: rgba(255, 255, 255, 0.2);
-            position: absolute;
-            transform-origin: 0 0;
-        }
-
-        .tab-transition {
-            transition: all 0.3s ease;
-        }
-
         .table-row-hover:hover {
             background-color: rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
 
-<body class="bg-gradient-custom min-h-screen text-white">
+<body class="min-h-screen text-white">
     <div class="container mx-auto px-4 py-8 flex flex-col min-h-screen">
         <!-- ヘッダー -->
         <header class="py-4 mb-8">
@@ -165,16 +69,7 @@
                         </li>
                         <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">設定</a>
                         </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center text-gray-300 hover:text-white transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                ユーザー名
-                            </a>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">ユーザー名</a>
                         </li>
                     </ul>
                 </nav>
@@ -196,8 +91,6 @@
                                 <span class="bg-blue-900/60 text-blue-300 text-xs px-2 py-1 rounded-full">GitHub</span>
                                 <span class="bg-purple-900/60 text-purple-300 text-xs px-2 py-1 rounded-full">San
                                     Francisco, CA</span>
-                                <span
-                                    class="bg-cyan-900/60 text-cyan-300 text-xs px-2 py-1 rounded-full">2011年から活動</span>
                             </div>
                             <p class="text-gray-400 text-sm">調査完了: 2025/03/29 14:46</p>
                         </div>
@@ -216,47 +109,25 @@
                                     <p class="text-gray-400 text-sm">リポジトリ</p>
                                 </div>
                             </div>
-                            <div class="flex space-x-2">
-                                <a href="#"
-                                    class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    GitHub
-                                </a>
-                                <a href="#"
-                                    class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path
-                                            d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                                    </svg>
-                                    メール
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- タブナビゲーション -->
                 <div class="mb-8">
-                    <div class="flex overflow-x-auto scrollbar-hide">
-                        <button class="px-6 py-3 font-medium text-white focus:outline-none tab-transition relative">
+                    <div class="flex overflow-x-auto">
+                        <button class="px-6 py-3 font-medium text-white focus:outline-none relative">
                             基本情報
                             <div class="absolute bottom-0 left-0 right-0 tab-gradient-active"></div>
                         </button>
                         <button
-                            class="px-6 py-3 font-medium text-gray-400 hover:text-white focus:outline-none tab-transition">リポジトリ分析</button>
+                            class="px-6 py-3 font-medium text-gray-400 hover:text-white focus:outline-none">リポジトリ分析</button>
                         <button
-                            class="px-6 py-3 font-medium text-gray-400 hover:text-white focus:outline-none tab-transition">コントリビューション</button>
+                            class="px-6 py-3 font-medium text-gray-400 hover:text-white focus:outline-none">コントリビューション</button>
                         <button
-                            class="px-6 py-3 font-medium text-gray-400 hover:text-white focus:outline-none tab-transition">ネットワーク</button>
+                            class="px-6 py-3 font-medium text-gray-400 hover:text-white focus:outline-none">ネットワーク</button>
                         <button
-                            class="px-6 py-3 font-medium text-gray-400 hover:text-white focus:outline-none tab-transition">技術スタック</button>
+                            class="px-6 py-3 font-medium text-gray-400 hover:text-white focus:outline-none">技術スタック</button>
                     </div>
                     <div class="divider-gradient"></div>
                 </div>
@@ -285,39 +156,8 @@
                                     <p>GitHub</p>
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-sm">ウェブサイト</p>
-                                    <a href="#"
-                                        class="text-blue-400 hover:text-blue-300 transition-colors duration-300">https://github.com/octocat</a>
-                                </div>
-                                <div>
                                     <p class="text-gray-400 text-sm">アカウント作成日</p>
                                     <p>2011年1月25日 (14年以上前)</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-400 text-sm">最終活動日</p>
-                                    <p>2025年3月28日 (1日前)</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-black/60 backdrop-blur-sm border border-gray-800 rounded-lg shadow-xl p-6">
-                            <h3 class="text-xl font-semibold mb-4">組織</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center">
-                                    <img src="https://github.com/identicons/github.png" alt="Organization Logo"
-                                        class="w-10 h-10 rounded-md mr-4">
-                                    <div>
-                                        <p class="font-medium">GitHub</p>
-                                        <p class="text-gray-400 text-sm">メンバー</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <img src="https://github.com/identicons/octo-org.png" alt="Organization Logo"
-                                        class="w-10 h-10 rounded-md mr-4">
-                                    <div>
-                                        <p class="font-medium">Octo Organization</p>
-                                        <p class="text-gray-400 text-sm">コントリビューター</p>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -345,70 +185,6 @@
                                     <p class="text-gray-400 text-sm">コードレビュー</p>
                                 </div>
                             </div>
-
-                            <h4 class="font-medium mb-3">活動カレンダーヒートマップ</h4>
-                            <div class="bg-gray-900/60 rounded-lg p-4">
-                                <div class="grid grid-cols-53 gap-1 h-20">
-                                    <!-- 活動ヒートマップの各セル (52週 + 曜日ラベル) -->
-                                    <div class="flex flex-col justify-between text-xs text-gray-500">
-                                        <span>月</span>
-                                        <span>水</span>
-                                        <span>金</span>
-                                    </div>
-                                    <!-- 実際のヒートマップセル (ランダムな活動レベルを表現) -->
-                                    <!-- 各週のセル (52週分) -->
-                                    <!-- 色の濃さで活動量を表現: bg-green-900 (少) → bg-green-800 → bg-green-700 → bg-green-600 → bg-green-500 (多) -->
-                                    <!-- 以下は例として一部のセルを表示 -->
-                                    <div class="grid grid-rows-7 gap-1">
-                                        <div class="bg-green-900 rounded-sm"></div>
-                                        <div class="bg-gray-800 rounded-sm"></div>
-                                        <div class="bg-green-800 rounded-sm"></div>
-                                        <div class="bg-gray-800 rounded-sm"></div>
-                                        <div class="bg-green-700 rounded-sm"></div>
-                                        <div class="bg-gray-800 rounded-sm"></div>
-                                        <div class="bg-green-900 rounded-sm"></div>
-                                    </div>
-                                    <!-- 残りの週は省略 (実際には52週分表示) -->
-                                    <!-- 例として数週間分だけ表示 -->
-                                    <div class="grid grid-rows-7 gap-1">
-                                        <div class="bg-gray-800 rounded-sm"></div>
-                                        <div class="bg-green-700 rounded-sm"></div>
-                                        <div class="bg-green-600 rounded-sm"></div>
-                                        <div class="bg-green-800 rounded-sm"></div>
-                                        <div class="bg-gray-800 rounded-sm"></div>
-                                        <div class="bg-green-900 rounded-sm"></div>
-                                        <div class="bg-gray-800 rounded-sm"></div>
-                                    </div>
-                                    <div class="grid grid-rows-7 gap-1">
-                                        <div class="bg-green-800 rounded-sm"></div>
-                                        <div class="bg-green-700 rounded-sm"></div>
-                                        <div class="bg-green-500 rounded-sm"></div>
-                                        <div class="bg-green-600 rounded-sm"></div>
-                                        <div class="bg-green-900 rounded-sm"></div>
-                                        <div class="bg-gray-800 rounded-sm"></div>
-                                        <div class="bg-green-800 rounded-sm"></div>
-                                    </div>
-                                    <!-- 残りは省略 -->
-                                </div>
-                                <div class="flex justify-between text-xs text-gray-500 mt-1">
-                                    <span>4月</span>
-                                    <span>7月</span>
-                                    <span>10月</span>
-                                    <span>1月</span>
-                                    <span>現在</span>
-                                </div>
-                                <div class="flex items-center justify-end mt-2">
-                                    <span class="text-xs text-gray-500 mr-2">活動量:</span>
-                                    <div class="flex space-x-1">
-                                        <div class="w-3 h-3 bg-gray-800 rounded-sm"></div>
-                                        <div class="w-3 h-3 bg-green-900 rounded-sm"></div>
-                                        <div class="w-3 h-3 bg-green-800 rounded-sm"></div>
-                                        <div class="w-3 h-3 bg-green-700 rounded-sm"></div>
-                                        <div class="w-3 h-3 bg-green-600 rounded-sm"></div>
-                                        <div class="w-3 h-3 bg-green-500 rounded-sm"></div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="bg-black/60 backdrop-blur-sm border border-gray-800 rounded-lg shadow-xl p-6">
@@ -421,55 +197,25 @@
                                             <th class="text-left py-3 px-4">説明</th>
                                             <th class="text-center py-3 px-4">スター</th>
                                             <th class="text-center py-3 px-4">フォーク</th>
-                                            <th class="text-center py-3 px-4">言語</th>
-                                            <th class="text-right py-3 px-4">最終更新</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr class="border-b border-gray-800 table-row-hover">
                                             <td class="py-3 px-4">
-                                                <a href="#"
-                                                    class="text-blue-400 hover:text-blue-300 transition-colors duration-300">Spoon-Knife</a>
+                                                <a href="#" class="text-blue-400 hover:text-blue-300">Spoon-Knife</a>
                                             </td>
                                             <td class="py-3 px-4 text-gray-300">This repo is for demonstration purposes
                                                 only.</td>
                                             <td class="py-3 px-4 text-center">11.2k</td>
                                             <td class="py-3 px-4 text-center">127k</td>
-                                            <td class="py-3 px-4 text-center">
-                                                <span
-                                                    class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-1"></span>
-                                                HTML
-                                            </td>
-                                            <td class="py-3 px-4 text-right text-gray-400 text-sm">3日前</td>
                                         </tr>
                                         <tr class="border-b border-gray-800 table-row-hover">
                                             <td class="py-3 px-4">
-                                                <a href="#"
-                                                    class="text-blue-400 hover:text-blue-300 transition-colors duration-300">Hello-World</a>
+                                                <a href="#" class="text-blue-400 hover:text-blue-300">Hello-World</a>
                                             </td>
                                             <td class="py-3 px-4 text-gray-300">My first repository on GitHub!</td>
                                             <td class="py-3 px-4 text-center">2.8k</td>
                                             <td class="py-3 px-4 text-center">3.1k</td>
-                                            <td class="py-3 px-4 text-center">
-                                                <span class="inline-block w-3 h-3 rounded-full bg-gray-500 mr-1"></span>
-                                                なし
-                                            </td>
-                                            <td class="py-3 px-4 text-right text-gray-400 text-sm">1週間前</td>
-                                        </tr>
-                                        <tr class="table-row-hover">
-                                            <td class="py-3 px-4">
-                                                <a href="#"
-                                                    class="text-blue-400 hover:text-blue-300 transition-colors duration-300">octocat.github.io</a>
-                                            </td>
-                                            <td class="py-3 px-4 text-gray-300">Octocat's personal website</td>
-                                            <td class="py-3 px-4 text-center">456</td>
-                                            <td class="py-3 px-4 text-center">210</td>
-                                            <td class="py-3 px-4 text-center">
-                                                <span
-                                                    class="inline-block w-3 h-3 rounded-full bg-purple-500 mr-1"></span>
-                                                CSS
-                                            </td>
-                                            <td class="py-3 px-4 text-right text-gray-400 text-sm">2週間前</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -483,30 +229,11 @@
                     <button
                         class="relative py-3 px-6 rounded-md font-medium text-white transition-all duration-300 group overflow-hidden">
                         <span class="absolute inset-0 w-full h-full btn-gradient rounded-md"></span>
-                        <span
-                            class="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 btn-gradient-hover rounded-md transition-opacity duration-300"></span>
                         <span class="relative flex items-center justify-center">
                             エクスポート
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20"
                                 fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </span>
-                    </button>
-
-                    <button
-                        class="relative py-3 px-6 rounded-md font-medium text-white transition-all duration-300 group overflow-hidden">
-                        <span class="absolute inset-0 w-full h-full btn-secondary-gradient rounded-md"></span>
-                        <span
-                            class="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 btn-secondary-gradient-hover rounded-md transition-opacity duration-300"></span>
-                        <span class="relative flex items-center justify-center">
-                            共有
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path
-                                    d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
                             </svg>
                         </span>
                     </button>
@@ -529,3 +256,15 @@
         <footer class="py-6 mt-12">
             <div class="divider-gradient mb-6"></div>
             <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 Deep Research. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm">利用規約</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm">プライバシーポリシー</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm">サポート</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
