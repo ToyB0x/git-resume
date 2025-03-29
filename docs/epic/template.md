@@ -7,7 +7,16 @@
   - PROGRESS.md // Epicの進捗をマークダウンのリストチェックボックス形式で簡単に記載したもの
   - ARCHITECTURE.md // Epicのアーキテクチャや設計思想を記載
   - USER-GUIDE.md // Epicで追加される機能のユーザガイド
-  - UI.md // Epicで追加されるUIの詳細 (UIがない場合は省略)
+  - UI.md // Epicで追加されるUIの詳細 (UIがない場合は省略)。ui モックを作成するための以下のセクションと内容を含む
+    - セクション名: HTMLモック生成プロンプト例
+    - 内容: HTMLモックを生成するためのプロンプト例を記載
+      - 以下のプロンプト等でHTMLを生成することができます:
+        ```html
+        UI.md に合わせて画面案を html でページごとに mocks 出力して下さい
+        (Roo ModeはDesignerで実行して下さい)
+        ``` 
+      - 生成したHTMLはHTMLディレクトリで `pnpm dlx http-server` を実行して閲覧できます
+
 
 ## 注意事項
 
