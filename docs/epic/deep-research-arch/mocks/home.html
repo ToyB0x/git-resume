@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Research - ホーム</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body
+    style="font-family: 'Open Sans', sans-serif; font-size: 16px; color: #333333; margin: 0; padding: 0; background-color: #FFFFFF; line-height: 1.5;">
+    <!-- ヘッダー -->
+    <header
+        style="background-color: #3366CC; color: #FFFFFF; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <div style="display: flex; align-items: center;">
+            <h1 style="font-family: 'Roboto', sans-serif; font-size: 24px; margin: 0; font-weight: 700;">Deep Research
+            </h1>
+        </div>
+        <nav style="display: flex; align-items: center;">
+            <a href="#" style="color: #FFFFFF; text-decoration: none; margin-right: 24px; font-size: 16px;">ダッシュボード</a>
+            <a href="#" style="color: #FFFFFF; text-decoration: none; margin-right: 24px; font-size: 16px;">ヘルプ</a>
+            <div style="display: flex; align-items: center; cursor: pointer;">
+                <span class="material-icons" style="margin-right: 8px;">account_circle</span>
+                <span>ログイン</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main style="max-width: 1200px; margin: 0 auto; padding: 40px 24px;">
+        <!-- ヒーローセクション -->
+        <section style="text-align: center; margin-bottom: 60px;">
+            <h2 style="font-family: 'Roboto', sans-serif; font-size: 32px; color: #333333; margin-bottom: 16px;">
+                GitHubユーザーの詳細分析</h2>
+            <p style="font-size: 18px; color: #777777; max-width: 700px; margin: 0 auto 32px;">Deep
+                Researchを使用して、GitHubユーザーのリポジトリ、コントリビューション、ネットワーク、技術スタックを深く分析しましょう。</p>
+
+            <!-- 検索フォーム -->
+            <div
+                style="max-width: 600px; margin: 0 auto; background-color: #F5F7FA; padding: 32px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <form style="display: flex; flex-direction: column;">
+                    <label for="github-username" style="font-weight: 600; margin-bottom: 8px; text-align: left;">GitHub
+                        ユーザー名</label>
+                    <div style="display: flex; margin-bottom: 16px;">
+                        <input type="text" id="github-username" placeholder="例: octocat"
+                            style="flex: 1; padding: 12px 16px; border: 1px solid #CCCCCC; border-radius: 4px; font-size: 16px; outline: none;">
+                    </div>
+                    <button type="submit"
+                        style="background-color: #FF6633; color: white; border: none; border-radius: 4px; padding: 12px 24px; font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 16px; cursor: pointer; transition: background-color 0.3s;">調査開始</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 最近の調査 -->
+        <section style="margin-bottom: 60px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h3 style="font-family: 'Roboto', sans-serif; font-size: 20px; color: #333333; margin: 0;">最近の調査</h3>
+                <a href="#" style="color: #3366CC; text-decoration: none; font-weight: 600;">すべて表示</a>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
+                <!-- 調査カード1 -->
+                <div
+                    style="background-color: #F5F7FA; border-radius: 8px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <div style="padding: 20px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                            <img src="https://github.com/identicons/octocat.png" alt="octocat"
+                                style="width: 48px; height: 48px; border-radius: 50%; margin-right: 12px;">
+                            <div>
+                                <h4 style="font-family: 'Roboto', sans-serif; font-size: 18px; margin: 0 0 4px 0;">
+                                    octocat</h4>
+                                <p style="color: #777777; font-size: 14px; margin: 0;">2025/03/28 完了</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #777777;">
+                            <span><span class="material-icons"
+                                    style="font-size: 16px; vertical-align: middle; margin-right: 4px;">folder</span>42
+                                リポジトリ</span>
+                            <span><span class="material-icons"
+                                    style="font-size: 16px; vertical-align: middle; margin-right: 4px;">code</span>5
+                                言語</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 調査カード2 -->
+                <div
+                    style="background-color: #F5F7FA; border-radius: 8px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <div style="padding: 20px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                            <img src="https://github.com/identicons/torvalds.png" alt="torvalds"
+                                style="width: 48px; height: 48px; border-radius: 50%; margin-right: 12px;">
+                            <div>
+                                <h4 style="font-family: 'Roboto', sans-serif; font-size: 18px; margin: 0 0 4px 0;">
+                                    torvalds</h4>
+                                <p style="color: #777777; font-size: 14px; margin: 0;">2025/03/25 完了</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #777777;">
+                            <span><span class="material-icons"
+                                    style="font-size: 16px; vertical-align: middle; margin-right: 4px;">folder</span>10
+                                リポジトリ</span>
+                            <span><span class="material-icons"
+                                    style="font-size: 16px; vertical-align: middle; margin-right: 4px;">code</span>3
+                                言語</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 調査カード3 -->
+                <div
+                    style="background-color: #F5F7FA; border-radius: 8px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <div style="padding: 20px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                            <img src="https://github.com/identicons/gaearon.png" alt="gaearon"
+                                style="width: 48px; height: 48px; border-radius: 50%; margin-right: 12px;">
+                            <div>
+                                <h4 style="font-family: 'Roboto', sans-serif; font-size: 18px; margin: 0 0 4px 0;">
+                                    gaearon</h4>
+                                <p style="color: #777777; font-size: 14px; margin: 0;">2025/03/20 完了</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #777777;">
+                            <span><span class="material-icons"
+                                    style="font-size: 16px; vertical-align: middle; margin-right: 4px;">folder</span>28
+                                リポジトリ</span>
+                            <span><span class="material-icons"
+                                    style="font-size: 16px; vertical-align: middle; margin-right: 4px;">code</span>4
+                                言語</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 機能紹介 -->
+        <section style="background-color: #F5F7FA; padding: 40px; border-radius: 8px; margin-bottom: 60px;">
+            <h3
+                style="font-family: 'Roboto', sans-serif; font-size: 20px; color: #333333; margin: 0 0 24px 0; text-align: center;">
+                Deep Researchの機能</h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+                <!-- 機能1 -->
+                <div style="text-align: center;">
+                    <span class="material-icons"
+                        style="font-size: 48px; color: #3366CC; margin-bottom: 16px;">analytics</span>
+                    <h4 style="font-family: 'Roboto', sans-serif; font-size: 18px; margin: 0 0 8px 0;">リポジトリ分析</h4>
+                    <p style="color: #777777; font-size: 14px; margin: 0;">コード量、言語使用率、コミット頻度などを詳細に分析します。</p>
+                </div>
+
+                <!-- 機能2 -->
+                <div style="text-align: center;">
+                    <span class="material-icons"
+                        style="font-size: 48px; color: #3366CC; margin-bottom: 16px;">people</span>
+                    <h4 style="font-family: 'Roboto', sans-serif; font-size: 18px; margin: 0 0 8px 0;">ネットワーク分析</h4>
+                    <p style="color: #777777; font-size: 14px; margin: 0;">コラボレーターやフォロワーとの関係性を可視化します。</p>
+                </div>
+
+                <!-- 機能3 -->
+                <div style="text-align: center;">
+                    <span class="material-icons"
+                        style="font-size: 48px; color: #3366CC; margin-bottom: 16px;">code</span>
+                    <h4 style="font-family: 'Roboto', sans-serif; font-size: 18px; margin: 0 0 8px 0;">技術スタック</h4>
+                    <p style="color: #777777; font-size: 14px; margin: 0;">使用言語、フレームワーク、ライブラリを特定します。</p>
+                </div>
+
+                <!-- 機能4 -->
+                <div style="text-align: center;">
+                    <span class="material-icons"
+                        style="font-size: 48px; color: #3366CC; margin-bottom: 16px;">history</span>
+                    <h4 style="font-family: 'Roboto', sans-serif; font-size: 18px; margin: 0 0 8px 0;">活動履歴</h4>
+                    <p style="color: #777777; font-size: 14px; margin: 0;">時間帯別、曜日別の活動パターンを分析します。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- フッター -->
+    <footer style="background-color: #F5F7FA; padding: 40px 24px; border-top: 1px solid #EEEEEE;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 32px;">
+                <div style="margin-bottom: 24px; min-width: 200px;">
+                    <h3 style="font-family: 'Roboto', sans-serif; font-size: 18px; margin: 0 0 16px 0;">Deep Research
+                    </h3>
+                    <p style="color: #777777; font-size: 14px; margin: 0;">GitHubユーザーの詳細分析ツール</p>
+                </div>
+
+                <div style="margin-bottom: 24px; min-width: 200px;">
+                    <h4 style="font-family: 'Roboto', sans-serif; font-size: 16px; margin: 0 0 16px 0;">リンク</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 8px;"><a href="#"
+                                style="color: #777777; text-decoration: none; font-size: 14px;">ホーム</a></li>
+                        <li style="margin-bottom: 8px;"><a href="#"
+                                style="color: #777777; text-decoration: none; font-size: 14px;">機能</a></li>
+                        <li style="margin-bottom: 8px;"><a href="#"
+                                style="color: #777777; text-decoration: none; font-size: 14px;">料金プラン</a></li>
+                        <li><a href="#" style="color: #777777; text-decoration: none; font-size: 14px;">よくある質問</a></li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 24px; min-width: 200px;">
+                    <h4 style="font-family: 'Roboto', sans-serif; font-size: 16px; margin: 0 0 16px 0;">サポート</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 8px;"><a href="#"
+                                style="color: #777777; text-decoration: none; font-size: 14px;">ヘルプセンター</a></li>
+                        <li style="margin-bottom: 8px;"><a href="#"
+                                style="color: #777777; text-decoration: none; font-size: 14px;">お問い合わせ</a></li>
+                        <li><a href="#" style="color: #777777; text-decoration: none; font-size: 14px;">フィードバック</a></li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 24px; min-width: 200px;">
+                    <h4 style="font-family: 'Roboto', sans-serif; font-size: 16px; margin: 0 0 16px 0;">法的情報</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 8px;"><a href="#"
+                                style="color: #777777; text-decoration: none; font-size: 14px;">利用規約</a></li>
+                        <li style="margin-bottom: 8px;"><a href="#"
+                                style="color: #777777; text-decoration: none; font-size: 14px;">プライバシーポリシー</a></li>
+                        <li><a href="#" style="color: #777777; text-decoration: none; font-size: 14px;">クッキーポリシー</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding-top: 24px; border-top: 1px solid #EEEEEE;">
+                <p style="color: #777777; font-size: 14px; margin: 0;">© 2025 Deep Research. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
