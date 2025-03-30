@@ -14,7 +14,7 @@ RUN apt update && apt install -y \
 FROM node_base AS node_pruner
 WORKDIR /pruner
 COPY . ./
-RUN npx turbo prune @resume/api --docker
+RUN npx turbo prune @resume/job --docker
 
 ###
 # Node Builder
@@ -33,7 +33,7 @@ RUN pnpm install --frozen-lockfile
 
 # After installing the dependencies, copy the main code files and build (as they change more often)
 COPY --from=node_pruner /pruner/out/full/ .
-RUN pnpm turbo run build --filter=...@resume/api
+RUN pnpm turbo run build --filter=...@resume/job
 
 # > The prune command does not support recursive execution on a monorepo currently. To only install production-dependencies in a monorepo node_modules folders can be deleted and then re-installed with pnpm install --prod
 # > https://pnpm.io/cli/prune
@@ -51,12 +51,8 @@ COPY --from=node_builder /builder .
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV PORT=8080
-
-# Expose port
-EXPOSE 8080
 
 # Start the application
-CMD ["node", "apps/api/dist/index.cjs"]
+CMD ["node", "apps/job/dist/index.cjs"]
 
-# docker build -t api -f apps/api/Dockerfile . --progress plain && docker run -p 3000:3000 --env-file .env api
+# docker build -t job -f apps/job/Dockerfile . --progress plain && docker run --env-file .env job

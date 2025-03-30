@@ -1,0 +1,23 @@
+{
+  "name": "@resume/db",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "dotenv -e ../../.env -- drizzle-kit migrate",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.40.1"
+  },
+  "devDependencies": {
+    "@neondatabase/serverless": "^1.0.0",
+    "@tsconfig/strictest": "2.0.5",
+    "@types/node": "22.13.5",
+    "dotenv-cli": "8.0.0",
+    "drizzle-kit": "0.30.5",
+    "typescript": "5.7.3"
+  }
+}

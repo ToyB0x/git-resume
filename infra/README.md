@@ -3,6 +3,10 @@
 ## Commands
 
 ```shell
+# local (For firebase auth)
+make terraform.init.local
+make terraform.apply.local
+
 # dev
 make terraform.init.dev
 make terraform.apply.dev
