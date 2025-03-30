@@ -1,9 +1,9 @@
-import { useParams, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Layout } from "../components/layout/Layout";
-import { UserInfoCard } from "../components/ui/UserInfoCard";
-import { StepCard } from "../components/ui/StepCard";
 import { SectionTitle } from "../components/ui/SectionTitle";
-import { getMockUser, getMockResearchPlan } from "../data/mockData";
+import { StepCard } from "../components/ui/StepCard";
+import { UserInfoCard } from "../components/ui/UserInfoCard";
+import { getMockResearchPlan, getMockUser } from "../data/mockData";
 import type { Route } from "./+types/github.$username.plan";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
@@ -17,7 +17,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Page() {
   const { username } = useParams<{ username: string }>();
   const navigate = useNavigate();
-  
+
   // モックデータの取得
   const user = getMockUser(username || "");
   const plan = getMockResearchPlan(username || "");
@@ -38,7 +38,7 @@ export default function Page() {
           <UserInfoCard user={user} showLocation showProfileLink />
 
           {/* Research Plan Overview */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-6">
             <SectionTitle>Research Plan Overview</SectionTitle>
 
             <div className="space-y-4">
@@ -49,20 +49,13 @@ export default function Page() {
           </div>
 
           {/* Estimated Time Display */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-6">
             <SectionTitle>Estimated Time</SectionTitle>
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-gray-300">
-                  Number of repositories: <span className="text-white font-medium">{plan.repositoryCount}</span>
-                </p>
-                <p className="text-gray-300 mt-1">
-                  Estimated time: <span className="text-white font-medium">about {plan.estimatedTime} minutes</span>
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-400">Results will be stored for 30 days</p>
-              </div>
+            <div className="text-sm text-gray-300">
+              <p>Number of repositories: {plan.repositoryCount}</p>
+              <p className="mt-1">
+                Estimated time: about {plan.estimatedTime} minutes
+              </p>
             </div>
           </div>
 

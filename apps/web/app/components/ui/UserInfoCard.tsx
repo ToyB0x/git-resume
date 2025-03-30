@@ -17,7 +17,7 @@ export function UserInfoCard({
 }: UserInfoCardProps) {
   return (
     <div
-      className={`glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8 ${className}`}
+      className={`glass rounded-xl border border-gray-800 shadow-xl px-6 py-4 mb-6 ${className}`}
     >
       <div className="flex items-center">
         <img
