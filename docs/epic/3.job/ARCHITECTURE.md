@@ -18,6 +18,7 @@
   - **実行環境**: GCP Cloud Run Jobs（サーバーレス、スケーラビリティ）
   - **処理管理**: 内蔵キュー管理（追加インフラ不要）
   - **データ永続化**: Neon.tech（PostgreSQL互換、サーバーレス）
+  - **CI/CD**: CloudBuild、ArtifactRegistry
 
 - **ローカル開発環境**:
   - **実行環境**: CLIコマンド実行（Cloud Run Jobsではなく直接コマンド実行）
@@ -202,17 +203,89 @@ export type NewResearchTask = typeof researchTasks.$inferInsert;
    - エンドポイント: `GET /api/research/:username/result`
    - レスポンス: マークダウン形式のレジュメ
 
-## デプロイメント設計
+## CI/CDとデプロイメント設計
 
-### 本番環境（Cloud Run Jobs）
+### CloudBuild経由のデプロイメント
 
-Cloud Run Jobsへのデプロイメント設計：
+CloudBuild、ArtifactRegistry、Cloud Run Jobsを連携させたCI/CDパイプラインを構築します：
 
-1. **Dockerイメージ**: 最適化されたDockerイメージの構築
-2. **環境変数**: 適切な環境変数の設定
-3. **リソース設定**: メモリと処理時間の設定
-4. **認証設定**: 適切な認証設定
-5. **CI/CD**: 自動デプロイパイプラインの構築
+```mermaid
+graph TD
+    A[Git Push] --> B[CloudBuild Trigger]
+    B --> C[CloudBuild Pipeline]
+    C --> D[Build Docker Image]
+    D --> E[Push to ArtifactRegistry]
+    E --> F[Deploy to Cloud Run Jobs]
+```
+
+1. **CloudBuild Trigger設定**:
+   - Terraformを使用してCloudBuild Triggerを設定
+   - 特定のブランチ（main, develop）へのプッシュでトリガー
+   - cloudbuild.ymlファイルを読み込んでビルドパイプラインを実行
+
+2. **cloudbuild.yml設計**:
+   ```yaml
+   steps:
+     # ビルド前の準備
+     - name: 'gcr.io/cloud-builders/npm'
+       args: ['install', '-g', 'pnpm@latest-10']
+     - name: 'gcr.io/cloud-builders/npm'
+       args: ['run', 'pnpm', 'install']
+     
+     # テスト実行
+     - name: 'gcr.io/cloud-builders/npm'
+       args: ['run', 'pnpm', 'test']
+     
+     # Dockerイメージのビルド
+     - name: 'gcr.io/cloud-builders/docker'
+       args: ['build', '-t', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_IMAGE}:${_TAG}', '-f', 'apps/job/Dockerfile', '.']
+     
+     # ArtifactRegistryへのプッシュ
+     - name: 'gcr.io/cloud-builders/docker'
+       args: ['push', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_IMAGE}:${_TAG}']
+     
+     # Cloud Run Jobsへのデプロイ
+     - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+       entrypoint: 'gcloud'
+       args:
+         - 'run'
+         - 'jobs'
+         - 'update'
+         - '${_JOB_NAME}'
+         - '--image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_IMAGE}:${_TAG}'
+         - '--region=${_REGION}'
+         - '--memory=${_MEMORY}'
+         - '--timeout=${_TIMEOUT}'
+         - '--max-retries=${_MAX_RETRIES}'
+         - '--set-env-vars=RESUME_ENV=${_ENV},RESUME_USERNAME=${_RESUME_USERNAME}'
+         - '--set-secrets=GITHUB_TOKEN=github-token:latest,RESUME_GEMINI_API_KEY=gemini-api-key:latest'
+   
+   substitutions:
+     _REGION: 'asia-northeast1'
+     _REPOSITORY: 'resume-jobs'
+     _IMAGE: 'resume-job'
+     _TAG: '${COMMIT_SHA}'
+     _JOB_NAME: 'resume-job'
+     _MEMORY: '2Gi'
+     _TIMEOUT: '3600s'
+     _MAX_RETRIES: '3'
+     _ENV: 'prd'
+     _RESUME_USERNAME: 'system'
+   
+   options:
+     logging: CLOUD_LOGGING_ONLY
+   ```
+
+3. **Terraform設定**:
+   - ArtifactRegistryリポジトリの作成
+   - CloudBuild Triggerの設定
+   - Cloud Run Jobsの設定
+   - Secret Managerでの機密情報管理
+
+4. **環境別設定**:
+   - 開発環境（dev）、ステージング環境（stg）、本番環境（prd）の設定
+   - 環境変数の切り替え
+   - リソース割り当ての調整
 
 ### ローカル開発環境
 
