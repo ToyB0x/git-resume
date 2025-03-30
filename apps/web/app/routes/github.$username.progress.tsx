@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { Layout } from "../components/layout/Layout";
+import { UserInfoCard } from "../components/ui/UserInfoCard";
 import { getMockUser, getMockResearchProgress } from "../data/mockData";
 import { ProgressBar } from "../components/ui/LoadingIndicators";
 import type { Route } from "./+types/github.$username.progress";
@@ -48,19 +49,7 @@ export default function Page() {
       <main className="flex-grow container mx-auto px-4 py-10">
         <div className="max-w-3xl mx-auto">
           {/* Basic Information Section */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
-            <div className="flex items-center">
-              <img 
-                src={user.avatarUrl} 
-                alt={`${user.name}'s GitHub Avatar`}
-                className="w-16 h-16 rounded-full mr-4"
-              />
-              <div>
-                <h2 className="text-2xl font-bold">{user.username}</h2>
-                <p className="text-gray-300">{user.bio}</p>
-              </div>
-            </div>
-          </div>
+          <UserInfoCard user={user} />
 
           {/* Progress Bar */}
           <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
