@@ -19,7 +19,7 @@ export const jobStatuses = [
 
 export const jobTbl = pgTable("job", {
   id: uuid().defaultRandom().primaryKey(),
-  login: varchar({ length: 24 }).notNull(),
+  login: varchar({ length: 24 }).notNull().unique(),
   status: text({ enum: jobStatuses }),
   progress: integer("progress").notNull().default(0),
   resume: text("resume"),

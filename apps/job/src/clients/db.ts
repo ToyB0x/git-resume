@@ -7,14 +7,26 @@ import { drizzle } from "drizzle-orm/neon-http";
 const sql = neon(env.RESUME_DB);
 const db = drizzle({ client: sql });
 
-export const insertStatus = async (userName: string) => {
+export const upsertStatus = async (userName: string) => {
   const job: NewJob = {
     login: userName,
     status: "SEARCHING",
     progress: 0,
   };
 
-  await db.insert(jobTbl).values(job);
+  const isExistUser = await db
+    .select()
+    .from(jobTbl)
+    .where(eq(jobTbl.login, userName));
+
+  if (isExistUser.length > 0) {
+    await db
+      .update(jobTbl)
+      .set({ status: job.status, progress: job.progress })
+      .where(eq(jobTbl.login, userName));
+  } else {
+    await db.insert(jobTbl).values(job);
+  }
 };
 
 export const updateStatus = async (

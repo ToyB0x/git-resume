@@ -4,7 +4,7 @@ import { retry } from "@resume/utils";
 
 export const summarize = async (userName: string) => {
   const packs = packService.load(userName);
-  for (const [i, pack] of Object.entries(packs)) {
+  for (const [i, pack] of packs.entries()) {
     logger.info(
       `Cloning ${pack.meta.owner}/${pack.meta.repo} (${i + 1} / ${packs.length})`,
     );
