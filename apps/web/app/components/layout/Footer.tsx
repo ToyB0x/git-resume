@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 export function Footer() {
   return (
-    <footer className="glass border-t border-gray-800 mt-auto py-4">
+    <footer className="border-t border-gray-800 mt-auto py-4">
       <div className="container mx-auto px-4">
         {/* ナビゲーションメニュー - 中央寄せで、横幅に収まりきらない項目は縦に折り返す */}
         <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">

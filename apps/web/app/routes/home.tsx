@@ -61,10 +61,7 @@ export default function Page() {
           />
         </div>
 
-        <button
-          type="submit"
-          className="w-full flex-1 btn-gradient text-white font-medium py-3 px-4 rounded-md transition-all duration-300"
-        >
+        <button type="submit" className="w-full btn-gradient  ">
           Search
         </button>
       </form>

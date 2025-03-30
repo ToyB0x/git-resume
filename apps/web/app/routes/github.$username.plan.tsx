@@ -26,19 +26,15 @@ export default function Page() {
     navigate(`/github/${username}/progress`);
   };
 
-  const handleCancel = () => {
-    navigate("/");
-  };
-
   return (
     // <main className="flex-grow container mx-auto px-4 py-10">
     <div className="container mx-auto max-w-3xl">
       {/* Basic Information Section */}
       <UserInfoCard user={user} />
 
-      {/* Research Plan Overview */}
+      {/* Research Plan */}
       <Card marginBottom="mb-6">
-        <SectionTitle className="w-fit">Research Plan Overview</SectionTitle>
+        <SectionTitle className="w-fit">Research Plan</SectionTitle>
 
         <div className="space-y-4">
           {plan.steps.map((step) => (
@@ -52,22 +48,13 @@ export default function Page() {
       </Card>
 
       {/* Action Buttons */}
-      <div className="flex space-x-4">
-        <button
-          type="button"
-          onClick={handleExecute}
-          className="flex-1 btn-gradient text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-        >
-          Execute Research
-        </button>
-        <button
-          type="button"
-          onClick={handleCancel}
-          className="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700"
-        >
-          Cancel
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={handleExecute}
+        className="w-full btn-gradient"
+      >
+        Execute Research
+      </button>
     </div>
   );
 }

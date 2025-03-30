@@ -68,17 +68,17 @@ export function getMockResearchPlan(): ResearchPlan {
     steps: [
       {
         id: 1,
-        name: "Repository Search",
-        description: "Search for repositories committed to in the past year",
+        name: "Search Repository",
+        description: "Find user's committed repositories",
       },
       {
         id: 2,
-        name: "Repository Clone",
+        name: "Clone Repository",
         description: "Clone repositories based on search results",
       },
       {
         id: 3,
-        name: "Repository Activity Analysis",
+        name: "Code Analysis",
         description: "Analyze commits in each repository in detail",
       },
       {
@@ -96,18 +96,18 @@ export function getMockResearchProgress(stage = 0) {
   const steps: ResearchStepStatus[] = [
     {
       id: 1,
-      name: "Repository Search",
+      name: "Search Repository",
       status: stage >= 1 ? "completed" : "waiting",
     },
     {
       id: 2,
-      name: "Repository Clone",
+      name: "Clone Repository",
       status: stage === 2 ? "in-progress" : stage > 2 ? "completed" : "waiting",
       progress: stage === 2 ? 45 : undefined,
     },
     {
       id: 3,
-      name: "Repository Activity Analysis",
+      name: "Code Analysis",
       status: stage === 3 ? "in-progress" : stage > 3 ? "completed" : "waiting",
     },
     {

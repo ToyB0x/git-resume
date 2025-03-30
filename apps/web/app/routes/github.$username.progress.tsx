@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { ShareButton } from "~/components/ui/ShareButton";
 import { Card } from "../components/ui/Card";
 import { SectionTitle } from "../components/ui/SectionTitle";
 import { StepCard } from "../components/ui/StepCard";
@@ -52,7 +53,7 @@ export default function Page() {
 
       {/* Step List */}
       <Card marginBottom="mb-6">
-        <SectionTitle className="w-fit">Research Steps</SectionTitle>
+        <SectionTitle className="w-fit">Research Progress</SectionTitle>
 
         <div className="space-y-4 mb-6">
           {progress.steps.map((step) => (
@@ -82,22 +83,14 @@ export default function Page() {
             />
           </svg>
           <span className="text-sm">
-            You can safely exit at any time. Research will continue in the
-            background.
+            You can safely exit at any time.
+            <br />
+            Research will continue in the background.
           </span>
         </div>
       </Card>
 
-      {/* Action Button */}
-      <div className="flex justify-center">
-        <button
-          type="button"
-          onClick={handleCancel}
-          className="bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700"
-        >
-          Cancel Research
-        </button>
-      </div>
+      <ShareButton />
     </div>
   );
 }
