@@ -1,5 +1,5 @@
 resource "google_artifact_registry_repository" "git_job" {
-  location      = "asia-northeast1"
+  location      = "us-central1"
   repository_id = "git-job"
   format        = "DOCKER"
 
