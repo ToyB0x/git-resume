@@ -26,11 +26,11 @@ body {
 
 /* Button gradient */
 .btn-gradient {
-  @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600;
+  @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-700;
 }
 
 .btn-gradient:hover {
-  @apply bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-700;
+  @apply bg-gradient-to-l from-blue-500 to-purple-800;
 }
 
 /* Glass morphism */
