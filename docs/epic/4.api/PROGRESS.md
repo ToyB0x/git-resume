@@ -9,10 +9,11 @@
   - [ ] 環境変数の設定（GitHub API Token、Database URL等）
 
 - [ ] **APIエンドポイント実装**
-  - [ ] 初期状態確認API
-    - [ ] `GET /api/research/:username/status`
+  - [ ] 研究状態API（統合エンドポイント）
+    - [ ] `GET /api/research/:username`
     - [ ] データベースからの状態取得ロジック
-    - [ ] レスポンス形式の定義
+    - [ ] 状態に応じたレスポンス形式の定義
+    - [ ] 総合的な進捗計算ロジックの実装
   - [ ] 1次調査API
     - [ ] `GET /api/research/:username/profile`
     - [ ] GitHub APIからのプロフィール情報取得
@@ -21,14 +22,6 @@
     - [ ] `POST /api/research/:username/start`
     - [ ] データベースへの初期状態記録
     - [ ] Cloud Run Jobsの起動
-    - [ ] レスポンス形式の定義
-  - [ ] 進捗確認API
-    - [ ] `GET /api/research/:username/progress`
-    - [ ] データベースからの進捗情報取得
-    - [ ] レスポンス形式の定義
-  - [ ] 結果取得API
-    - [ ] `GET /api/research/:username/result`
-    - [ ] データベースからのレジュメ取得
     - [ ] レスポンス形式の定義
 
 - [ ] **エラーハンドリング**

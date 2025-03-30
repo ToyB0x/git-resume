@@ -23,37 +23,54 @@
   - Cloud Run Jobs API（2次調査ジョブの起動）
 - **データベース連携**: Neon.tech（PostgreSQL互換、サーバーレス）
 
-### APIエンドポイント設計
+### APIエンドポイント設計（簡略化版）
 
 ```mermaid
 graph TD
-    A[クライアント] --> B[初期状態確認API]
+    A[クライアント] --> B[研究状態API]
     A --> C[1次調査API]
     A --> D[2次調査起動API]
-    A --> E[進捗確認API]
-    A --> F[結果取得API]
     
     B --> G[データベース]
     C --> H[GitHub API]
     D --> I[Cloud Run Jobs]
     D --> G
-    E --> G
-    F --> G
 ```
 
-#### 1. 初期状態確認API
+#### 1. 研究状態API（統合エンドポイント）
 
-- **エンドポイント**: `GET /api/research/:username/status`
-- **目的**: GitHub User名に対する現在の調査状態を確認する
+- **エンドポイント**: `GET /api/research/:username`
+- **目的**: GitHub User名に対する現在の調査状態、進捗、結果を一括取得する
 - **処理内容**:
   - データベースからユーザーの状態を取得
-  - 状態に応じたレスポンスを返却
-- **レスポンス例**:
+  - 状態に応じたレスポンスを返却（進捗情報や結果を含む）
+  - STATUSとPROGRESSから総合的な進捗状況を計算
+- **レスポンス例（未実行の場合）**:
   ```json
   {
+    "exists": false,
+    "message": "No research data found for this username"
+  }
+  ```
+- **レスポンス例（実行中の場合）**:
+  ```json
+  {
+    "exists": true,
+    "status": "ANALYZING",
+    "progress": 60,
+    "total_progress": 70,
+    "updated_at": "2025-03-30T15:10:00Z"
+  }
+  ```
+- **レスポンス例（完了の場合）**:
+  ```json
+  {
+    "exists": true,
     "status": "COMPLETED",
     "progress": 100,
-    "updated_at": "2025-03-30T15:00:00Z"
+    "total_progress": 100,
+    "resume": "# octocat's Resume\n\n## Skills\n\n- JavaScript: Advanced\n- Python: Intermediate\n...",
+    "updated_at": "2025-03-30T15:30:00Z"
   }
   ```
 
@@ -94,37 +111,42 @@ graph TD
   }
   ```
 
-#### 4. 進捗確認API
+#### 進捗計算ロジック
 
-- **エンドポイント**: `GET /api/research/:username/progress`
-- **目的**: 2次調査の進捗状況を確認する
-- **処理内容**:
-  - データベースから進捗情報を取得
-  - 進捗状況を返却
-- **レスポンス例**:
-  ```json
-  {
-    "status": "ANALYZING",
-    "progress": 60,
-    "updated_at": "2025-03-30T15:10:00Z"
+STATUSとPROGRESSから総合的な進捗状況を計算するロジックは以下の通りです：
+
+```typescript
+function calculateTotalProgress(status: string, progress: number): number {
+  // 各ステータスの重み（合計100%）
+  const weights = {
+    "SEARCHING": 10,
+    "CLONING": 20,
+    "ANALYZING": 40,
+    "CREATING": 30,
+    "COMPLETED": 0,
+    "FAILED": 0
+  };
+  
+  // 完了したステップの進捗
+  let completedProgress = 0;
+  
+  // 現在のステップより前のステップは100%完了とみなす
+  for (const step of Object.keys(weights)) {
+    if (step === status) {
+      // 現在のステップは、そのステップの重みに対する現在の進捗の割合
+      return completedProgress + (weights[step] * progress / 100);
+    }
+    
+    // 完了したステップの重みを加算
+    completedProgress += weights[step];
   }
-  ```
+  
+  // COMPLETED または FAILED の場合は100%
+  return 100;
+}
+```
 
-#### 5. 結果取得API
-
-- **エンドポイント**: `GET /api/research/:username/result`
-- **目的**: 2次調査の結果（レジュメ）を取得する
-- **処理内容**:
-  - データベースからレジュメを取得
-  - マークダウン形式で返却
-- **レスポンス例**:
-  ```json
-  {
-    "resume": "# octocat's Resume\n\n## Skills\n\n- JavaScript: Advanced\n- Python: Intermediate\n...",
-    "status": "COMPLETED",
-    "updated_at": "2025-03-30T15:30:00Z"
-  }
-  ```
+このロジックにより、クライアントは単一のAPIコールで現在の状態と総合的な進捗状況を取得できます。
 
 ### エラーハンドリング設計
 
