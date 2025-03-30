@@ -87,17 +87,13 @@ graph TD
 
 ```
 job
-├── clone
-│   └── repositories <userName> [options]
-├── pack
-│   └── create <userName>
-├── summary
-│   └── create <userName> [options]
-└── resume
-    └── create <userName> [options]
+└── run
+    └── loginName
 ```
 
-各コマンドは独立して実行可能であり、また連続して実行することでパイプライン全体を構成します。これにより、特定のステップだけを再実行したり、デバッグしたりすることが容易になります。
+このコマンドは、指定されたGitHubユーザー名に対して、リポジトリの検索、クローン、分析、レジュメ生成までの一連の処理を実行します。内部的には各ステップが順番に実行され、エラーが発生した場合は適切にハンドリングされます。
+
+開発時には、各ステップの処理を個別にテストしたりデバッグしたりするための内部実装が含まれていますが、ユーザーに対しては単一のコマンドとして提供されます。
 
 ### ローカル開発環境のセットアップ
 
@@ -127,44 +123,48 @@ job
 進捗状態は以下のように定義され、データベースに記録されます：
 
 ```typescript
-type ProgressStatus = 
-  | "SEARCHING"  // リポジトリを検索中
-  | "CLONING"    // リポジトリをClone中
-  | "ANALYZING"  // リポジトリの活動を分析中
-  | "CREATING"   // Resumeの作成中
-  | "COMPLETED"  // Resume作成済み
-  | "FAILED";    // 処理失敗
+export const jobStatuses = [
+  "SEARCHING", // リポジトリを検索中
+  "CLONING",   // リポジトリをClone中
+  "ANALYZING", // リポジトリの活動を分析中
+  "CREATING",  // Resumeの作成中
+  "COMPLETED", // Resume作成済み
+  "FAILED",    // 処理失敗
+] as const;
 ```
 
 進捗情報には以下の情報が含まれます：
 
-- 現在のステータス
+- 現在のステータス（上記のいずれか）
 - 進捗率（0-100%）
-- 詳細情報（例: "3/10リポジトリ処理中"）
-- 更新元（"worker"または"job"）
-- タイムスタンプ
+- タイムスタンプ（作成日時、更新日時）
+
+データベースクライアントは以下の操作を提供します：
+
+- `upsertStatus`: ユーザーの状態を作成または更新
+- `updateStatus`: ステータスを更新
+- `updateProgress`: 進捗率を更新
+- `addResume`: 生成されたレジュメを保存
 
 ### データベーススキーマ設計
 
 Drizzleを使用して以下のスキーマを定義します：
 
 ```typescript
-// research_tasks テーブル
-export const researchTasks = pgTable('research_tasks', {
-  github_username: text('github_username').primaryKey(),
-  status: text('status').notNull(),
-  progress: integer('progress').notNull().default(0),
-  detail: text('detail'),
-  updated_by: text('updated_by').notNull(),
-  resume: text('resume'),
-  created_at: timestamp('created_at').notNull().defaultNow(),
-  updated_at: timestamp('updated_at').notNull().defaultNow(),
-  expires_at: timestamp('expires_at').notNull(),
+// job テーブル
+export const jobTbl = pgTable("job", {
+  id: uuid().defaultRandom().primaryKey(),
+  login: varchar({ length: 24 }).notNull().unique(),
+  status: text({ enum: jobStatuses }),
+  progress: integer("progress").notNull().default(0),
+  resume: text("resume"),
+  created_at: timestamp("created_at").notNull().defaultNow(),
+  updated_at: timestamp("updated_at").notNull().defaultNow(),
 });
 
 // 型定義
-export type ResearchTask = typeof researchTasks.$inferSelect;
-export type NewResearchTask = typeof researchTasks.$inferInsert;
+export type Job = typeof jobTbl.$inferSelect;
+export type NewJob = typeof jobTbl.$inferInsert;
 ```
 
 ### エラーハンドリング設計
