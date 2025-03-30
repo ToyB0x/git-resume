@@ -19,9 +19,7 @@ export default function Page() {
   const { username } = useParams<{ username: string }>();
   const navigate = useNavigate();
   const [stage, setStage] = useState(1);
-  const [progress, setProgress] = useState(
-    getMockResearchProgress(username || "", stage),
-  );
+  const [progress, setProgress] = useState(getMockResearchProgress(stage));
 
   // 進捗状況を定期的に更新するシミュレーション
   useEffect(() => {
@@ -34,7 +32,7 @@ export default function Page() {
     // 各ステージは10秒間隔で進行
     const timer = setTimeout(() => {
       setStage((prevStage) => prevStage + 1);
-      setProgress(getMockResearchProgress(username || "", stage + 1));
+      setProgress(getMockResearchProgress(stage + 1));
     }, 10000);
 
     return () => clearTimeout(timer);

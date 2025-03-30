@@ -96,7 +96,7 @@ export function getMockResearchPlan(username: string): ResearchPlan {
   };
 }
 
-export function getMockResearchProgress(username: string, stage = 0) {
+export function getMockResearchProgress(stage = 0) {
   const steps: ResearchStepStatus[] = [
     {
       id: 1,
