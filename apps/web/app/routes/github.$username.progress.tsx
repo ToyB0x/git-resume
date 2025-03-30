@@ -34,7 +34,7 @@ export default function Page() {
     const timer = setTimeout(() => {
       setStage((prevStage) => prevStage + 1);
       setProgress(getMockResearchProgress(stage + 1));
-    }, 30 * 1000);
+    }, 3 * 1000);
 
     return () => clearTimeout(timer);
   }, [stage, username, navigate]);

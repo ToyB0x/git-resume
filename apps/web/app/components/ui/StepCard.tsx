@@ -26,7 +26,7 @@ export function StepCard({
     if (stepName.includes("Search")) {
       return (
         <svg
-          className="w-4 h-4 text-blue-400"
+          className="w-4 h-4 text-gray-300"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ export function StepCard({
     if (stepName.includes("Clone")) {
       return (
         <svg
-          className="w-4 h-4 text-blue-400"
+          className="w-4 h-4 text-gray-300"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ export function StepCard({
     if (stepName.includes("Analysis")) {
       return (
         <svg
-          className="w-4 h-4 text-blue-400"
+          className="w-4 h-4 text-gray-300"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@ export function StepCard({
     if (stepName.includes("Resume") || stepName.includes("Creation")) {
       return (
         <svg
-          className="w-4 h-4 text-blue-400"
+          className="w-4 h-4 text-gray-300"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
