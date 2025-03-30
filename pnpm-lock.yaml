@@ -106,6 +106,12 @@ importers:
       '@inquirer/confirm':
         specifier: ^5.1.6
         version: 5.1.6(@types/node@22.13.5)
+      '@neondatabase/serverless':
+        specifier: ^1.0.0
+        version: 1.0.0
+      '@resume/db':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@resume/models':
         specifier: workspace:*
         version: link:../../packages/models
@@ -124,6 +130,9 @@ importers:
       dotenv-cli:
         specifier: 8.0.0
         version: 8.0.0
+      drizzle-orm:
+        specifier: 0.40.1
+        version: 0.40.1(@cloudflare/workers-types@4.20250313.0)(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.11.11)(gel@2.0.1)
       pino:
         specifier: 9.6.0
         version: 9.6.0

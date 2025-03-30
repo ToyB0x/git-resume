@@ -7,13 +7,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@inquirer/confirm": "^5.1.6",
+    "@neondatabase/serverless": "^1.0.0",
+    "@resume/db": "workspace:*",
     "@resume/models": "workspace:*",
     "@resume/services": "workspace:*",
     "@resume/utils": "workspace:*",
-    "@inquirer/confirm": "^5.1.6",
     "@supercharge/promise-pool": "3.2.0",
     "commander": "13.1.0",
     "dotenv-cli": "8.0.0",
+    "drizzle-orm": "0.40.1",
     "pino": "9.6.0",
     "pino-pretty": "13.0.0",
     "valibot": "1.0.0-rc.2"

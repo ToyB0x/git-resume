@@ -9,6 +9,7 @@ const envSchema = v.object({
     v.literal("stg"),
     v.literal("prd"),
   ]),
+  RESUME_DB: v.pipe(v.string(), v.url()), // NEON DB URL
   // public mode では不要
   // GITHUB_TOKEN: v.pipe(v.string(), v.minLength(5)),
 });
