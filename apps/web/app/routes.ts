@@ -6,9 +6,6 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  // 既存のルート（互換性のために維持）
-  route("github/:userId", "routes/github.$userId.tsx"),
-
   layout("components/layout/Layout.tsx", [
     index("routes/home.tsx"),
     route("github/:username/plan", "routes/github.$username.plan.tsx"),
