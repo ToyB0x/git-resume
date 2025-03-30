@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: resume-postgres
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: resume
