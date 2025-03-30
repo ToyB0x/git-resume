@@ -47,7 +47,7 @@ export function Card({
 }: CardProps) {
   // 基本クラス名
   const baseClassName = "glass rounded-xl border border-gray-800 shadow-xl";
-  
+
   // 追加のクラス名を結合
   const combinedClassName = [
     baseClassName,

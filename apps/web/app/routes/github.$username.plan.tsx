@@ -27,7 +27,6 @@ export default function Page() {
   };
 
   return (
-    // <main className="flex-grow container mx-auto px-4 py-10">
     <div className="container mx-auto max-w-3xl">
       {/* Basic Information Section */}
       <UserInfoCard user={user} />
