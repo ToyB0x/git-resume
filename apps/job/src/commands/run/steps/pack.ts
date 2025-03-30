@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { packService } from "@resume/services";
 
-export const create = async (userName: string) => {
+export const pack = async (userName: string) => {
   const dir = "./generated/git";
   const orgDirs: string[] = fs.readdirSync(dir);
 
