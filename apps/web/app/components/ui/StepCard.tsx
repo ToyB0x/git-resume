@@ -63,10 +63,13 @@ export function StepCard({
     return <span className="text-xs font-medium">{stepId}</span>;
   };
 
+  // 共通のアイコン背景スタイル - サイトのアクセントカラーに合わせたグラデーション
+  const iconBgClass = "bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600";
+  
   if (status === "completed") {
     statusClasses = "border-green-800 bg-opacity-20 bg-green-900";
     statusIcon = (
-      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mr-3 shadow-sm">
+      <div className={`w-7 h-7 rounded-full ${iconBgClass} flex items-center justify-center mr-3 shadow-sm`}>
         <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <title>Completed</title>
           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -76,7 +79,7 @@ export function StepCard({
   } else if (status === "in-progress") {
     statusClasses = "border-blue-800 bg-opacity-20 bg-blue-900";
     statusIcon = (
-      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mr-3 animate-pulse shadow-sm">
+      <div className={`w-7 h-7 rounded-full ${iconBgClass} flex items-center justify-center mr-3 animate-pulse shadow-sm`}>
         <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <title>In Progress</title>
           <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
@@ -86,7 +89,7 @@ export function StepCard({
   } else {
     statusClasses = "border-gray-700";
     statusIcon = (
-      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center mr-3 shadow-sm">
+      <div className={`w-7 h-7 rounded-full ${iconBgClass} opacity-70 flex items-center justify-center mr-3 shadow-sm`}>
         {getStepIcon(step.id, step.name)}
       </div>
     );
@@ -96,7 +99,7 @@ export function StepCard({
   if (!status) {
     statusClasses = "border-gray-800 transition-all duration-300 hover:-translate-y-1 hover:border-blue-700";
     statusIcon = (
-      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-400 to-purple-600 flex items-center justify-center mr-3 shadow-sm">
+      <div className={`w-7 h-7 rounded-full ${iconBgClass} flex items-center justify-center mr-3 shadow-sm`}>
         {getStepIcon(step.id, step.name)}
       </div>
     );
