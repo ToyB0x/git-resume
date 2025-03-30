@@ -13,7 +13,7 @@
    - 実際のAPIが実装されるまでの間、フロントエンドの開発を進めるための仮データ
 
 3. **コンポーネントの再利用**
-   - 共通コンポーネント（ヘッダー、フッターなど）を作成し、各画面で再利用
+   - 共通コンポーネント（フッターなど）を作成し、各画面で再利用
    - デザインの一貫性を保ちつつ、開発効率を向上
 
 4. **段階的な実装**
@@ -25,7 +25,6 @@
 ```mermaid
 graph TD
     A[App Root] --> B[Layout]
-    B --> C[Header]
     B --> D[Main Content]
     B --> E[Footer]
     D --> F[Routes]
@@ -36,18 +35,24 @@ graph TD
     F --> K[Results]
     F --> L[Error]
     F --> M[Help]
-    N[Mock Data] --> I
-    N --> J
-    N --> K
+    F --> N[History]
+    O[Mock Data] --> I
+    O --> J
+    O --> K
 ```
 
 ## コンポーネント構成
 
 ### 共通コンポーネント
 - **Layout**: 全画面共通のレイアウトを提供
-- **Header**: ロゴとナビゲーションメニューを含むヘッダー
 - **Footer**: 著作権表示、リンクなどを含むフッター
 - **LoadingIndicator**: ローディング表示（スケルトン、スピナー、プログレスバー）
+- **Card**: ガラスモーフィズム風のカードコンポーネント
+- **HR**: 水平区切り線コンポーネント
+- **SectionTitle**: セクションタイトルコンポーネント
+- **StepCard**: ステップカードコンポーネント
+- **UserInfoCard**: ユーザー情報カードコンポーネント
+- **ShareButton**: 共有ボタンコンポーネント
 
 ### 画面コンポーネント
 - **Home**: ホーム画面（GitHub ユーザー名入力フォーム）
@@ -56,12 +61,13 @@ graph TD
 - **Results**: 調査結果画面（基本情報、レジュメ本文、アクションボタン）
 - **Error**: エラー画面（エラー情報、トラブルシューティング）
 - **Help**: ヘルプ・サポート画面（ユーザーガイド、FAQ、サポート連絡先）
+- **History**: 履歴画面（過去に調査したGitHubユーザーのリスト）
 
 ### モックデータ
-- **UserData**: GitHub ユーザーの基本情報
-- **PlanData**: 調査計画の情報
-- **ProgressData**: 調査進行状況の情報
-- **ResultsData**: レジュメ結果の情報
+- **GitHubUser**: GitHub ユーザーの基本情報
+- **ResearchPlan**: 調査計画の情報
+- **ResearchStepStatus**: 調査進行状況の情報
+- **ResumeResult**: レジュメ結果の情報
 
 ## ルーティング設計
 
@@ -73,6 +79,7 @@ graph LR
     A --> E["/error"]
     A --> F["/help"]
     A --> G["/github/:userId"]
+    A --> H["/history"]
 ```
 
 - `/`: ホーム画面
@@ -82,6 +89,7 @@ graph LR
 - `/error`: エラー画面
 - `/help`: ヘルプ・サポート画面
 - `/github/:userId`: 既存の GitHub ユーザー画面（維持）
+- `/history`: 履歴画面
 
 ## 状態管理
 

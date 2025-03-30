@@ -27,28 +27,28 @@
 **URL**: `/`
 
 **主要コンポーネント:**
-- 中央のパネルコンポーネント
+- 中央のパネルコンポーネント（Card）
   - サービスのロゴ（「Git Resume」に変更）
   - サービスの1行コンセプト
-  - GitHub User名入力フォーム
-  - 調査開始ボタン
-  - 水平区切り線
-  - Next step: Research Planning のテキスト
+  - GitHub User名入力フォーム（GithubIconを含む）
+  - 調査開始ボタン（btn-gradient）
+  - 水平区切り線（HR）
+  - "Proceed to research planning" のテキスト
 
 **変更点:**
 - サービス名を「GitHub Check」から「Git Resume」に変更
-- 「Next step: Research Planning」テキストの追加
-- ヘッダーとフッターの追加
+- 「Proceed to research planning」テキストの追加
+- フッターの追加
 
 ### 2. 調査計画画面（新規）
 
 **URL**: `/github/:username/plan`
 
 **主要コンポーネント:**
-- 基本情報セクション: GitHub User名と基本プロフィール
-- 調査計画概要: 実行予定の調査ステップのリスト
-- 予想時間表示: 各ステップと全体の予想所要時間
-- アクションボタン: 「Execute Research」と「Cancel」
+- 基本情報セクション: GitHub User名と基本プロフィール（UserInfoCard）
+- 調査計画概要: 実行予定の調査ステップのリスト（StepCard）
+- 予想時間表示: 全体の予想所要時間
+- アクションボタン: 「Execute Research」
 
 ### 3. 調査進行画面（新規）
 
@@ -67,7 +67,7 @@
 **主要コンポーネント:**
 - 基本情報: GitHub User名、プロフィール画像、基本プロフィール情報
 - レジュメ本文: AI生成のレジュメ（Markdown形式で表示）
-- アクションボタン: 「Export」と「Share」
+- アクションボタン: 「Export」と「Share」（ShareButton）
 
 ### 5. エラー画面（新規）
 
@@ -87,13 +87,22 @@
 - よくある質問（FAQ）
 - サポート連絡先
 
-### 7. 共通コンポーネント
+### 7. 履歴画面（新規）
+
+**URL**: `/history`
+
+**主要コンポーネント:**
+- 過去に調査したGitHubユーザーのリスト
+- 各ユーザーの基本情報と調査日時
+- 結果を再表示するためのリンク
+
+### 8. 共通コンポーネント
 
 **フッター**:
 
 全体を上限2段に分けて、以下の要素を含む:
 
-- ナビゲーションメニュー (中央寄席でレスポンシブ対応し、横幅に収まりきらない項目は縦に折り返す)
+- ナビゲーションメニュー (中央寄せでレスポンシブ対応し、横幅に収まりきらない項目は縦に折り返す)
   - Home
   - History
   - 利用規約へのリンク
@@ -105,6 +114,10 @@
 - スケルトンローダー
 - スピナー
 - プログレスバー
+
+**カードコンポーネント**:
+- ガラスモーフィズム風のカードコンポーネント
+- 調整可能なパディング、マージン、テキスト配置、最大幅、幅
 
 ## HTMLモック生成プロンプト例
 
@@ -124,11 +137,11 @@ UI.md に合わせて画面案を html でページごとに mocks 出力して�
 
 ## カラーパレット
 
-- **ベースカラー**: 
+- **ベースカラー**:
   - ダークテーマ: #0F172A (bg-gray-950)
   - グラデーション背景: #0F172A → #172554 → #581C87 (from-gray-950 via-blue-950 to-purple-950)
 
-- **アクセントカラー**: 
+- **アクセントカラー**:
   - プライマリグラデーション: #22D3EE → #3B82F6 → #9333EA (from-cyan-400 via-blue-500 to-purple-600)
   - セカンダリグラデーション: #6366F1 → #8B5CF6 → #D946EF (from-indigo-500 via-purple-500 to-pink-500)
 
@@ -141,10 +154,48 @@ UI.md に合わせて画面案を html でページごとに mocks 出力して�
 ## タイポグラフィ
 
 - **フォントファミリー**: "Inter", ui-sans-serif, system-ui, sans-serif
-- **見出し**: 
+- **見出し**:
   - H1: 2.25rem (text-4xl), font-bold/font-extrabold
   - H2: 1.875rem (text-3xl), font-bold
   - H3: 1.5rem (text-2xl), font-semibold
 - **本文**: 1rem (text-base), font-normal
 - **小テキスト**: 0.875rem (text-sm), font-normal
 - **ボタンテキスト**: 1rem (text-base), font-medium
+
+## CSS実装
+
+app.cssでは以下のようなスタイルが定義されています：
+
+```css
+/* Background gradient */
+.bg-gradient-dark {
+  @apply bg-gradient-to-br from-gray-950 via-blue-950 to-purple-950;
+}
+
+/* Text gradient */
+.text-gradient {
+  @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent;
+}
+
+/* Button gradient */
+.btn-gradient {
+  @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-700 text-white font-medium rounded-lg py-3 px-4;
+}
+
+/* HR gradient */
+.hr-gradient {
+  @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-700;
+}
+
+/* Glass morphism */
+.glass {
+  @apply bg-black/60 backdrop-blur-sm;
+}
+
+/* Progress gradient */
+.progress-gradient {
+  @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600;
+}
+```
+
+これらのスタイルは、UIコンポーネント全体で一貫して使用されています。
