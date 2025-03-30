@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router";
 import { Layout } from "../components/layout/Layout";
 import { UserInfoCard } from "../components/ui/UserInfoCard";
 import { StepCard } from "../components/ui/StepCard";
+import { SectionTitle } from "../components/ui/SectionTitle";
 import { getMockUser, getMockResearchPlan } from "../data/mockData";
 import type { Route } from "./+types/github.$username.plan";
 
@@ -38,7 +39,7 @@ export default function Page() {
 
           {/* Research Plan Overview */}
           <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
-            <h3 className="text-xl font-semibold mb-4">Research Plan Overview</h3>
+            <SectionTitle>Research Plan Overview</SectionTitle>
 
             <div className="space-y-4">
               {plan.steps.map((step) => (
@@ -49,7 +50,7 @@ export default function Page() {
 
           {/* Estimated Time Display */}
           <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
-            <h3 className="text-xl font-semibold mb-4">Estimated Time</h3>
+            <SectionTitle>Estimated Time</SectionTitle>
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-gray-300">

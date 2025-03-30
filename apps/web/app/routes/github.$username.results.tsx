@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import { Layout } from "../components/layout/Layout";
 import { UserInfoCard } from "../components/ui/UserInfoCard";
+import { SectionTitle } from "../components/ui/SectionTitle";
 import { getMockUser, getMockResumeResult } from "../data/mockData";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -46,6 +47,7 @@ export default function Page() {
 
           {/* Resume Content */}
           <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+            <SectionTitle>Resume Content</SectionTitle>
             <div className="prose prose-invert max-w-none text-gray-200">
               <ReactMarkdown
                 components={{

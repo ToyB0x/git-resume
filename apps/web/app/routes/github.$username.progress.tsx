@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Layout } from "../components/layout/Layout";
 import { UserInfoCard } from "../components/ui/UserInfoCard";
 import { StepCard } from "../components/ui/StepCard";
+import { SectionTitle } from "../components/ui/SectionTitle";
 import { getMockUser, getMockResearchProgress } from "../data/mockData";
 import { ProgressBar } from "../components/ui/LoadingIndicators";
 import type { Route } from "./+types/github.$username.progress";
@@ -55,7 +56,7 @@ export default function Page() {
           {/* Progress Bar */}
           <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-xl font-semibold">Research Progress</h3>
+              <SectionTitle className="mb-0">Research Progress</SectionTitle>
               <span className="text-gray-300">{progress.overallProgress}%</span>
             </div>
             <ProgressBar progress={progress.overallProgress} className="mb-4" />
@@ -72,7 +73,7 @@ export default function Page() {
 
           {/* Step List */}
           <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
-            <h3 className="text-xl font-semibold mb-4">Research Steps</h3>
+            <SectionTitle>Research Steps</SectionTitle>
 
             <div className="space-y-4">
               {progress.steps.map((step) => (
