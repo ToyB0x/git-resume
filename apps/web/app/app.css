@@ -46,5 +46,5 @@ body {
 /* Tab active style */
 .tab-active {
   border-bottom: 2px solid;
-  border-image: linear-gradient(to right, #22D3EE, #3B82F6, #9333EA) 1;
+  border-image: linear-gradient(to right, #22d3ee, #3b82f6, #9333ea) 1;
 }

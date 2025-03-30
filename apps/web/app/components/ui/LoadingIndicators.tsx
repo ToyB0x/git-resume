@@ -49,10 +49,18 @@ export function TextSkeletonLoader({
   return (
     <div className={`space-y-2 ${className}`} aria-label="Loading">
       <div className="h-2.5 bg-gray-800 rounded-full animate-pulse" />
-      {lines >= 2 && <div className="h-2.5 bg-gray-800 rounded-full animate-pulse" />}
-      {lines >= 3 && <div className="h-2.5 bg-gray-800 rounded-full animate-pulse" />}
-      {lines >= 4 && <div className="h-2.5 bg-gray-800 rounded-full animate-pulse" />}
-      {lines >= 5 && <div className="h-2.5 bg-gray-800 rounded-full animate-pulse" />}
+      {lines >= 2 && (
+        <div className="h-2.5 bg-gray-800 rounded-full animate-pulse" />
+      )}
+      {lines >= 3 && (
+        <div className="h-2.5 bg-gray-800 rounded-full animate-pulse" />
+      )}
+      {lines >= 4 && (
+        <div className="h-2.5 bg-gray-800 rounded-full animate-pulse" />
+      )}
+      {lines >= 5 && (
+        <div className="h-2.5 bg-gray-800 rounded-full animate-pulse" />
+      )}
       {/* 5行以上は必要に応じて追加 */}
     </div>
   );

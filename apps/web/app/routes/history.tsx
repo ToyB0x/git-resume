@@ -87,8 +87,12 @@ export default function Page() {
                   />
                   <div className="flex-1">
                     <div className="flex justify-between items-center">
-                      <h3 className="font-medium text-lg text-white">{item.username}</h3>
-                      <span className="text-sm text-gray-400">{formatDate(item.analyzedAt)}</span>
+                      <h3 className="font-medium text-lg text-white">
+                        {item.username}
+                      </h3>
+                      <span className="text-sm text-gray-400">
+                        {formatDate(item.analyzedAt)}
+                      </span>
                     </div>
                     <p className="text-gray-300 text-sm">{item.name}</p>
                   </div>
@@ -128,7 +132,8 @@ export default function Page() {
               </svg>
               <h3 className="text-xl font-semibold mb-2">No History Yet</h3>
               <p className="text-gray-400 mb-6">
-                You haven't analyzed any GitHub profiles yet. Start by entering a GitHub username on the home page.
+                You haven't analyzed any GitHub profiles yet. Start by entering
+                a GitHub username on the home page.
               </p>
               <Link
                 to="/"
@@ -158,7 +163,8 @@ export default function Page() {
               <div>
                 <h3 className="text-lg font-medium mb-2">About History</h3>
                 <p className="text-gray-300">
-                  Git Resume stores the results of your GitHub profile analyses for 30 days. You can access them anytime from this page.
+                  Git Resume stores the results of your GitHub profile analyses
+                  for 30 days. You can access them anytime from this page.
                 </p>
               </div>
             </div>

@@ -4,7 +4,7 @@ export default [
   // 既存のルート（互換性のために維持）
   index("routes/home.tsx"),
   route("github/:userId", "routes/github.$userId.tsx"),
-  
+
   // 新しいルート
   route("github/:username/plan", "routes/github.$username.plan.tsx"),
   route("github/:username/progress", "routes/github.$username.progress.tsx"),

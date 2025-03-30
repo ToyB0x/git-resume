@@ -1,12 +1,12 @@
-import { useParams } from "react-router";
-import { Layout } from "../components/layout/Layout";
-import { UserInfoCard } from "../components/ui/UserInfoCard";
-import { SectionTitle } from "../components/ui/SectionTitle";
-import { getMockUser, getMockResumeResult } from "../data/mockData";
 import ReactMarkdown from "react-markdown";
+import { useParams } from "react-router";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
+import { Layout } from "../components/layout/Layout";
+import { SectionTitle } from "../components/ui/SectionTitle";
+import { UserInfoCard } from "../components/ui/UserInfoCard";
+import { getMockResumeResult, getMockUser } from "../data/mockData";
 import type { Route } from "./+types/github.$username.results";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
@@ -19,7 +19,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Page() {
   const { username } = useParams<{ username: string }>();
-  
+
   // モックデータの取得
   const user = getMockUser(username || "");
   const result = getMockResumeResult(username || "");
@@ -38,11 +38,11 @@ export default function Page() {
       <main className="flex-grow container mx-auto px-4 py-10">
         <div className="max-w-4xl mx-auto">
           {/* Basic Information Section */}
-          <UserInfoCard 
-            user={user} 
-            showLocation 
-            showProfileLink 
-            additionalInfo={`Analysis completed: ${completedDate}`} 
+          <UserInfoCard
+            user={user}
+            showLocation
+            showProfileLink
+            additionalInfo={`Analysis completed: ${completedDate}`}
           />
 
           {/* Resume Content */}
@@ -154,9 +154,18 @@ export default function Page() {
               onClick={handleExport}
               className="flex-1 btn-gradient text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
             >
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <title>Export</title>
-                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
               </svg>
               Export
             </button>
@@ -165,7 +174,12 @@ export default function Page() {
               onClick={handleShare}
               className="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700 flex items-center justify-center"
             >
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <title>Share</title>
                 <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
               </svg>

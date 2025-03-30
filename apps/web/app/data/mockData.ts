@@ -32,7 +32,7 @@ export interface ResearchProgress {
 export interface ResearchStepStatus {
   id: number;
   name: string;
-  status: 'completed' | 'in-progress' | 'waiting';
+  status: "completed" | "in-progress" | "waiting";
   progress?: number | undefined;
   details?: string | undefined;
 }
@@ -47,41 +47,48 @@ export interface ResumeResult {
 export function getMockUser(username: string): GitHubUser {
   return {
     username,
-    name: username === 'octocat' ? 'The Octocat' : `${username.charAt(0).toUpperCase()}${username.slice(1)}`,
-    avatarUrl: username === 'octocat' 
-      ? 'https://avatars.githubusercontent.com/u/583231' 
-      : `https://avatars.githubusercontent.com/u/${Math.floor(Math.random() * 1000000)}`,
-    bio: username === 'octocat' ? 'The GitHub Mascot' : 'GitHub User',
-    location: username === 'octocat' ? 'San Francisco' : 'Earth',
+    name:
+      username === "octocat"
+        ? "The Octocat"
+        : `${username.charAt(0).toUpperCase()}${username.slice(1)}`,
+    avatarUrl:
+      username === "octocat"
+        ? "https://avatars.githubusercontent.com/u/583231"
+        : `https://avatars.githubusercontent.com/u/${Math.floor(Math.random() * 1000000)}`,
+    bio: username === "octocat" ? "The GitHub Mascot" : "GitHub User",
+    location: username === "octocat" ? "San Francisco" : "Earth",
     profileUrl: `https://github.com/${username}`,
-    repositories: username === 'octocat' ? 8 : Math.floor(Math.random() * 30) + 5,
+    repositories:
+      username === "octocat" ? 8 : Math.floor(Math.random() * 30) + 5,
   };
 }
 
 export function getMockResearchPlan(username: string): ResearchPlan {
-  const repositoryCount = username === 'octocat' ? 8 : Math.floor(Math.random() * 30) + 5;
-  
+  const repositoryCount =
+    username === "octocat" ? 8 : Math.floor(Math.random() * 30) + 5;
+
   return {
     steps: [
       {
         id: 1,
-        name: 'Repository Search',
-        description: 'Search for repositories committed to in the past year',
+        name: "Repository Search",
+        description: "Search for repositories committed to in the past year",
       },
       {
         id: 2,
-        name: 'Repository Clone',
+        name: "Repository Clone",
         description: `Clone about ${repositoryCount} repositories based on search results`,
       },
       {
         id: 3,
-        name: 'Repository Activity Analysis',
-        description: 'Analyze commit content in each repository in detail',
+        name: "Repository Activity Analysis",
+        description: "Analyze commit content in each repository in detail",
       },
       {
         id: 4,
-        name: 'Resume Creation',
-        description: 'Generate a resume in Markdown format from analysis results',
+        name: "Resume Creation",
+        description:
+          "Generate a resume in Markdown format from analysis results",
       },
     ],
     estimatedTime: repositoryCount * 1, // 1分/リポジトリと仮定
@@ -93,40 +100,40 @@ export function getMockResearchProgress(username: string, stage = 0) {
   const steps: ResearchStepStatus[] = [
     {
       id: 1,
-      name: 'Repository Search',
-      status: stage >= 1 ? 'completed' : 'waiting',
+      name: "Repository Search",
+      status: stage >= 1 ? "completed" : "waiting",
     },
     {
       id: 2,
-      name: 'Repository Clone',
-      status: stage === 2 ? 'in-progress' : (stage > 2 ? 'completed' : 'waiting'),
+      name: "Repository Clone",
+      status: stage === 2 ? "in-progress" : stage > 2 ? "completed" : "waiting",
       progress: stage === 2 ? 45 : undefined,
     },
     {
       id: 3,
-      name: 'Repository Activity Analysis',
-      status: stage === 3 ? 'in-progress' : (stage > 3 ? 'completed' : 'waiting'),
+      name: "Repository Activity Analysis",
+      status: stage === 3 ? "in-progress" : stage > 3 ? "completed" : "waiting",
     },
     {
       id: 4,
-      name: 'Resume Creation',
-      status: stage === 4 ? 'in-progress' : (stage > 4 ? 'completed' : 'waiting'),
+      name: "Resume Creation",
+      status: stage === 4 ? "in-progress" : stage > 4 ? "completed" : "waiting",
     },
   ];
 
   const currentStepMap: Record<number, string> = {
-    0: 'Not started',
-    1: 'Repository Search',
-    2: 'Repository Clone',
-    3: 'Repository Activity Analysis',
-    4: 'Resume Creation',
-    5: 'Complete',
+    0: "Not started",
+    1: "Repository Search",
+    2: "Repository Clone",
+    3: "Repository Activity Analysis",
+    4: "Resume Creation",
+    5: "Complete",
   };
 
   return {
     overallProgress: Math.min(100, stage * 20),
     steps,
-    currentStep: currentStepMap[stage] || 'Not started',
+    currentStep: currentStepMap[stage] || "Not started",
   };
 }
 
