@@ -34,7 +34,7 @@ export default function Page() {
     // <main className="flex-grow container mx-auto px-4 py-10">
     <div className="container mx-auto max-w-3xl">
       {/* Basic Information Section */}
-      <UserInfoCard user={user} showLocation showProfileLink />
+      <UserInfoCard user={user} />
 
       {/* Research Plan Overview */}
       <Card marginBottom="mb-6">

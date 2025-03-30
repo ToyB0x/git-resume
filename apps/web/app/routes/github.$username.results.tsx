@@ -23,7 +23,6 @@ export default function Page() {
   // モックデータの取得
   const user = getMockUser(username || "");
   const result = getMockResumeResult(username || "");
-  const completedDate = new Date(result.completedAt).toLocaleDateString();
 
   const handleExport = () => {
     alert("Export functionality would be implemented here");
@@ -36,12 +35,7 @@ export default function Page() {
   return (
     <div className="container mx-auto max-w-3xl pt-6">
       {/* Basic Information Section */}
-      <UserInfoCard
-        user={user}
-        showLocation
-        showProfileLink
-        additionalInfo={`Analysis completed: ${completedDate}`}
-      />
+      <UserInfoCard user={user} />
 
       {/* Resume Content */}
       <Card marginBottom="mb-8">
