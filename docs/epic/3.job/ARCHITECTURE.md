@@ -22,7 +22,7 @@
 
 - **ローカル開発環境**:
   - **実行環境**: CLIコマンド実行（Cloud Run Jobsではなく直接コマンド実行）
-  - **データベース**: Docker Composeで起動するローカルPostgres
+  - **データベース**: Neon.tech（PostgreSQL互換、サーバーレス）
   - **ORM**: Drizzle（TypeScript型安全なSQLビルダー）
 
 - **共通**:
@@ -103,10 +103,10 @@ job
 
 ローカル開発環境では、以下のセットアップを行います：
 
-1. **PostgreSQLのセットアップ**:
-   - Docker Composeを使用してPostgreSQLコンテナを起動
-   - 開発用のデータベースを作成
-   - マイグレーションスクリプトの実行
+1. **Neon.techのセットアップ**:
+   - Neon.techでプロジェクトを作成（開発用）
+   - データベースとブランチを作成
+   - 接続情報を取得
 
 2. **Drizzle ORMの設定**:
    - スキーマ定義
@@ -114,7 +114,7 @@ job
    - TypeScript型の生成
 
 3. **環境変数の設定**:
-   - データベース接続情報
+   - Neon.tech接続情報
    - GitHub API トークン
    - Gemini API キー
 
@@ -149,8 +149,8 @@ type ProgressStatus =
 Drizzleを使用して以下のスキーマを定義します：
 
 ```typescript
-// job テーブル
-export const researchTasks = pgTable('job', {
+// research_tasks テーブル
+export const researchTasks = pgTable('research_tasks', {
   github_username: text('github_username').primaryKey(),
   status: text('status').notNull(),
   progress: integer('progress').notNull().default(0),
@@ -287,31 +287,11 @@ graph TD
    - 環境変数の切り替え
    - リソース割り当ての調整
 
-### ローカル開発環境
+### データベース接続設定
 
-ローカル開発環境のセットアップ：
+Neon.techへの接続設定：
 
-1. **Docker Compose**: PostgreSQLコンテナの起動
-   ```yaml
-   # docker-compose.yml
-   version: '3'
-   services:
-     postgres:
-       image: postgres:16
-       environment:
-         POSTGRES_USER: resume
-         POSTGRES_PASSWORD: resume
-         POSTGRES_DB: resume
-       ports:
-         - "5432:5432"
-       volumes:
-         - postgres_data:/var/lib/postgresql/data
-   
-   volumes:
-     postgres_data:
-   ```
-
-2. **Drizzleセットアップ**:
+1. **Drizzleセットアップ**:
    ```typescript
    // drizzle.config.ts
    import type { Config } from 'drizzle-kit';
@@ -321,25 +301,28 @@ graph TD
      out: './drizzle',
      driver: 'pg',
      dbCredentials: {
-       host: process.env.DB_HOST || 'localhost',
-       port: Number(process.env.DB_PORT) || 5432,
-       user: process.env.DB_USER || 'resume',
-       password: process.env.DB_PASSWORD || 'resume',
-       database: process.env.DB_NAME || 'resume',
+       connectionString: process.env.DATABASE_URL || '',
      },
    } satisfies Config;
    ```
 
-3. **環境変数設定**:
+2. **環境変数設定**:
    ```
    # .env
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USER=resume
-   DB_PASSWORD=resume
-   DB_NAME=resume
+   DATABASE_URL=postgres://user:password@hostname:port/database
    GITHUB_TOKEN=your_github_token
    RESUME_GEMINI_API_KEY=your_gemini_api_key
+   ```
+
+3. **データベース接続コード**:
+   ```typescript
+   // db.ts
+   import { drizzle } from 'drizzle-orm/postgres-js';
+   import postgres from 'postgres';
+   
+   const connectionString = process.env.DATABASE_URL || '';
+   const client = postgres(connectionString);
+   export const db = drizzle(client);
    ```
 
 ## 監視設計
