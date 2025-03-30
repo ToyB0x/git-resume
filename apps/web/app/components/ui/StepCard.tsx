@@ -6,9 +6,16 @@ interface StepCardProps {
   status?: 'completed' | 'in-progress' | 'waiting';
   progress?: number | undefined;
   className?: string;
+  showProgressDetails?: boolean;
 }
 
-export function StepCard({ step, status, progress, className = "" }: StepCardProps) {
+export function StepCard({ 
+  step, 
+  status, 
+  progress, 
+  className = "",
+  showProgressDetails = false
+}: StepCardProps) {
   // ステータスに基づいてスタイルとアイコンを決定
   let statusClasses = "";
   let statusIcon = null;
@@ -52,28 +59,48 @@ export function StepCard({ step, status, progress, className = "" }: StepCardPro
     );
   }
 
+  // 進行中のステップの場合、残り時間を計算（モック）
+  const remainingTime = status === "in-progress" && progress !== undefined 
+    ? Math.ceil((100 - progress) / 10) // 10%ごとに1分と仮定
+    : null;
+
   return (
     <div className={`glass rounded-lg p-4 border ${statusClasses} ${className}`}>
-      <div className="flex items-center">
-        {statusIcon}
-        <div>
-          <h4 className={`font-medium ${
-            status === "completed" ? "text-green-300" : 
-            (status === "in-progress" ? "text-blue-300" : "text-white")
-          }`}>
-            {step.name}
-          </h4>
-          {status ? (
-            <p className={`text-sm mt-1 ${status === "waiting" ? "text-gray-500" : "text-gray-300"}`}>
-              {status === "completed" ? "Completed" : (status === "in-progress" ? "In progress" : "Waiting")}
-              {progress !== undefined && status === "in-progress" && ` (${progress}% completed)`}
-            </p>
-          ) : (
-            'description' in step && (
-              <p className="text-gray-300 mt-2">{step.description}</p>
-            )
-          )}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          {statusIcon}
+          <div>
+            <h4 className={`font-medium ${
+              status === "completed" ? "text-green-300" : 
+              (status === "in-progress" ? "text-blue-300" : "text-white")
+            }`}>
+              {step.name}
+            </h4>
+            {status ? (
+              <p className={`text-sm mt-1 ${status === "waiting" ? "text-gray-500" : "text-gray-300"}`}>
+                {status === "completed" ? "Completed" : (status === "in-progress" ? "In progress" : "Waiting")}
+              </p>
+            ) : (
+              'description' in step && (
+                <p className="text-gray-300 mt-2">{step.description}</p>
+              )
+            )}
+          </div>
         </div>
+
+        {/* 進捗状況の詳細表示（showProgressDetailsがtrueの場合のみ） */}
+        {showProgressDetails && status === "in-progress" && progress !== undefined && (
+          <div className="text-right">
+            <div className="text-blue-300 font-medium animate-pulse">
+              {progress}%
+            </div>
+            {remainingTime !== null && (
+              <div className="text-sm text-gray-400">
+                ~{remainingTime} min left
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
