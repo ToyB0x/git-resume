@@ -25,7 +25,7 @@ export function StepCard({
     // ステップ名に基づいて適切なアイコンを返す
     if (stepName.includes("Search")) {
       return (
-        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <title>Search</title>
           <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
         </svg>
@@ -34,7 +34,7 @@ export function StepCard({
     
     if (stepName.includes("Clone")) {
       return (
-        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <title>Clone</title>
           <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
         </svg>
@@ -43,7 +43,7 @@ export function StepCard({
     
     if (stepName.includes("Analysis")) {
       return (
-        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <title>Analysis</title>
           <path fillRule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
         </svg>
@@ -52,7 +52,7 @@ export function StepCard({
     
     if (stepName.includes("Resume") || stepName.includes("Creation")) {
       return (
-        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <title>Resume</title>
           <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
         </svg>
@@ -60,36 +60,29 @@ export function StepCard({
     }
     
     // デフォルトは数字を表示
-    return <span className="text-xs font-medium">{stepId}</span>;
+    return <span className="text-sm font-medium text-blue-400">{stepId}</span>;
   };
-
-  // 共通のアイコン背景スタイル - サイトのアクセントカラーに合わせたグラデーション
-  const iconBgClass = "bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600";
   
   if (status === "completed") {
     statusClasses = "border-green-800 bg-opacity-20 bg-green-900";
     statusIcon = (
-      <div className={`w-7 h-7 rounded-full ${iconBgClass} flex items-center justify-center mr-3 shadow-sm`}>
-        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <title>Completed</title>
-          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-        </svg>
-      </div>
+      <svg className="w-5 h-5 text-green-400 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <title>Completed</title>
+        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+      </svg>
     );
   } else if (status === "in-progress") {
     statusClasses = "border-blue-800 bg-opacity-20 bg-blue-900";
     statusIcon = (
-      <div className={`w-7 h-7 rounded-full ${iconBgClass} flex items-center justify-center mr-3 animate-pulse shadow-sm`}>
-        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <title>In Progress</title>
-          <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-        </svg>
-      </div>
+      <svg className="w-5 h-5 text-blue-400 mr-3 animate-pulse" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <title>In Progress</title>
+        <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+      </svg>
     );
   } else {
     statusClasses = "border-gray-700";
     statusIcon = (
-      <div className={`w-7 h-7 rounded-full ${iconBgClass} opacity-70 flex items-center justify-center mr-3 shadow-sm`}>
+      <div className="mr-3 opacity-70">
         {getStepIcon(step.id, step.name)}
       </div>
     );
@@ -99,7 +92,7 @@ export function StepCard({
   if (!status) {
     statusClasses = "border-gray-800 transition-all duration-300 hover:-translate-y-1 hover:border-blue-700";
     statusIcon = (
-      <div className={`w-7 h-7 rounded-full ${iconBgClass} flex items-center justify-center mr-3 shadow-sm`}>
+      <div className="mr-3">
         {getStepIcon(step.id, step.name)}
       </div>
     );
