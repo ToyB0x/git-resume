@@ -33,7 +33,7 @@ export default function Page() {
     const timer = setTimeout(() => {
       setStage((prevStage) => prevStage + 1);
       setProgress(getMockResearchProgress(stage + 1));
-    }, 3 * 1000);
+    }, 31 * 1000);
 
     return () => clearTimeout(timer);
   }, [stage, username, navigate]);
@@ -67,7 +67,7 @@ export default function Page() {
         </div>
 
         {/* Safe Exit Indicator - 移動済み */}
-        <div className="flex items-center text-green-400">
+        <div className="flex items-center text-gray-400">
           <svg
             className="w-5 h-5 mr-2"
             fill="currentColor"
