@@ -1,15 +1,11 @@
-import type { ReactNode } from "react";
+import { Outlet } from "react-router";
 import { Footer } from "./Footer";
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-export function Layout({ children }: LayoutProps) {
+export default function Layout() {
   return (
     <div className="flex flex-col bg-gradient-dark">
       <main className="flex items-center justify-center min-h-screen">
-        {children}
+        <Outlet />
       </main>
       <Footer />
     </div>
