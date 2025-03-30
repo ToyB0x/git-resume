@@ -39,7 +39,9 @@ export default function Page() {
 
           {/* Research Plan Overview */}
           <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-6">
-            <SectionTitle>Research Plan Overview</SectionTitle>
+            <SectionTitle className="w-fit">
+              Research Plan Overview
+            </SectionTitle>
 
             <div className="space-y-4">
               {plan.steps.map((step) => (
@@ -50,7 +52,7 @@ export default function Page() {
 
           {/* Estimated Time Display */}
           <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-6">
-            <SectionTitle>Estimated Time</SectionTitle>
+            <SectionTitle className="w-fit">Estimated Time</SectionTitle>
             <div className="text-sm text-gray-300">
               <p>Number of repositories: {plan.repositoryCount}</p>
               <p className="mt-1">
