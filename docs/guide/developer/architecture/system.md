@@ -61,15 +61,16 @@ Deep Researchのアーキテクチャは、効率的な情報収集と分析を�
 **進捗状態と表示**:
 システムは以下の進捗状態を管理し、ユーザーに表示します：
 
-| 進捗状態 | 状態概要 | 更新元 |
-|---------|---------|-------|
-| リポジトリを検索中 | 直近 x 年以内にユーザが活動したことがあるリポジトリを検索 | CloudFlare Workers |
-| リポジトリをClone中 | 直近 x 年以内にユーザが活動したリポジトリをClone（Clone対象のリポジトリ総数も表示） | Cloud Run Jobs |
-| リポジトリの活動を分析中 | リポジトリごとにユーザのCommitログを詳細に分析中 | Cloud Run Jobs |
-| Resumeの作成中 | 上記全体をまとめて、Resumeを作成中 | Cloud Run Jobs |
-| Resume作成済み | 分析が完了し、結果の閲覧が可能 | Cloud Run Jobs |
+| 進捗状態 | 状態概要 |
+|---------|---------|
+| SEARCHING（リポジトリを検索中） | 直近 x 年以内にユーザが活動したことがあるリポジトリを検索 |
+| CLONING（リポジトリをClone中） | 直近 x 年以内にユーザが活動したリポジトリをClone |
+| ANALYZING（リポジトリの活動を分析中） | リポジトリごとにユーザのCommitログを詳細に分析中 |
+| CREATING（Resumeの作成中） | 上記全体をまとめて、Resumeを作成中 |
+| COMPLETED（Resume作成済み） | 分析が完了し、結果の閲覧が可能 |
+| FAILED（処理失敗） | 処理中にエラーが発生 |
 
-**注意**: 「リポジトリを検索中」ステップはCloudFlare Workersによって記録されます。これはCloud Run Jobsの起動まで時間がかかる場合があり、2次調査段階の重複実行を避けるためです。このステップまたはこれ以降のステップがDBに記録されていることをもって2次調査が進行または完了していることがわかります。それ以降の進捗状態の更新は全てCloud Run Jobsから行われます。
+**注意**: 現在の実装では、すべての進捗状態はCloud Run Jobsによって管理されています。将来的には、CloudFlare Workersとの連携も検討されています。
 
 ### 3. 状態管理アーキテクチャ
 
@@ -139,24 +140,25 @@ Deep Researchのアーキテクチャは、効率的な情報収集と分析を�
 
 システムで永続化が必要な最小限のデータモデルは以下の通りです：
 
-```
-ResearchTask
-  - github_username: String (PK) // GitHub User名（検索キー）
-  - status: String // "SEARCHING", "CLONING", "ANALYZING", "CREATING", "COMPLETED", "FAILED"
-  - progress: Integer // 0-100の進捗率
-  - detail: String // 現在の処理の詳細情報（例: "3/10リポジトリ処理中"）
-  - updated_by: String // "worker" または "job"
-  - resume: Text // 完成したマークダウン形式のResume（status=COMPLETEDの場合のみ）
-  - created_at: Timestamp
-  - updated_at: Timestamp
-  - expires_at: Timestamp // 作成から30日後
+```typescript
+// job テーブル
+export const jobTbl = pgTable("job", {
+  id: uuid().defaultRandom().primaryKey(),
+  login: varchar({ length: 24 }).notNull().unique(),
+  status: text({ enum: jobStatuses }),
+  progress: integer("progress").notNull().default(0),
+  resume: text("resume"),
+  created_at: timestamp("created_at").notNull().defaultNow(),
+  updated_at: timestamp("updated_at").notNull().defaultNow(),
+});
 ```
 
 注:
 1. 1次調査結果はキャッシュせず常に最新データを取得するため、データベースには保存しません。
 2. ユーザー情報（プラン種別など）は認証システムと連携する将来実装のために予約し、現段階では最小限のモデルとします。
-3. GitHub User名をプライマリキーとすることで、同一ユーザーの重複調査を防止し、再訪問時の状態復元を容易にします。
+3. `login`（GitHub User名）にユニーク制約を設定することで、同一ユーザーの重複調査を防止し、再訪問時の状態復元を容易にします。
 4. 結果データ（resume）を同一テーブルに保存することで、クエリの単純化とデータ整合性を確保します。
+5. 将来的には、詳細情報や有効期限などの追加カラムを検討します。
 
 ## ユーザーフローとシステムアーキテクチャ
 
@@ -275,21 +277,25 @@ GitHub User名入力後の状態遷移は以下のように設計されていま
   └── [2次調査未実行] → [1次調査実行] → [調査計画画面] → [実行ボタンクリック] → [調査実行中画面]
 ```
 
-2次調査の進捗ステップは以下のように定義され、更新元が明確に区別されます：
+2次調査の進捗ステップは以下のように定義されます：
 
 ```
-[調査開始] 
+[調査開始]
    ↓
-[リポジトリを検索中] // CloudFlare Workersが記録（2次調査の重複実行防止のため）
+[SEARCHING（リポジトリを検索中）]
    ↓
-[リポジトリをClone中] // Cloud Run Jobsが記録（以降すべてCloud Run Jobsが更新）
+[CLONING（リポジトリをClone中）]
    ↓
-[リポジトリの活動を分析中] // Cloud Run Jobsが記録
+[ANALYZING（リポジトリの活動を分析中）]
    ↓
-[Resumeの作成中] // Cloud Run Jobsが記録
+[CREATING（Resumeの作成中）]
    ↓
-[Resume作成済み] // Cloud Run Jobsが記録
+[COMPLETED（Resume作成済み）]
 ```
+
+エラーが発生した場合は、任意のステップから `FAILED` 状態に遷移します。
+
+現在の実装では、すべての状態遷移はCloud Run Jobsによって管理されています。将来的には、CloudFlare Workersとの連携による初期状態の記録なども検討されています。
 
 この状態遷移設計により、ユーザーは常に適切な画面を見ることができ、システムの現在の状態を理解できます。また、ユーザーがいつでも離脱し、再訪問した際にも適切な画面に誘導されます。
 

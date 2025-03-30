@@ -42,11 +42,8 @@ graph TD
     D --> E[Resumeの作成中]
     E --> F[Resume作成済み]
     
-    subgraph "CloudFlare Workers"
-    A
-    end
-    
     subgraph "Cloud Run Jobs"
+    A
     B
     C
     D
@@ -55,49 +52,39 @@ graph TD
     end
 ```
 
-**注意**: CloudFlare Workersは「リポジトリを検索中」の初期状態をデータベースに記録するだけで、実際の検索処理はCloud Run Jobsで行います。これはJobs起動待ちをユーザーに感じさせないための設計です。
+処理パイプラインは以下のステップで構成されています：
 
 1. **リポジトリ検索**: ユーザがCommitしたリポジトリの検索
    - GitHub REST APIを使用
    - 過去1年分のリポジトリを検索
-   - 検索結果をフィルタリング（言語、スター数など）
-   - **実行**: Cloud Run Jobs（CloudFlare Workersは初期状態のDB更新のみ）
+   - 検索結果をフィルタリング
 
 2. **リポジトリClone**: 検索結果に基づきリポジトリをClone
-   - 並列処理による効率化（最大10並列）
-   - 大規模リポジトリの部分クローン
-   - クローン失敗時のリトライ機能
+   - Gitコマンドを使用したクローン処理
+   - 一時ディレクトリへの保存
 
 3. **Commit抽出**: ユーザのCommitのみを抽出しpack
    - Gitコマンドを使用したユーザーのCommit抽出
-   - コミットメタデータの収集（日付、メッセージなど）
-   - 効率的なパック処理
+   - コミットメタデータの収集
 
 4. **AI要約**: リポジトリごとの活動サマリを生成
    - Gemini APIを使用
-   - リポジトリの言語、コミット内容、パターンの分析
-   - トークン制限に対応した分割処理
+   - リポジトリの言語、コミット内容の分析
 
 5. **AI横断分析**: 複数サマリからマークダウン形式のResumeを生成
    - Gemini APIを使用
    - スキルと経験の抽出
-   - 構造化されたマークダウン形式のレジュメ生成
+   - マークダウン形式のレジュメ生成
 
 ### コマンド構造設計
 
 ```
 job
-├── clone
-│   └── repositories <userName> [options]
-├── pack
-│   └── create <userName>
-├── summary
-│   └── create <userName> [options]
-└── resume
-    └── create <userName> [options]
+└── run
+    └── github <login>
 ```
 
-各コマンドは独立して実行可能であり、また連続して実行することでパイプライン全体を構成します。これにより、特定のステップだけを再実行したり、デバッグしたりすることが容易になります。
+このコマンドは、指定されたGitHubユーザー名に対して、リポジトリの検索、クローン、分析、レジュメ生成までの一連の処理を実行します。内部的には各ステップが順番に実行され、エラーが発生した場合は適切にハンドリングされます。
 
 ### ローカル開発環境のセットアップ
 
@@ -119,52 +106,55 @@ job
    - Gemini API キー
 
 4. **ジョブコマンドの実行**:
-   - `pnpm jobs <command> <subcommand> [options]`で直接実行
-   - 例: `pnpm jobs clone repositories username --public-only`
+   - `pnpm job run github <login>`で直接実行
 
 ### 進捗管理設計
 
 進捗状態は以下のように定義され、データベースに記録されます：
 
 ```typescript
-type ProgressStatus = 
-  | "SEARCHING"  // リポジトリを検索中
-  | "CLONING"    // リポジトリをClone中
-  | "ANALYZING"  // リポジトリの活動を分析中
-  | "CREATING"   // Resumeの作成中
-  | "COMPLETED"  // Resume作成済み
-  | "FAILED";    // 処理失敗
+export const jobStatuses = [
+  "SEARCHING", // リポジトリを検索中
+  "CLONING",   // リポジトリをClone中
+  "ANALYZING", // リポジトリの活動を分析中
+  "CREATING",  // Resumeの作成中
+  "COMPLETED", // Resume作成済み
+  "FAILED",    // 処理失敗
+] as const;
 ```
 
 進捗情報には以下の情報が含まれます：
 
-- 現在のステータス
+- 現在のステータス（上記のいずれか）
 - 進捗率（0-100%）
-- 詳細情報（例: "3/10リポジトリ処理中"）
-- 更新元（"worker"または"job"）
-- タイムスタンプ
+- タイムスタンプ（作成日時、更新日時）
+
+データベースクライアントは以下の操作を提供します：
+
+- `upsertStatus`: ユーザーの状態を作成または更新
+- `updateStatus`: ステータスを更新
+- `updateProgress`: 進捗率を更新
+- `addResume`: 生成されたレジュメを保存
 
 ### データベーススキーマ設計
 
 Drizzleを使用して以下のスキーマを定義します：
 
 ```typescript
-// research_tasks テーブル
-export const researchTasks = pgTable('research_tasks', {
-  github_username: text('github_username').primaryKey(),
-  status: text('status').notNull(),
-  progress: integer('progress').notNull().default(0),
-  detail: text('detail'),
-  updated_by: text('updated_by').notNull(),
-  resume: text('resume'),
-  created_at: timestamp('created_at').notNull().defaultNow(),
-  updated_at: timestamp('updated_at').notNull().defaultNow(),
-  expires_at: timestamp('expires_at').notNull(),
+// job テーブル
+export const jobTbl = pgTable("job", {
+  id: uuid().defaultRandom().primaryKey(),
+  login: varchar({ length: 24 }).notNull().unique(),
+  status: text({ enum: jobStatuses }),
+  progress: integer("progress").notNull().default(0),
+  resume: text("resume"),
+  created_at: timestamp("created_at").notNull().defaultNow(),
+  updated_at: timestamp("updated_at").notNull().defaultNow(),
 });
 
 // 型定義
-export type ResearchTask = typeof researchTasks.$inferSelect;
-export type NewResearchTask = typeof researchTasks.$inferInsert;
+export type Job = typeof jobTbl.$inferSelect;
+export type NewJob = typeof jobTbl.$inferInsert;
 ```
 
 ### エラーハンドリング設計
@@ -189,19 +179,7 @@ export type NewResearchTask = typeof researchTasks.$inferInsert;
 
 ## APIエンドポイント設計
 
-フロントエンドとの連携のために、以下のAPIエンドポイントを実装します：
-
-1. **ジョブ起動API**: 2次調査を開始するAPI
-   - エンドポイント: `POST /api/research/:username/start`
-   - レスポンス: ジョブID、初期状態
-
-2. **進捗確認API**: 2次調査の進捗を確認するAPI
-   - エンドポイント: `GET /api/research/:username/progress`
-   - レスポンス: 現在の状態、進捗率、詳細情報
-
-3. **結果取得API**: 2次調査の結果を取得するAPI
-   - エンドポイント: `GET /api/research/:username/result`
-   - レスポンス: マークダウン形式のレジュメ
+APIエンドポイントの実装は次のエピックで行われる予定です。
 
 ## CI/CDとデプロイメント設計
 
@@ -325,29 +303,6 @@ Neon.techへの接続設定：
    export const db = drizzle(client);
    ```
 
-## 監視設計
+## 今後の展望
 
-システムの健全性を監視するための設計：
-
-1. **ログ記録**: 詳細なログの記録と保存
-2. **メトリクス**: 処理時間、成功率などのメトリクス収集
-3. **アラート**: 異常検知時のアラート設定
-4. **ダッシュボード**: 運用状況の可視化
-
-## セキュリティ考慮事項
-
-セキュリティを確保するための設計：
-
-1. **認証**: 適切な認証設定
-2. **データ保護**: 機密情報の適切な取り扱い
-3. **リソース制限**: DoS攻撃対策としてのリソース制限
-4. **一時ファイル**: 一時的なリポジトリCloneの安全な管理と削除
-
-## 将来の拡張性
-
-このアーキテクチャは、以下の将来的な拡張を考慮して設計されています：
-
-1. **分析範囲の拡大**: 過去3年分など、より広い範囲の分析
-2. **追加の分析機能**: コード品質分析、貢献度分析など
-3. **他のバージョン管理システム**: GitLab、Bitbucketなどへの対応
-4. **より高度なAI分析**: 特定の技術スタックに特化した分析など
+監視設計、セキュリティ強化、機能拡張などは次のエピックで検討・実装予定です。
