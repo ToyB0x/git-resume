@@ -31,6 +31,14 @@ export interface CardProps {
    * 幅（w-full, w-autoなど）
    */
   width?: string;
+  /**
+   * 相対位置指定（relative, absoluteなど）
+   */
+  position?: string;
+  /**
+   * z-index（z-10, z-20など）
+   */
+  zIndex?: string;
 }
 
 /**
@@ -44,6 +52,8 @@ export function Card({
   textAlign = "",
   maxWidth = "",
   width = "",
+  position = "",
+  zIndex = "",
 }: CardProps) {
   // 基本クラス名
   const baseClassName = "glass rounded-xl border border-gray-800 shadow-xl";
@@ -56,6 +66,8 @@ export function Card({
     textAlign,
     maxWidth,
     width,
+    position,
+    zIndex,
     className,
   ]
     .filter(Boolean)
