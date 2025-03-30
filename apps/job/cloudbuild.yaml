@@ -1,0 +1,47 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: [
+        # NOTE: use bash & -c option for read secrets
+        # ref: https://cloud.google.com/build/docs/securing-builds/use-secrets?hl=ja#access-utf8-secrets
+        '-c',
+        'docker build --file apps/job/Dockerfile --tag asia-northeast1-docker.pkg.dev/$PROJECT_ID/git-job/git-job .',
+      ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/git-job/git-job']
+
+  - id: deploy git-job
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+        'run',
+        'jobs',
+        'deploy',
+        'git-job', # Service name
+        '--args',
+        'node,apps/job/dist/index.cjs,run',
+        '--image',
+        'asia-northeast1-docker.pkg.dev/$PROJECT_ID/git-job/git-job',
+        '--region',
+        'asia-northeast1',
+        '--service-account',
+        'git-job-runner@$PROJECT_ID.iam.gserviceaccount.com',
+        '--task-timeout',
+        '30m',
+        '--max-retries',
+        '0',
+        # env vars
+        '--set-env-vars',
+        'GCP_PROJECT_ID=$PROJECT_ID',
+        # secrets
+        '--set-secrets',
+        'RESUME_DB=neon:latest',
+      ]
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+#######################################################
+# deploy command:
+# gcloud builds submit --region=asia-northeast1 --config apps/job/cloudbuild.yaml --project=xxx
