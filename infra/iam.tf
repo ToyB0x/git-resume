@@ -33,7 +33,12 @@ resource "google_project_iam_member" "git_job_runner" {
 
 # Add permissions to the specified service account
 resource "google_secret_manager_secret_iam_member" "git_job_runner" {
-  secret_id = google_secret_manager_secret.neon.id
+  for_each = toset([
+    google_secret_manager_secret.neon.id,
+    google_secret_manager_secret.gemini.id,
+  ])
+
+  secret_id = each.value
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${google_service_account.git_job_runner.email}"
 }

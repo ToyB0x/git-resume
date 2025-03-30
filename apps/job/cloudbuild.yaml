@@ -37,6 +37,8 @@ steps:
         # secrets
         '--set-secrets',
         'RESUME_DB=neon:latest',
+        '--set-secrets',
+        'RESUME_GEMINI_API_KEY=gemini:latest',
       ]
 
 options:
