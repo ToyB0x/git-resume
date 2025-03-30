@@ -1,15 +1,25 @@
 import {
   addResume,
-  insertStatus,
   updateProgress,
   updateStatus,
+  upsertStatus,
 } from "@/clients";
 import { logger } from "@/utils";
 import { clone, generateResume, pack, search, summarize } from "./steps";
 
 export const run = async (userName: string) => {
+  try {
+    await _run(userName);
+  } catch (error) {
+    logger.error("Error during run:", error);
+    await upsertStatus(userName); // if not exist, create a new status
+    await updateStatus(userName, "FAILED");
+  }
+};
+
+const _run = async (userName: string) => {
   logger.info("searching repositories...");
-  await insertStatus(userName);
+  await upsertStatus(userName);
   const repositories = await search(userName);
   await updateProgress(userName, 100);
 
