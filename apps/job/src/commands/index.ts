@@ -1,17 +1,9 @@
 import { Command } from "commander";
-import { newCloneCommand } from "./clone";
-// import { newGenerateCommand } from "./generate";
-import { newPackCommand } from "./pack";
-import { newResumeCommand } from "./resume";
-import { newSummaryCommand } from "./summary";
+import { newRunCommand } from "./run";
 
 const main = async () => {
   const program = new Command();
-  // program.addCommand(newGenerateCommand());
-  program.addCommand(newCloneCommand());
-  program.addCommand(newPackCommand());
-  program.addCommand(newSummaryCommand());
-  program.addCommand(newResumeCommand());
+  program.addCommand(newRunCommand());
 
   try {
     await program.parseAsync();
