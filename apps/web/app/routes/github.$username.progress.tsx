@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { ShareButton } from "~/components/ui/ShareButton";
 import { Card } from "../components/ui/Card";
 import { SectionTitle } from "../components/ui/SectionTitle";
@@ -18,26 +17,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Page() {
   const { username } = useParams<{ username: string }>();
-  const navigate = useNavigate();
-  const [stage, setStage] = useState(1);
-  const [progress, setProgress] = useState(getMockResearchProgress(stage));
-
-  // 進捗状況を定期的に更新するシミュレーション
-  useEffect(() => {
-    // 最終ステージに達したら結果画面に遷移
-    if (stage >= 5) {
-      navigate(`/github/${username}/results`);
-      return;
-    }
-
-    // 各ステージは10秒間隔で進行
-    const timer = setTimeout(() => {
-      setStage((prevStage) => prevStage + 1);
-      setProgress(getMockResearchProgress(stage + 1));
-    }, 31 * 1000);
-
-    return () => clearTimeout(timer);
-  }, [stage, username, navigate]);
+  const steps = getMockResearchProgress();
 
   // モックデータの取得
   const user = getMockUser(username || "");
@@ -52,13 +32,12 @@ export default function Page() {
         <SectionTitle className="w-fit">Research Progress</SectionTitle>
 
         <div className="space-y-4 mb-6">
-          {progress.steps.map((step) => (
+          {steps.map((step) => (
             <StepCard
               key={step.id}
               step={step}
-              status={step.status}
               progress={step.progress}
-              showProgressDetails={step.status === "in-progress"}
+              isActive={step.isActive}
             />
           ))}
         </div>

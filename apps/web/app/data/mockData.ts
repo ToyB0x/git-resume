@@ -25,9 +25,9 @@ export interface ResearchStep {
 export interface ResearchStepStatus {
   id: number;
   name: string;
-  status: "completed" | "in-progress" | "waiting";
-  progress?: number | undefined;
-  details?: string | undefined;
+  description: string;
+  progress: number; // 開始前は0
+  isActive: boolean; // 現在進行中のステップかどうか
 }
 
 // レジュメ結果のモックデータ
@@ -85,45 +85,39 @@ export function getMockResearchPlan(): ResearchPlan {
   };
 }
 
-export function getMockResearchProgress(stage = 0) {
+export function getMockResearchProgress() {
   const steps: ResearchStepStatus[] = [
     {
       id: 1,
       name: "Search Repository",
-      status: stage >= 1 ? "completed" : "waiting",
+      description: "Find user's committed repositories",
+      progress: 100,
+      isActive: false,
     },
     {
       id: 2,
       name: "Clone Repository",
-      status: stage === 2 ? "in-progress" : stage > 2 ? "completed" : "waiting",
-      progress: stage === 2 ? 45 : undefined,
+      description: "Clone repositories based on search results",
+      progress: 23,
+      isActive: true,
     },
     {
       id: 3,
       name: "Code Analysis",
-      status: stage === 3 ? "in-progress" : stage > 3 ? "completed" : "waiting",
+      description: "Analyze commits in each repository in detail",
+      progress: 0,
+      isActive: false,
     },
     {
       id: 4,
       name: "Resume Creation",
-      status: stage === 4 ? "in-progress" : stage > 4 ? "completed" : "waiting",
+      description: "Generate a resume from analysis results",
+      progress: 0,
+      isActive: false,
     },
   ];
 
-  const currentStepMap: Record<number, string> = {
-    0: "Not started",
-    1: "Repository Search",
-    2: "Repository Clone",
-    3: "Repository Activity Analysis",
-    4: "Resume Creation",
-    5: "Complete",
-  };
-
-  return {
-    overallProgress: Math.min(100, stage * 20),
-    steps,
-    currentStep: currentStepMap[stage] || "Not started",
-  };
+  return steps;
 }
 
 export function getMockResumeResult(username: string): ResumeResult {
