@@ -7,8 +7,10 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-dark">
-      <main className="flex-grow">{children}</main>
+    <div className="flex flex-col bg-gradient-dark">
+      <main className="flex items-center justify-center min-h-screen">
+        {children}
+      </main>
       <Footer />
     </div>
   );

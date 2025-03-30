@@ -49,16 +49,9 @@ export default function Page() {
                 <StepCard key={step.id} step={step} />
               ))}
             </div>
-          </Card>
 
-          {/* Estimated Time Display */}
-          <Card marginBottom="mb-6">
-            <SectionTitle className="w-fit">Estimated Time</SectionTitle>
-            <div className="text-sm text-gray-300">
-              <p>Number of repositories: {plan.repositoryCount}</p>
-              <p className="mt-1">
-                Estimated time: about {plan.estimatedTime} minutes
-              </p>
+            <div className="text-sm text-gray-300 text-right mt-6">
+              Estimated time: {plan.estimatedTime} minutes
             </div>
           </Card>
 
