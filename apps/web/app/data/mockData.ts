@@ -120,43 +120,55 @@ export function getMockResearchProgress() {
   return steps;
 }
 
-export function getMockResumeResult(username: string): ResumeResult {
+export function getMockResumeResult(): ResumeResult {
   return {
-    markdown: `# ${username.charAt(0).toUpperCase() + username.slice(1)} - GitHub Developer Resume
+    markdown: `# Yuki Hattori
 
-## Profile Overview
+> Full-stack engineer passionate about open source development
 
-Software developer with experience in open source development. Through activities in the GitHub community, I have contributed to diverse projects. I am passionate about building high-quality software and collaborating with other developers.
+## Overview
 
-## Technical Skills
+Experienced software engineer with 8+ years of expertise in web development and cloud infrastructure. Passionate about creating high-performance applications and contributing to open source projects.
 
-- **Programming Languages:** JavaScript, TypeScript, Python, Go
-- **Frameworks:** React, Node.js, Express, Django
-- **Tools:** Git, Docker, Kubernetes, GitHub Actions
-- **Cloud:** AWS, Azure, Google Cloud Platform
+## Skills
 
-## Key Projects
+- **Languages**: JavaScript (9/10), TypeScript (8/10), Python (7/10), Go (6/10)
+- **Frontend**: React, Vue.js, Angular, HTML5, CSS3, Tailwind CSS
+- **Backend**: Node.js, Express, Hono, Django, FastAPI
+- **DevOps**: Docker, Kubernetes, GitHub Actions, CircleCI
+- **Cloud**: AWS, GCP, Firebase, Cloudflare
 
-### Project 1
+## Project Experience
 
-Description of project 1 and contributions.
+### survive
 
-### Project 2
+**Role**: Maintainer
 
-Description of project 2 and contributions.
+A GitHub resume generator that analyzes repositories to create professional profiles. Built with TypeScript, React, and Hono.
 
-## Open Source Contributions
+### web-app
 
-Contributed to various open source repositories, focusing on bug fixes, documentation improvements, and new features.
+**Role**: Contributor
 
-## Communication and Collaboration
+Modern web application with cutting-edge features built using React, GraphQL, and Tailwind CSS.
 
-Active participant in the developer community, focusing on effective communication and collaboration.
+### open-source-library
 
-## Future Goals
+**Role**: Creator
 
-Continuing to improve skills and contribute to the open source community.
-`,
+Popular utility library that simplifies common development tasks with zero dependencies.
+
+## Key Strengths
+
+- Strong problem-solving skills with a focus on clean, maintainable code
+- Consistent contributions to open-source projects
+- Cross-functional team collaboration
+- Rapid prototyping and MVP development
+- Data-driven approach to performance optimization
+
+---
+
+Generated with GitHub data and AI analysis.`,
     completedAt: new Date().toISOString(),
   };
 }
