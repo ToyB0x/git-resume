@@ -20,7 +20,7 @@ export default function Page() {
 
   // モックデータの取得
   const user = getMockUser(username || "");
-  const plan = getMockResearchPlan(username || "");
+  const plan = getMockResearchPlan();
 
   const handleExecute = () => {
     navigate(`/github/${username}/progress`);

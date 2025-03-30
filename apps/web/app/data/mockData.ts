@@ -63,10 +63,7 @@ export function getMockUser(username: string): GitHubUser {
   };
 }
 
-export function getMockResearchPlan(username: string): ResearchPlan {
-  const repositoryCount =
-    username === "octocat" ? 8 : Math.floor(Math.random() * 30) + 5;
-
+export function getMockResearchPlan(): ResearchPlan {
   return {
     steps: [
       {
@@ -77,22 +74,21 @@ export function getMockResearchPlan(username: string): ResearchPlan {
       {
         id: 2,
         name: "Repository Clone",
-        description: `Clone about ${repositoryCount} repositories based on search results`,
+        description: "Clone repositories based on search results",
       },
       {
         id: 3,
         name: "Repository Activity Analysis",
-        description: "Analyze commit content in each repository in detail",
+        description: "Analyze commits in each repository in detail",
       },
       {
         id: 4,
         name: "Resume Creation",
-        description:
-          "Generate a resume in Markdown format from analysis results",
+        description: "Generate a resume from analysis results",
       },
     ],
-    estimatedTime: repositoryCount * 1, // 1分/リポジトリと仮定
-    repositoryCount,
+    estimatedTime: 11, // 1分/リポジトリと仮定
+    repositoryCount: 11, // 1分/リポジトリと仮定
   };
 }
 
