@@ -5,6 +5,8 @@ resource "google_project_service" "default" {
   for_each = toset([
     # for terraform state bucket
     "storage.googleapis.com",
+    # for cloud run jobs
+    "run.googleapis.com",
     # for idp auth
     # "identitytoolkit.googleapis.com",
     # https://firebase.google.com/docs/projects/terraform/get-started
