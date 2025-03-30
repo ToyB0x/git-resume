@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1743322898454,
-      "tag": "0000_broad_malcolm_colcord",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1743337142269,
-      "tag": "0001_wise_spyke",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1743338401500,
-      "tag": "0002_nervous_calypso",
+      "when": 1743350745050,
+      "tag": "0000_colossal_quasar",
       "breakpoints": true
     }
   ]

@@ -8,6 +8,8 @@ resource "google_service_account" "builder" {
 resource "google_project_iam_member" "builder" {
   for_each = toset([
     "roles/cloudbuild.builds.builder",
+    "roles/run.developer", # avoid: (gcloud.run.jobs.deploy) PERMISSION_DENIED: Permission 'run.jobs.update' denied on resource
+    "roles/iam.serviceAccountUser", # avoid: (gcloud.run.jobs.deploy) PERMISSION_DENIED: Permission 'iam.serviceaccounts.actAs' denied on service account
   ])
 
   project = data.google_project.current.project_id
