@@ -13,6 +13,7 @@ resource "google_project_service" "default" {
     # "firebase.googleapis.com",
     "serviceusage.googleapis.com", # Enabling the ServiceUsage API allows the new project to be quota checked from now on.
     "cloudbuild.googleapis.com", # For deploying cloud run jobs
+    "secretmanager.googleapis.com", # For neon connection and so on
   ])
 
   project = var.project_id
