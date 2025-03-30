@@ -1,4 +1,9 @@
-import { insertStatus, updateProgress, updateStatus } from "@/clients";
+import {
+  addResume,
+  insertStatus,
+  updateProgress,
+  updateStatus,
+} from "@/clients";
 import { logger } from "@/utils";
 import { clone, generateResume, pack, search, summarize } from "./steps";
 
@@ -25,7 +30,8 @@ export const run = async (userName: string) => {
   // TODO: update status
   logger.info("creating resume...");
   await updateStatus(userName, "CREATING");
-  await generateResume(userName);
+  const resume = await generateResume(userName);
+  await addResume(userName, resume);
   await updateProgress(userName, 100);
 
   await updateStatus(userName, "COMPLETED");

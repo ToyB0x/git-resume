@@ -1,12 +1,12 @@
 import { sleep } from "./sleep";
 
-export const retry = async ({
+export const retry = async <T>({
   fn,
   timingSeconds,
 }: {
-  fn: () => Promise<void>;
+  fn: () => Promise<T>;
   timingSeconds: number[]; // [2, 4, 8, 16, 32] // 指数バックオフしたい場合(AI のRATE Limitなどで単に指数バックオフ以上の分数指定したい場合があるので利用側でリトライ感覚を指定)
-}) => {
+}): Promise<T> => {
   let count = 0;
 
   while (count < timingSeconds.length) {
@@ -21,4 +21,6 @@ export const retry = async ({
       await sleep(delaySec * 1000);
     }
   }
+
+  throw Error("retries exceeded");
 };

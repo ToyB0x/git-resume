@@ -21,19 +21,13 @@ export const updateStatus = async (
   userName: string,
   status: (typeof jobStatuses)[number],
 ) => {
-  await db
-    .update(jobTbl)
-    .set({
-      status,
-    })
-    .where(eq(jobTbl.login, userName));
+  await db.update(jobTbl).set({ status }).where(eq(jobTbl.login, userName));
 };
 
 export const updateProgress = async (userName: string, progress: number) => {
-  await db
-    .update(jobTbl)
-    .set({
-      progress,
-    })
-    .where(eq(jobTbl.login, userName));
+  await db.update(jobTbl).set({ progress }).where(eq(jobTbl.login, userName));
+};
+
+export const addResume = async (userName: string, resume: string) => {
+  await db.update(jobTbl).set({ resume }).where(eq(jobTbl.login, userName));
 };
