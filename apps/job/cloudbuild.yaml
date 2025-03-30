@@ -5,11 +5,11 @@ steps:
         # NOTE: use bash & -c option for read secrets
         # ref: https://cloud.google.com/build/docs/securing-builds/use-secrets?hl=ja#access-utf8-secrets
         '-c',
-        'docker build --file apps/job/Dockerfile --tag asia-northeast1-docker.pkg.dev/$PROJECT_ID/git-job/git-job .',
+        'docker build --file apps/job/Dockerfile --tag us-central1-docker.pkg.dev/$PROJECT_ID/git-job/git-job .',
       ]
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/git-job/git-job']
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/git-job/git-job']
 
   - id: deploy git-job
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -22,9 +22,9 @@ steps:
         '--args',
         'node,apps/job/dist/index.cjs,run',
         '--image',
-        'asia-northeast1-docker.pkg.dev/$PROJECT_ID/git-job/git-job',
+        'us-central1-docker.pkg.dev/$PROJECT_ID/git-job/git-job',
         '--region',
-        'asia-northeast1',
+        'us-central1',
         '--service-account',
         'git-job-runner@$PROJECT_ID.iam.gserviceaccount.com',
         '--task-timeout',
@@ -37,6 +37,8 @@ steps:
         # secrets
         '--set-secrets',
         'RESUME_DB=neon:latest',
+        '--set-secrets',
+        'RESUME_GEMINI_API_KEY=gemini:latest',
       ]
 
 options:
@@ -44,4 +46,7 @@ options:
 
 #######################################################
 # deploy command:
-# gcloud builds submit --region=asia-northeast1 --config apps/job/cloudbuild.yaml --project=xxx
+# gcloud builds submit --region=us-central1 --config apps/job/cloudbuild.yaml --project=xxx
+
+# NOTE: currently, the region is limited to below (maybe payment plan related?)
+# ref: https://cloud.google.com/build/docs/locations#restricted_regions_for_some_projects
