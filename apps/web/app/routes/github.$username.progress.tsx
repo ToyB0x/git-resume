@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Layout } from "../components/layout/Layout";
+import { Card } from "../components/ui/Card";
 import { SectionTitle } from "../components/ui/SectionTitle";
 import { StepCard } from "../components/ui/StepCard";
 import { UserInfoCard } from "../components/ui/UserInfoCard";
@@ -53,7 +54,7 @@ export default function Page() {
           <UserInfoCard user={user} />
 
           {/* Step List */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-6">
+          <Card marginBottom="mb-6">
             <SectionTitle className="w-fit">Research Steps</SectionTitle>
 
             <div className="space-y-4 mb-6">
@@ -88,7 +89,7 @@ export default function Page() {
                 background.
               </span>
             </div>
-          </div>
+          </Card>
 
           {/* Action Button */}
           <div className="flex justify-center">

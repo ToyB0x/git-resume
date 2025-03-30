@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { Layout } from "../components/layout/Layout";
+import { Card } from "../components/ui/Card";
 import type { Route } from "./+types/help";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
@@ -63,7 +64,7 @@ export default function Page() {
 
           {/* User Guide */}
           {activeTab === "guide" && (
-            <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+            <Card marginBottom="mb-8">
               <h3 className="text-xl font-semibold mb-4">
                 Basic Usage of Git Resume
               </h3>
@@ -165,12 +166,12 @@ export default function Page() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Card>
           )}
 
           {/* FAQ */}
           {activeTab === "faq" && (
-            <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+            <Card marginBottom="mb-8">
               <h3 className="text-xl font-semibold mb-4">
                 Frequently Asked Questions
               </h3>
@@ -219,12 +220,12 @@ export default function Page() {
                   </p>
                 </div>
               </div>
-            </div>
+            </Card>
           )}
 
           {/* Contact */}
           {activeTab === "contact" && (
-            <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+            <Card marginBottom="mb-8">
               <h3 className="text-xl font-semibold mb-4">Contact Us</h3>
 
               <p className="text-gray-300 mb-6">
@@ -283,11 +284,11 @@ export default function Page() {
                   Send Message
                 </button>
               </form>
-            </div>
+            </Card>
           )}
 
           {/* Support Information */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6">
+          <Card>
             <h3 className="text-xl font-semibold mb-4">Support Information</h3>
 
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
@@ -414,7 +415,7 @@ export default function Page() {
                 </Link>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
       </main>
     </Layout>

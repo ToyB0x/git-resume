@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { Layout } from "../components/layout/Layout";
+import { Card } from "../components/ui/Card";
 import type { Route } from "./+types/history";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
@@ -72,7 +73,7 @@ export default function Page() {
           </div>
 
           {/* History List */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+          <Card marginBottom="mb-8">
             <div className="space-y-4">
               {mockHistoryData.map((item) => (
                 <Link
@@ -112,11 +113,11 @@ export default function Page() {
                 </Link>
               ))}
             </div>
-          </div>
+          </Card>
 
           {/* Empty State (表示条件付き) */}
           {mockHistoryData.length === 0 && (
-            <div className="glass rounded-xl border border-gray-800 shadow-xl p-8 text-center">
+            <Card padding="p-8" textAlign="text-center">
               <svg
                 className="w-16 h-16 mx-auto text-gray-600 mb-4"
                 fill="currentColor"
@@ -141,11 +142,11 @@ export default function Page() {
               >
                 Go to Home
               </Link>
-            </div>
+            </Card>
           )}
 
           {/* Information Box */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6">
+          <Card>
             <div className="flex items-start">
               <svg
                 className="w-6 h-6 text-blue-400 mr-3 flex-shrink-0 mt-1"
@@ -168,7 +169,7 @@ export default function Page() {
                 </p>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
       </main>
     </Layout>

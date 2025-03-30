@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router";
 import { Layout } from "../components/layout/Layout";
+import { Card } from "../components/ui/Card";
 import { SectionTitle } from "../components/ui/SectionTitle";
 import { StepCard } from "../components/ui/StepCard";
 import { UserInfoCard } from "../components/ui/UserInfoCard";
@@ -38,7 +39,7 @@ export default function Page() {
           <UserInfoCard user={user} showLocation showProfileLink />
 
           {/* Research Plan Overview */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-6">
+          <Card marginBottom="mb-6">
             <SectionTitle className="w-fit">
               Research Plan Overview
             </SectionTitle>
@@ -48,10 +49,10 @@ export default function Page() {
                 <StepCard key={step.id} step={step} />
               ))}
             </div>
-          </div>
+          </Card>
 
           {/* Estimated Time Display */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-6">
+          <Card marginBottom="mb-6">
             <SectionTitle className="w-fit">Estimated Time</SectionTitle>
             <div className="text-sm text-gray-300">
               <p>Number of repositories: {plan.repositoryCount}</p>
@@ -59,7 +60,7 @@ export default function Page() {
                 Estimated time: about {plan.estimatedTime} minutes
               </p>
             </div>
-          </div>
+          </Card>
 
           {/* Action Buttons */}
           <div className="flex space-x-4">

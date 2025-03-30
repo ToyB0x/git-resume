@@ -4,6 +4,7 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import { Layout } from "../components/layout/Layout";
+import { Card } from "../components/ui/Card";
 import { SectionTitle } from "../components/ui/SectionTitle";
 import { UserInfoCard } from "../components/ui/UserInfoCard";
 import { getMockResumeResult, getMockUser } from "../data/mockData";
@@ -46,7 +47,7 @@ export default function Page() {
           />
 
           {/* Resume Content */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
+          <Card marginBottom="mb-8">
             <SectionTitle>Resume Content</SectionTitle>
             <div className="prose prose-invert max-w-none text-gray-200">
               <ReactMarkdown
@@ -145,7 +146,7 @@ export default function Page() {
                 {result.markdown}
               </ReactMarkdown>
             </div>
-          </div>
+          </Card>
 
           {/* Action Buttons */}
           <div className="flex space-x-4 mb-8">

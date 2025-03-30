@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { Layout } from "../components/layout/Layout";
+import { Card } from "../components/ui/Card";
 import type { Route } from "./+types/error";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
@@ -20,7 +21,7 @@ export default function Page() {
   return (
     <Layout>
       <main className="flex-grow container mx-auto px-4 py-16 flex items-center justify-center">
-        <div className="glass rounded-xl border border-gray-800 shadow-xl p-8 max-w-md w-full text-center">
+        <Card padding="p-8" maxWidth="max-w-md" width="w-full" textAlign="text-center">
           <div className="mb-6">
             <svg
               className="w-20 h-20 mx-auto text-red-500"
@@ -142,7 +143,7 @@ export default function Page() {
               Retry
             </button>
           </div>
-        </div>
+        </Card>
       </main>
     </Layout>
   );
