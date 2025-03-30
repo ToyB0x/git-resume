@@ -14,14 +14,22 @@
 
 ### 技術構成
 
-- **実行環境**: GCP Cloud Run Jobs（サーバーレス、スケーラビリティ）
-- **処理管理**: 内蔵キュー管理（追加インフラ不要）
-- **データ永続化**: Neon.tech（PostgreSQL互換、サーバーレス）
-- **言語・フレームワーク**: TypeScript、Node.js
-- **ライブラリ**:
-  - Commander.js（CLIコマンド）
-  - @supercharge/promise-pool（並列処理）
-  - Gemini API（AI分析）
+- **本番環境**:
+  - **実行環境**: GCP Cloud Run Jobs（サーバーレス、スケーラビリティ）
+  - **処理管理**: 内蔵キュー管理（追加インフラ不要）
+  - **データ永続化**: Neon.tech（PostgreSQL互換、サーバーレス）
+
+- **ローカル開発環境**:
+  - **実行環境**: CLIコマンド実行（Cloud Run Jobsではなく直接コマンド実行）
+  - **データベース**: Docker Composeで起動するローカルPostgres
+  - **ORM**: Drizzle（TypeScript型安全なSQLビルダー）
+
+- **共通**:
+  - **言語・フレームワーク**: TypeScript、Node.js
+  - **ライブラリ**:
+    - Commander.js（CLIコマンド）
+    - @supercharge/promise-pool（並列処理）
+    - Gemini API（AI分析）
 
 ### 詳細分析パイプライン
 
@@ -35,10 +43,10 @@ graph TD
     
     subgraph "CloudFlare Workers"
     A
-    B
     end
     
     subgraph "Cloud Run Jobs"
+    B
     C
     D
     E
@@ -46,10 +54,13 @@ graph TD
     end
 ```
 
+**注意**: CloudFlare Workersは「リポジトリを検索中」の初期状態をデータベースに記録するだけで、実際の検索処理はCloud Run Jobsで行います。これはJobs起動待ちをユーザーに感じさせないための設計です。
+
 1. **リポジトリ検索**: ユーザがCommitしたリポジトリの検索
    - GitHub REST APIを使用
    - 過去1年分のリポジトリを検索
    - 検索結果をフィルタリング（言語、スター数など）
+   - **実行**: Cloud Run Jobs（CloudFlare Workersは初期状態のDB更新のみ）
 
 2. **リポジトリClone**: 検索結果に基づきリポジトリをClone
    - 並列処理による効率化（最大10並列）
@@ -87,6 +98,29 @@ job
 
 各コマンドは独立して実行可能であり、また連続して実行することでパイプライン全体を構成します。これにより、特定のステップだけを再実行したり、デバッグしたりすることが容易になります。
 
+### ローカル開発環境のセットアップ
+
+ローカル開発環境では、以下のセットアップを行います：
+
+1. **PostgreSQLのセットアップ**:
+   - Docker Composeを使用してPostgreSQLコンテナを起動
+   - 開発用のデータベースを作成
+   - マイグレーションスクリプトの実行
+
+2. **Drizzle ORMの設定**:
+   - スキーマ定義
+   - マイグレーションファイルの生成
+   - TypeScript型の生成
+
+3. **環境変数の設定**:
+   - データベース接続情報
+   - GitHub API トークン
+   - Gemini API キー
+
+4. **ジョブコマンドの実行**:
+   - `pnpm jobs <command> <subcommand> [options]`で直接実行
+   - 例: `pnpm jobs clone repositories username --public-only`
+
 ### 進捗管理設計
 
 進捗状態は以下のように定義され、データベースに記録されます：
@@ -108,6 +142,29 @@ type ProgressStatus =
 - 詳細情報（例: "3/10リポジトリ処理中"）
 - 更新元（"worker"または"job"）
 - タイムスタンプ
+
+### データベーススキーマ設計
+
+Drizzleを使用して以下のスキーマを定義します：
+
+```typescript
+// research_tasks テーブル
+export const researchTasks = pgTable('research_tasks', {
+  github_username: text('github_username').primaryKey(),
+  status: text('status').notNull(),
+  progress: integer('progress').notNull().default(0),
+  detail: text('detail'),
+  updated_by: text('updated_by').notNull(),
+  resume: text('resume'),
+  created_at: timestamp('created_at').notNull().defaultNow(),
+  updated_at: timestamp('updated_at').notNull().defaultNow(),
+  expires_at: timestamp('expires_at').notNull(),
+});
+
+// 型定義
+export type ResearchTask = typeof researchTasks.$inferSelect;
+export type NewResearchTask = typeof researchTasks.$inferInsert;
+```
 
 ### エラーハンドリング設計
 
@@ -147,6 +204,8 @@ type ProgressStatus =
 
 ## デプロイメント設計
 
+### 本番環境（Cloud Run Jobs）
+
 Cloud Run Jobsへのデプロイメント設計：
 
 1. **Dockerイメージ**: 最適化されたDockerイメージの構築
@@ -154,6 +213,61 @@ Cloud Run Jobsへのデプロイメント設計：
 3. **リソース設定**: メモリと処理時間の設定
 4. **認証設定**: 適切な認証設定
 5. **CI/CD**: 自動デプロイパイプラインの構築
+
+### ローカル開発環境
+
+ローカル開発環境のセットアップ：
+
+1. **Docker Compose**: PostgreSQLコンテナの起動
+   ```yaml
+   # docker-compose.yml
+   version: '3'
+   services:
+     postgres:
+       image: postgres:16
+       environment:
+         POSTGRES_USER: resume
+         POSTGRES_PASSWORD: resume
+         POSTGRES_DB: resume
+       ports:
+         - "5432:5432"
+       volumes:
+         - postgres_data:/var/lib/postgresql/data
+   
+   volumes:
+     postgres_data:
+   ```
+
+2. **Drizzleセットアップ**:
+   ```typescript
+   // drizzle.config.ts
+   import type { Config } from 'drizzle-kit';
+   
+   export default {
+     schema: './src/schema.ts',
+     out: './drizzle',
+     driver: 'pg',
+     dbCredentials: {
+       host: process.env.DB_HOST || 'localhost',
+       port: Number(process.env.DB_PORT) || 5432,
+       user: process.env.DB_USER || 'resume',
+       password: process.env.DB_PASSWORD || 'resume',
+       database: process.env.DB_NAME || 'resume',
+     },
+   } satisfies Config;
+   ```
+
+3. **環境変数設定**:
+   ```
+   # .env
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USER=resume
+   DB_PASSWORD=resume
+   DB_NAME=resume
+   GITHUB_TOKEN=your_github_token
+   RESUME_GEMINI_API_KEY=your_gemini_api_key
+   ```
 
 ## 監視設計
 
