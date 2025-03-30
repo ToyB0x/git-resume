@@ -27,7 +27,6 @@ export const run = async (userName: string) => {
   await summarize(userName);
   await updateProgress(userName, 100);
 
-  // TODO: update status
   logger.info("creating resume...");
   await updateStatus(userName, "CREATING");
   const resume = await generateResume(userName);
