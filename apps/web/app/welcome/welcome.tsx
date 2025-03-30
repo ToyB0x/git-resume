@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { HR } from "~/components/ui/HR";
 import { Card } from "../components/ui/Card";
 
 export function Welcome() {
@@ -64,7 +65,7 @@ export function Welcome() {
       </form>
 
       <div className="mt-8">
-        <div className="h-1 w-full btn-gradient rounded-full" />
+        <HR />
         <p className="text-sm text-gray-400 text-center mt-4">
           Proceed to research planning
         </p>

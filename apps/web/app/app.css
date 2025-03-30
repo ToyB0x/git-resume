@@ -33,6 +33,11 @@ body {
   @apply bg-gradient-to-l from-blue-500 to-purple-800;
 }
 
+/* HR gradient */
+.hr-gradient {
+  @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-700;
+}
+
 /* Glass morphism */
 .glass {
   @apply bg-black/60 backdrop-blur-sm;
