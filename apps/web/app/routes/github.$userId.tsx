@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
+import { HR } from "~/components/ui/HR";
 import type { Route } from "./+types/github.$userId";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
@@ -663,7 +664,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           <LoadingStates userId={userId} />
         </div>
 
-        <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mt-10 rounded-full" />
+        <div className="mt-10">
+          <HR />
+        </div>
+
         <footer className="text-center text-gray-400 text-xs mt-6">
           Built with GitHub data and AI generation
         </footer>

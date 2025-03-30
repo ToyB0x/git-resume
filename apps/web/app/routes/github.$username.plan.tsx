@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { Layout } from "../components/layout/Layout";
+import { Card } from "../components/ui/Card";
 import { SectionTitle } from "../components/ui/SectionTitle";
 import { StepCard } from "../components/ui/StepCard";
 import { UserInfoCard } from "../components/ui/UserInfoCard";
@@ -20,64 +20,40 @@ export default function Page() {
 
   // モックデータの取得
   const user = getMockUser(username || "");
-  const plan = getMockResearchPlan(username || "");
+  const plan = getMockResearchPlan();
 
   const handleExecute = () => {
     navigate(`/github/${username}/progress`);
   };
 
-  const handleCancel = () => {
-    navigate("/");
-  };
-
   return (
-    <Layout>
-      <main className="flex-grow container mx-auto px-4 py-10">
-        <div className="max-w-3xl mx-auto">
-          {/* Basic Information Section */}
-          <UserInfoCard user={user} showLocation showProfileLink />
+    <div className="container mx-auto max-w-3xl">
+      {/* Basic Information Section */}
+      <UserInfoCard user={user} />
 
-          {/* Research Plan Overview */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-6">
-            <SectionTitle>Research Plan Overview</SectionTitle>
+      {/* Research Plan */}
+      <Card marginBottom="mb-6">
+        <SectionTitle className="w-fit">Research Plan</SectionTitle>
 
-            <div className="space-y-4">
-              {plan.steps.map((step) => (
-                <StepCard key={step.id} step={step} />
-              ))}
-            </div>
-          </div>
-
-          {/* Estimated Time Display */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-6">
-            <SectionTitle>Estimated Time</SectionTitle>
-            <div className="text-sm text-gray-300">
-              <p>Number of repositories: {plan.repositoryCount}</p>
-              <p className="mt-1">
-                Estimated time: about {plan.estimatedTime} minutes
-              </p>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex space-x-4">
-            <button
-              type="button"
-              onClick={handleExecute}
-              className="flex-1 btn-gradient text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              Execute Research
-            </button>
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700"
-            >
-              Cancel
-            </button>
-          </div>
+        <div className="space-y-4">
+          {plan.steps.map((step) => (
+            <StepCard key={step.id} step={step} />
+          ))}
         </div>
-      </main>
-    </Layout>
+
+        <div className="text-sm text-gray-300 text-right mt-6">
+          Estimated time: {plan.estimatedTime} minutes
+        </div>
+      </Card>
+
+      {/* Action Buttons */}
+      <button
+        type="button"
+        onClick={handleExecute}
+        className="w-full btn-gradient"
+      >
+        Execute Research
+      </button>
+    </div>
   );
 }

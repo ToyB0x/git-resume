@@ -22,19 +22,12 @@ export interface ResearchStep {
   description: string;
 }
 
-// 調査進行状況のモックデータ
-export interface ResearchProgress {
-  overallProgress: number;
-  steps: ResearchStepStatus[];
-  currentStep: string;
-}
-
 export interface ResearchStepStatus {
   id: number;
   name: string;
-  status: "completed" | "in-progress" | "waiting";
-  progress?: number | undefined;
-  details?: string | undefined;
+  description: string;
+  progress: number; // 開始前は0
+  isActive: boolean; // 現在進行中のステップかどうか
 }
 
 // レジュメ結果のモックデータ
@@ -63,117 +56,119 @@ export function getMockUser(username: string): GitHubUser {
   };
 }
 
-export function getMockResearchPlan(username: string): ResearchPlan {
-  const repositoryCount =
-    username === "octocat" ? 8 : Math.floor(Math.random() * 30) + 5;
-
+export function getMockResearchPlan(): ResearchPlan {
   return {
     steps: [
       {
         id: 1,
-        name: "Repository Search",
-        description: "Search for repositories committed to in the past year",
+        name: "Search Repository",
+        description: "Find user's committed repositories",
       },
       {
         id: 2,
-        name: "Repository Clone",
-        description: `Clone about ${repositoryCount} repositories based on search results`,
+        name: "Clone Repository",
+        description: "Clone repositories based on search results",
       },
       {
         id: 3,
-        name: "Repository Activity Analysis",
-        description: "Analyze commit content in each repository in detail",
+        name: "Code Analysis",
+        description: "Analyze commits in each repository in detail",
       },
       {
         id: 4,
         name: "Resume Creation",
-        description:
-          "Generate a resume in Markdown format from analysis results",
+        description: "Generate a resume from analysis results",
       },
     ],
-    estimatedTime: repositoryCount * 1, // 1分/リポジトリと仮定
-    repositoryCount,
+    estimatedTime: 11,
+    repositoryCount: 11,
   };
 }
 
-export function getMockResearchProgress(stage = 0) {
+export function getMockResearchProgress() {
   const steps: ResearchStepStatus[] = [
     {
       id: 1,
-      name: "Repository Search",
-      status: stage >= 1 ? "completed" : "waiting",
+      name: "Search Repository",
+      description: "Find user's committed repositories",
+      progress: 100,
+      isActive: false,
     },
     {
       id: 2,
-      name: "Repository Clone",
-      status: stage === 2 ? "in-progress" : stage > 2 ? "completed" : "waiting",
-      progress: stage === 2 ? 45 : undefined,
+      name: "Clone Repository",
+      description: "Clone repositories based on search results",
+      progress: 23,
+      isActive: true,
     },
     {
       id: 3,
-      name: "Repository Activity Analysis",
-      status: stage === 3 ? "in-progress" : stage > 3 ? "completed" : "waiting",
+      name: "Code Analysis",
+      description: "Analyze commits in each repository in detail",
+      progress: 0,
+      isActive: false,
     },
     {
       id: 4,
       name: "Resume Creation",
-      status: stage === 4 ? "in-progress" : stage > 4 ? "completed" : "waiting",
+      description: "Generate a resume from analysis results",
+      progress: 0,
+      isActive: false,
     },
   ];
 
-  const currentStepMap: Record<number, string> = {
-    0: "Not started",
-    1: "Repository Search",
-    2: "Repository Clone",
-    3: "Repository Activity Analysis",
-    4: "Resume Creation",
-    5: "Complete",
-  };
-
-  return {
-    overallProgress: Math.min(100, stage * 20),
-    steps,
-    currentStep: currentStepMap[stage] || "Not started",
-  };
+  return steps;
 }
 
-export function getMockResumeResult(username: string): ResumeResult {
+export function getMockResumeResult(): ResumeResult {
   return {
-    markdown: `# ${username.charAt(0).toUpperCase() + username.slice(1)} - GitHub Developer Resume
+    markdown: `# Yuki Hattori
 
-## Profile Overview
+> Full-stack engineer passionate about open source development
 
-Software developer with experience in open source development. Through activities in the GitHub community, I have contributed to diverse projects. I am passionate about building high-quality software and collaborating with other developers.
+## Overview
 
-## Technical Skills
+Experienced software engineer with 8+ years of expertise in web development and cloud infrastructure. Passionate about creating high-performance applications and contributing to open source projects.
 
-- **Programming Languages:** JavaScript, TypeScript, Python, Go
-- **Frameworks:** React, Node.js, Express, Django
-- **Tools:** Git, Docker, Kubernetes, GitHub Actions
-- **Cloud:** AWS, Azure, Google Cloud Platform
+## Skills
 
-## Key Projects
+- **Languages**: JavaScript (9/10), TypeScript (8/10), Python (7/10), Go (6/10)
+- **Frontend**: React, Vue.js, Angular, HTML5, CSS3, Tailwind CSS
+- **Backend**: Node.js, Express, Hono, Django, FastAPI
+- **DevOps**: Docker, Kubernetes, GitHub Actions, CircleCI
+- **Cloud**: AWS, GCP, Firebase, Cloudflare
 
-### Project 1
+## Project Experience
 
-Description of project 1 and contributions.
+### survive
 
-### Project 2
+**Role**: Maintainer
 
-Description of project 2 and contributions.
+A GitHub resume generator that analyzes repositories to create professional profiles. Built with TypeScript, React, and Hono.
 
-## Open Source Contributions
+### web-app
 
-Contributed to various open source repositories, focusing on bug fixes, documentation improvements, and new features.
+**Role**: Contributor
 
-## Communication and Collaboration
+Modern web application with cutting-edge features built using React, GraphQL, and Tailwind CSS.
 
-Active participant in the developer community, focusing on effective communication and collaboration.
+### open-source-library
 
-## Future Goals
+**Role**: Creator
 
-Continuing to improve skills and contribute to the open source community.
-`,
+Popular utility library that simplifies common development tasks with zero dependencies.
+
+## Key Strengths
+
+- Strong problem-solving skills with a focus on clean, maintainable code
+- Consistent contributions to open-source projects
+- Cross-functional team collaboration
+- Rapid prototyping and MVP development
+- Data-driven approach to performance optimization
+
+---
+
+Generated with GitHub data and AI analysis.`,
     completedAt: new Date().toISOString(),
   };
 }

@@ -1,5 +1,6 @@
 import { Link } from "react-router";
-import { Layout } from "../components/layout/Layout";
+import { SectionTitle } from "~/components/ui/SectionTitle";
+import { Card } from "../components/ui/Card";
 import type { Route } from "./+types/history";
 
 // biome-ignore lint/correctness/noEmptyPattern: template default
@@ -63,114 +64,100 @@ export default function Page() {
   };
 
   return (
-    <Layout>
-      <main className="flex-grow container mx-auto px-4 py-10">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold text-gradient">History</h2>
-            <p className="text-gray-300">Recently analyzed GitHub profiles</p>
-          </div>
+    <div className="container mx-auto max-w-3xl">
+      {/* Information Box */}
+      <Card className="flex items-start">
+        <svg
+          className="w-6 h-6 text-blue-400 mr-2"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>Information</title>
+          <path
+            fillRule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+            clipRule="evenodd"
+          />
+        </svg>
+        <p className="text-gray-300">
+          You can access your results on this page for 30 days.
+        </p>
+      </Card>
 
-          {/* History List */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6 mb-8">
-            <div className="space-y-4">
-              {mockHistoryData.map((item) => (
-                <Link
-                  key={item.id}
-                  to={`/github/${item.username}/results`}
-                  className="glass rounded-lg p-4 border border-gray-800 flex items-center hover:border-blue-500 transition-all duration-300 hover:-translate-y-1 block"
-                >
-                  <img
-                    src={item.avatarUrl}
-                    alt={`${item.name}'s avatar`}
-                    className="w-12 h-12 rounded-full mr-4"
-                  />
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center">
-                      <h3 className="font-medium text-lg text-white">
-                        {item.username}
-                      </h3>
-                      <span className="text-sm text-gray-400">
-                        {formatDate(item.analyzedAt)}
-                      </span>
-                    </div>
-                    <p className="text-gray-300 text-sm">{item.name}</p>
-                  </div>
-                  <svg
-                    className="w-5 h-5 text-gray-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>View</title>
-                    <path
-                      fillRule="evenodd"
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Empty State (表示条件付き) */}
-          {mockHistoryData.length === 0 && (
-            <div className="glass rounded-xl border border-gray-800 shadow-xl p-8 text-center">
-              <svg
-                className="w-16 h-16 mx-auto text-gray-600 mb-4"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>Empty History</title>
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-7.536 5.879a1 1 0 001.415 0 3 3 0 014.242 0 1 1 0 001.415-1.415 5 5 0 00-7.072 0 1 1 0 000 1.415z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <h3 className="text-xl font-semibold mb-2">No History Yet</h3>
-              <p className="text-gray-400 mb-6">
-                You haven't analyzed any GitHub profiles yet. Start by entering
-                a GitHub username on the home page.
-              </p>
-              <Link
-                to="/"
-                className="btn-gradient text-white font-medium py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 inline-block"
-              >
-                Go to Home
-              </Link>
-            </div>
-          )}
-
-          {/* Information Box */}
-          <div className="glass rounded-xl border border-gray-800 shadow-xl p-6">
-            <div className="flex items-start">
-              <svg
-                className="w-6 h-6 text-blue-400 mr-3 flex-shrink-0 mt-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>Information</title>
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <div>
-                <h3 className="text-lg font-medium mb-2">About History</h3>
-                <p className="text-gray-300">
-                  Git Resume stores the results of your GitHub profile analyses
-                  for 30 days. You can access them anytime from this page.
-                </p>
+      {/* History List */}
+      <Card marginBottom="mt-6">
+        <SectionTitle className="w-fit">Recently analyzed</SectionTitle>
+        <div className="space-y-4">
+          {mockHistoryData.map((item) => (
+            <Link
+              key={item.id}
+              to={`/github/${item.username}/results`}
+              className="glass rounded-lg p-4 border border-gray-800 flex items-center hover:border-blue-500 transition-all duration-300 hover:-translate-y-1 block"
+            >
+              <img
+                src={item.avatarUrl}
+                alt={`${item.name}'s avatar`}
+                className="w-12 h-12 rounded-full mr-4"
+              />
+              <div className="flex-1">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-medium text-lg text-white">
+                    {item.username}
+                  </h3>
+                  <span className="text-sm text-gray-400">
+                    {formatDate(item.analyzedAt)}
+                  </span>
+                </div>
+                <p className="text-gray-300 text-sm">{item.name}</p>
               </div>
-            </div>
-          </div>
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title>View</title>
+                <path
+                  fillRule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </Link>
+          ))}
         </div>
-      </main>
-    </Layout>
+      </Card>
+
+      {/* Empty State (表示条件付き) */}
+      {mockHistoryData.length === 0 && (
+        <Card padding="p-8" textAlign="text-center">
+          <svg
+            className="w-16 h-16 mx-auto text-gray-600 mb-4"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>Empty History</title>
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-7.536 5.879a1 1 0 001.415 0 3 3 0 014.242 0 1 1 0 001.415-1.415 5 5 0 00-7.072 0 1 1 0 000 1.415z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <h3 className="text-xl font-semibold mb-2">No History Yet</h3>
+          <p className="text-gray-400 mb-6">
+            You haven't analyzed any GitHub profiles yet. Start by entering a
+            GitHub username on the home page.
+          </p>
+          <Link
+            to="/"
+            className="btn-gradient text-white font-medium py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 inline-block"
+          >
+            Go to Home
+          </Link>
+        </Card>
+      )}
+    </div>
   );
 }
