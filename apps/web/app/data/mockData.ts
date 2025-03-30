@@ -22,13 +22,6 @@ export interface ResearchStep {
   description: string;
 }
 
-// 調査進行状況のモックデータ
-export interface ResearchProgress {
-  overallProgress: number;
-  steps: ResearchStepStatus[];
-  currentStep: string;
-}
-
 export interface ResearchStepStatus {
   id: number;
   name: string;
@@ -87,8 +80,8 @@ export function getMockResearchPlan(): ResearchPlan {
         description: "Generate a resume from analysis results",
       },
     ],
-    estimatedTime: 11, // 1分/リポジトリと仮定
-    repositoryCount: 11, // 1分/リポジトリと仮定
+    estimatedTime: 11,
+    repositoryCount: 11,
   };
 }
 
