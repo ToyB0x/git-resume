@@ -27,37 +27,37 @@
   - [x] 進捗率の計算ロジック
   - [x] エラー状態の管理
 
-- [ ] **Neon.techデータベースのセットアップ(for GCP)**
-  - [ ] Dev
+- [x] **Neon.techデータベースのセットアップ(for GCP)**
+  - [x] Dev
     - [x] Neon.techプロジェクトの作成
-    - [ ] 接続情報の取得と設定
-    - [ ] 初回マイグレーション実行
-  - [ ] STG
+    - [x] 接続情報の取得と設定
+    - [x] 初回マイグレーション実行
+  - [x] STG
     - [x] Neon.techプロジェクトの作成
-    - [ ] 接続情報の取得と設定
-    - [ ] 初回マイグレーション実行
-  - [ ] PRD
+    - [x] 接続情報の取得と設定
+    - [x] 初回マイグレーション実行
+  - [x] PRD
     - [x] Neon.techプロジェクトの作成
-    - [ ] 接続情報の取得と設定
-    - [ ] 初回マイグレーション実行
+    - [x] 接続情報の取得と設定
+    - [x] 初回マイグレーション実行
+
+- [x] **CI/CDパイプライン**
+  - [x] **cloudbuild.ymlの作成**
+    - [x] ビルドステップの定義
+    - [x] Dockerイメージのビルドと公開
+    - [x] Cloud Run Jobsへのデプロイ
+  - [x] **Terraformによる設定**
+    - [x] ArtifactRegistryリポジトリの作成
+    - [x] CloudBuild Triggerの設定
+    - [x] Secret Managerでの機密情報管理
+  - [x] **環境別設定**
+    - [x] 開発環境（dev）の設定
+    - [x] ステージング環境（stg）の設定
+    - [x] 本番環境（prd）の設定
+
+## 別エピックにて対応予定
 
 - [ ] **APIエンドポイント**
   - [ ] ジョブ起動APIの実装
   - [ ] 進捗確認APIの実装
   - [ ] 結果取得APIの実装
-
-- [ ] **CI/CDパイプライン**
-  - [ ] **cloudbuild.ymlの作成**
-    - [ ] ビルドステップの定義
-    - [ ] テスト実行の設定
-    - [ ] Dockerイメージのビルドと公開
-    - [ ] Cloud Run Jobsへのデプロイ
-  - [ ] **Terraformによる設定**
-    - [ ] ArtifactRegistryリポジトリの作成
-    - [ ] CloudBuild Triggerの設定
-    - [ ] Cloud Run Jobsの設定
-    - [ ] Secret Managerでの機密情報管理
-  - [ ] **環境別設定**
-    - [ ] 開発環境（dev）の設定
-    - [ ] ステージング環境（stg）の設定
-    - [ ] 本番環境（prd）の設定

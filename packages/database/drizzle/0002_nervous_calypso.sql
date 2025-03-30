@@ -1,1 +1,0 @@
-ALTER TABLE "job" ADD CONSTRAINT "job_login_unique" UNIQUE("login");
