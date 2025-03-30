@@ -9,17 +9,17 @@
   - [ ] 環境変数の設定（GitHub API Token、Database URL等）
 
 - [ ] **APIエンドポイント実装**
-  - [ ] 研究状態API（統合エンドポイント）
-    - [ ] `GET /api/research/:username`
+  - [ ] Git分析状態API（統合エンドポイント）
+    - [ ] `GET /api/git-analysis/:username`
     - [ ] データベースからの状態取得ロジック
     - [ ] 状態に応じたレスポンス形式の定義
     - [ ] 総合的な進捗計算ロジックの実装
-  - [ ] 1次調査API
-    - [ ] `GET /api/research/:username/profile`
+  - [ ] 1次分析API
+    - [ ] `GET /api/git-analysis/:username/profile`
     - [ ] GitHub APIからのプロフィール情報取得
     - [ ] レスポンス形式の定義
-  - [ ] 2次調査起動API
-    - [ ] `POST /api/research/:username/start`
+  - [ ] 2次分析起動API
+    - [ ] `POST /api/git-analysis/:username/start`
     - [ ] データベースへの初期状態記録
     - [ ] Cloud Run Jobsの起動
     - [ ] レスポンス形式の定義
@@ -30,19 +30,28 @@
   - [ ] 429エラー（レート制限）
   - [ ] 500エラー（内部サーバーエラー）
 
+- [ ] **Cloud Run Jobs連携**
+  - [ ] GCPサービスアカウントの設定
+  - [ ] 認証トークン取得ロジックの実装
+  - [ ] Cloud Run Jobs API呼び出しの実装
+  - [ ] エラーハンドリングの実装
+
 - [ ] **テスト**
   - [ ] ユニットテスト
   - [ ] 統合テスト
   - [ ] cURLを使用した動作確認スクリプト
 
 - [ ] **デプロイメント**
+  - [ ] wrangler.tomlの設定
+  - [ ] 環境変数の設定（開発環境、本番環境）
   - [ ] CloudFlare Workersへのデプロイ
-  - [ ] 環境変数の設定
-  - [ ] ドメイン設定
+  - [ ] カスタムドメイン設定
+  - [ ] デプロイ後の動作確認
 
 - [ ] **ドキュメント**
   - [ ] API仕様書の作成
   - [ ] cURLコマンド例の作成
+  - [ ] デプロイ手順書の作成
 
 ## 別エピックにて対応予定
 

@@ -2,14 +2,14 @@
 
 ## 概要
 
-このドキュメントは、Deep ResearchシステムのバックエンドAPIサーバーの詳細設計を説明するものです。GitHub User名を入力した後の1次調査（調査計画段階）と2次調査（詳細分析段階）の進捗管理・結果取得を行うためのAPIインターフェースのアーキテクチャと実装方針を定義しています。
+このドキュメントは、Deep ResearchシステムのバックエンドAPIサーバーの詳細設計を説明するものです。GitHub User名を入力した後の1次分析（基本情報取得段階）と2次分析（詳細Git活動分析段階）の進捗管理・結果取得を行うためのAPIインターフェースのアーキテクチャと実装方針を定義しています。
 
 ## APIサーバーアーキテクチャの詳細
 
 ### 目的と特性
 
-- GitHub User名からの基本情報取得と調査計画生成（1次調査）
-- 詳細分析ジョブの起動と進捗管理（2次調査）
+- GitHub User名からの基本情報取得とプロフィール情報生成（1次分析）
+- 詳細Git活動分析ジョブの起動と進捗管理（2次分析）
 - 軽量処理による10秒以内の高速レスポンス
 - エッジでの分散実行によるグローバルな低レイテンシ
 
@@ -20,16 +20,17 @@
 - **API設計**: RESTful API（標準的、理解しやすい、キャッシュ可能）
 - **外部API連携**:
   - GitHub API（プロフィール情報取得）
-  - Cloud Run Jobs API（2次調査ジョブの起動）
+  - Cloud Run Jobs API（2次分析ジョブの起動）
 - **データベース連携**: Neon.tech（PostgreSQL互換、サーバーレス）
+- **デプロイ**: Wrangler CLI（CloudFlare Workersのデプロイツール）
 
 ### APIエンドポイント設計（簡略化版）
 
 ```mermaid
 graph TD
-    A[クライアント] --> B[研究状態API]
-    A --> C[1次調査API]
-    A --> D[2次調査起動API]
+    A[クライアント] --> B[Git分析状態API]
+    A --> C[1次分析API]
+    A --> D[2次分析起動API]
     
     B --> G[データベース]
     C --> H[GitHub API]
@@ -37,10 +38,10 @@ graph TD
     D --> G
 ```
 
-#### 1. 研究状態API（統合エンドポイント）
+#### 1. Git分析状態API（統合エンドポイント）
 
-- **エンドポイント**: `GET /api/research/:username`
-- **目的**: GitHub User名に対する現在の調査状態、進捗、結果を一括取得する
+- **エンドポイント**: `GET /api/git-analysis/:username`
+- **目的**: GitHub User名に対する現在の分析状態、進捗、結果を一括取得する
 - **処理内容**:
   - データベースからユーザーの状態を取得
   - 状態に応じたレスポンスを返却（進捗情報や結果を含む）
@@ -49,7 +50,7 @@ graph TD
   ```json
   {
     "exists": false,
-    "message": "No research data found for this username"
+    "message": "No Git analysis data found for this username"
   }
   ```
 - **レスポンス例（実行中の場合）**:
@@ -74,9 +75,9 @@ graph TD
   }
   ```
 
-#### 2. 1次調査API
+#### 2. 1次分析API
 
-- **エンドポイント**: `GET /api/research/:username/profile`
+- **エンドポイント**: `GET /api/git-analysis/:username/profile`
 - **目的**: GitHub User名からプロフィール情報を取得する
 - **処理内容**:
   - GitHub APIからユーザープロフィール情報を取得
@@ -94,10 +95,10 @@ graph TD
   }
   ```
 
-#### 3. 2次調査起動API
+#### 3. 2次分析起動API
 
-- **エンドポイント**: `POST /api/research/:username/start`
-- **目的**: 詳細分析ジョブを起動する
+- **エンドポイント**: `POST /api/git-analysis/:username/start`
+- **目的**: 詳細Git活動分析ジョブを起動する
 - **処理内容**:
   - データベースに初期状態（SEARCHING）を記録
   - Cloud Run Jobsを起動
@@ -106,7 +107,7 @@ graph TD
   {
     "status": "SEARCHING",
     "progress": 0,
-    "message": "Analysis started",
+    "message": "Git analysis started",
     "job_id": "job-123456"
   }
   ```

@@ -11,11 +11,11 @@ apps/api/
 │   ├── routes/
 │   │   ├── api/
 │   │   │   ├── index.ts          # ルート定義のエクスポート（修正）
-│   │   │   ├── research/         # 新規追加
-│   │   │   │   ├── index.ts      # 研究関連ルートの定義
-│   │   │   │   ├── getStatus.ts  # 研究状態API
-│   │   │   │   ├── getProfile.ts # 1次調査API
-│   │   │   │   └── startJob.ts   # 2次調査起動API
+│   │   │   ├── git-analysis/     # 新規追加
+│   │   │   │   ├── index.ts      # Git分析関連ルートの定義
+│   │   │   │   ├── getStatus.ts  # Git分析状態API
+│   │   │   │   ├── getProfile.ts # 1次分析API
+│   │   │   │   └── startJob.ts   # 2次分析起動API
 │   │   │   └── github/           # 既存（必要に応じて修正）
 │   ├── utils/
 │   │   ├── index.ts              # ユーティリティのエクスポート
@@ -41,7 +41,7 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { githubRoute } from "./routes/api/github";
-import { researchRoute } from "./routes/api/research"; // 追加
+import { gitAnalysisRoute } from "./routes/api/git-analysis"; // 追加
 import { env } from "./utils";
 
 const app = new Hono()
@@ -61,7 +61,7 @@ const app = new Hono()
     return c.json({ status: "ok" });
   })
   .route("/api/github", githubRoute)
-  .route("/api/research", researchRoute); // 追加
+  .route("/api/git-analysis", gitAnalysisRoute); // 追加
 
 serve(
   {
@@ -83,12 +83,12 @@ export type AppType = typeof app;
 
 ```typescript
 export * from "./github";
-export * from "./research"; // 追加
+export * from "./git-analysis"; // 追加
 ```
 
-### 3. 研究関連ルートの定義（新規）
+### 3. Git分析関連ルートの定義（新規）
 
-**`src/routes/api/research/index.ts`**
+**`src/routes/api/git-analysis/index.ts`**
 
 ```typescript
 import { Hono } from "hono";
@@ -96,15 +96,15 @@ import { getStatusHandler } from "./getStatus";
 import { getProfileHandler } from "./getProfile";
 import { startJobHandler } from "./startJob";
 
-export const researchRoute = new Hono()
+export const gitAnalysisRoute = new Hono()
   .get("/:username", getStatusHandler)
   .get("/:username/profile", getProfileHandler)
   .post("/:username/start", startJobHandler);
 ```
 
-### 4. 研究状態API（新規）
+### 4. Git分析状態API（新規）
 
-**`src/routes/api/research/getStatus.ts`**
+**`src/routes/api/git-analysis/getStatus.ts`**
 
 ```typescript
 import { Context } from "hono";
@@ -123,7 +123,7 @@ export const getStatusHandler = async (c: Context) => {
       .where(eq(jobTbl.login, username));
 
     if (result.length === 0) {
-      return c.json({ exists: false, message: "No research data found for this username" });
+      return c.json({ exists: false, message: "No Git analysis data found for this username" });
     }
 
     const job = result[0];
@@ -178,9 +178,9 @@ function calculateTotalProgress(status: string, progress: number): number {
 }
 ```
 
-### 5. 1次調査API（新規）
+### 5. 1次分析API（新規）
 
-**`src/routes/api/research/getProfile.ts`**
+**`src/routes/api/git-analysis/getProfile.ts`**
 
 ```typescript
 import { Context } from "hono";
@@ -216,9 +216,9 @@ export const getProfileHandler = async (c: Context) => {
 };
 ```
 
-### 6. 2次調査起動API（新規）
+### 6. 2次分析起動API（新規）
 
-**`src/routes/api/research/startJob.ts`**
+**`src/routes/api/git-analysis/startJob.ts`**
 
 ```typescript
 import { Context } from "hono";
@@ -380,19 +380,20 @@ RESUME_JOB_NAME=resume-job
 
 ## 動作確認方法（cURLコマンド例）
 
-### 研究状態API
+### Git分析状態API
 
 ```bash
-curl -X GET "http://localhost:3000/api/research/octocat"
+curl -X GET "http://localhost:3000/api/git-analysis/octocat"
 ```
 
-### 1次調査API
+### 1次分析API
 
 ```bash
-curl -X GET "http://localhost:3000/api/research/octocat/profile"
+curl -X GET "http://localhost:3000/api/git-analysis/octocat/profile"
 ```
 
-### 2次調査起動API
+### 2次分析起動API
 
 ```bash
-curl -X POST "http://localhost:3000/api/research/octocat/start"
+curl -X POST "http://localhost:3000/api/git-analysis/octocat/start"
+```
