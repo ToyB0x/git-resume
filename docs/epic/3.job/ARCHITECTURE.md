@@ -149,8 +149,8 @@ type ProgressStatus =
 Drizzleを使用して以下のスキーマを定義します：
 
 ```typescript
-// research_tasks テーブル
-export const researchTasks = pgTable('research_tasks', {
+// job テーブル
+export const researchTasks = pgTable('job', {
   github_username: text('github_username').primaryKey(),
   status: text('status').notNull(),
   progress: integer('progress').notNull().default(0),
