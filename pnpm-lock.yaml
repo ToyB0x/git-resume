@@ -253,6 +253,9 @@ importers:
       '@tsconfig/strictest':
         specifier: 2.0.5
         version: 2.0.5
+      '@types/node':
+        specifier: 22.13.5
+        version: 22.13.5
       dotenv-cli:
         specifier: 8.0.0
         version: 8.0.0

@@ -15,6 +15,7 @@
   "devDependencies": {
     "@neondatabase/serverless": "^1.0.0",
     "@tsconfig/strictest": "2.0.5",
+    "@types/node": "22.13.5",
     "dotenv-cli": "8.0.0",
     "drizzle-kit": "0.30.5",
     "typescript": "5.7.3"
