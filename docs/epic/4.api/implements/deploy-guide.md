@@ -170,11 +170,11 @@ CloudFlareのダッシュボードから、カスタムドメインを設定で�
 
 デプロイ後、以下のcURLコマンドを使用して動作確認を行います。
 ```bash
-# 統合状態・プロフィールAPI
-curl -X GET "https://resume-api.your-account.workers.dev/api/git-analysis/octocat"
+# 1次分析(プロフィール取得)兼診断状況(結果含む)読込API
+curl -X GET "https://resume-api.your-account.workers.dev/api/github/octocat"
 
 # 2次分析実行API
-curl -X POST "https://resume-api.your-account.workers.dev/api/git-analysis/octocat/analyze"
+curl -X POST "https://resume-api.your-account.workers.dev/api/github/octocat/analyze"
 ```
 ```
 

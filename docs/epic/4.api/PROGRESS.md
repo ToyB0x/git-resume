@@ -9,14 +9,14 @@
   - [ ] 環境変数の設定（GitHub API Token、Database URL等）
 
 - [ ] **APIエンドポイント実装**
-  - [ ] 統合状態・プロフィールAPI
-    - [ ] `GET /api/git-analysis/:username`
+  - [ ] 1次分析(プロフィール取得)兼診断状況(結果含む)読込API
+    - [ ] `GET /api/github/:username`
     - [ ] データベースからの状態取得ロジック
     - [ ] GitHub APIからのプロフィール情報取得
     - [ ] 状態に応じたレスポンス形式の定義
     - [ ] 総合的な進捗計算ロジックの実装
   - [ ] 2次分析実行API
-    - [ ] `POST /api/git-analysis/:username/analyze`
+    - [ ] `POST /api/github/:username/analyze`
     - [ ] データベースへの初期状態記録
     - [ ] Cloud Run Jobsの起動
     - [ ] レスポンス形式の定義

@@ -28,7 +28,7 @@
 
 ```mermaid
 graph TD
-    A[クライアント] --> B[統合状態・プロフィールAPI]
+    A[クライアント] --> B[1次分析(プロフィール取得)兼診断状況(結果含む)読込API]
     A --> D[2次分析実行API]
     
     B --> G[データベース]
@@ -37,9 +37,9 @@ graph TD
     D --> G
 ```
 
-#### 1. 統合状態・プロフィールAPI
+#### 1. 1次分析(プロフィール取得)兼診断状況(結果含む)読込API
 
-- **エンドポイント**: `GET /api/git-analysis/:username`
+- **エンドポイント**: `GET /api/github/:username`
 - **目的**: GitHub User名に対する現在の2次分析状態、進捗、結果、および1次分析のプロフィール情報を一括取得する
 - **処理内容**:
   - データベースからユーザーの2次分析状態を取得
@@ -110,7 +110,7 @@ graph TD
 
 #### 2. 2次分析実行API
 
-- **エンドポイント**: `POST /api/git-analysis/:username/analyze`
+- **エンドポイント**: `POST /api/github/:username/analyze`
 - **目的**: 詳細Git活動分析ジョブを起動する
 - **処理内容**:
   - データベースに初期状態（SEARCHING）を記録
