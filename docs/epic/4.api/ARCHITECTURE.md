@@ -28,76 +28,89 @@
 
 ```mermaid
 graph TD
-    A[クライアント] --> B[Git分析状態API]
-    A --> C[1次分析API]
-    A --> D[2次分析起動API]
+    A[クライアント] --> B[統合状態・プロフィールAPI]
+    A --> D[2次分析実行API]
     
     B --> G[データベース]
-    C --> H[GitHub API]
+    B --> H[GitHub API]
     D --> I[Cloud Run Jobs]
     D --> G
 ```
 
-#### 1. Git分析状態API（統合エンドポイント）
+#### 1. 統合状態・プロフィールAPI
 
 - **エンドポイント**: `GET /api/git-analysis/:username`
-- **目的**: GitHub User名に対する現在の分析状態、進捗、結果を一括取得する
+- **目的**: GitHub User名に対する現在の2次分析状態、進捗、結果、および1次分析のプロフィール情報を一括取得する
 - **処理内容**:
-  - データベースからユーザーの状態を取得
+  - データベースからユーザーの2次分析状態を取得
+  - GitHub APIからプロフィール情報を取得（1次分析）
   - 状態に応じたレスポンスを返却（進捗情報や結果を含む）
   - STATUSとPROGRESSから総合的な進捗状況を計算
 - **レスポンス例（未実行の場合）**:
   ```json
   {
-    "exists": false,
-    "message": "No Git analysis data found for this username"
+    "secondary_analysis": {
+      "exists": false,
+      "message": "No Git analysis data found for this username"
+    },
+    "profile": {
+      "login": "octocat",
+      "name": "The Octocat",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+      "public_repos": 2,
+      "followers": 20,
+      "following": 0,
+      "created_at": "2008-01-14T04:33:35Z"
+    }
   }
   ```
 - **レスポンス例（実行中の場合）**:
   ```json
   {
-    "exists": true,
-    "status": "ANALYZING",
-    "progress": 60,
-    "total_progress": 70,
-    "updated_at": "2025-03-30T15:10:00Z"
+    "secondary_analysis": {
+      "exists": true,
+      "status": "ANALYZING",
+      "progress": 60,
+      "total_progress": 70,
+      "updated_at": "2025-03-30T15:10:00Z"
+    },
+    "profile": {
+      "login": "octocat",
+      "name": "The Octocat",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+      "public_repos": 2,
+      "followers": 20,
+      "following": 0,
+      "created_at": "2008-01-14T04:33:35Z"
+    }
   }
   ```
 - **レスポンス例（完了の場合）**:
   ```json
   {
-    "exists": true,
-    "status": "COMPLETED",
-    "progress": 100,
-    "total_progress": 100,
-    "resume": "# octocat's Resume\n\n## Skills\n\n- JavaScript: Advanced\n- Python: Intermediate\n...",
-    "updated_at": "2025-03-30T15:30:00Z"
+    "secondary_analysis": {
+      "exists": true,
+      "status": "COMPLETED",
+      "progress": 100,
+      "total_progress": 100,
+      "resume": "# octocat's Resume\n\n## Skills\n\n- JavaScript: Advanced\n- Python: Intermediate\n...",
+      "updated_at": "2025-03-30T15:30:00Z"
+    },
+    "profile": {
+      "login": "octocat",
+      "name": "The Octocat",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+      "public_repos": 2,
+      "followers": 20,
+      "following": 0,
+      "created_at": "2008-01-14T04:33:35Z"
+    }
   }
   ```
 
-#### 2. 1次分析API
+#### 2. 2次分析実行API
 
-- **エンドポイント**: `GET /api/git-analysis/:username/profile`
-- **目的**: GitHub User名からプロフィール情報を取得する
-- **処理内容**:
-  - GitHub APIからユーザープロフィール情報を取得
-  - 基本情報を抽出して返却
-- **レスポンス例**:
-  ```json
-  {
-    "login": "octocat",
-    "name": "The Octocat",
-    "avatar_url": "https://github.com/images/error/octocat_happy.gif",
-    "public_repos": 2,
-    "followers": 20,
-    "following": 0,
-    "created_at": "2008-01-14T04:33:35Z"
-  }
-  ```
-
-#### 3. 2次分析起動API
-
-- **エンドポイント**: `POST /api/git-analysis/:username/start`
+- **エンドポイント**: `POST /api/git-analysis/:username/analyze`
 - **目的**: 詳細Git活動分析ジョブを起動する
 - **処理内容**:
   - データベースに初期状態（SEARCHING）を記録

@@ -169,16 +169,13 @@ CloudFlareのダッシュボードから、カスタムドメインを設定で�
 ## 11. デプロイ後の動作確認
 
 デプロイ後、以下のcURLコマンドを使用して動作確認を行います。
-
 ```bash
-# Git分析状態API
+# 統合状態・プロフィールAPI
 curl -X GET "https://resume-api.your-account.workers.dev/api/git-analysis/octocat"
 
-# 1次分析API
-curl -X GET "https://resume-api.your-account.workers.dev/api/git-analysis/octocat/profile"
-
-# 2次分析起動API
-curl -X POST "https://resume-api.your-account.workers.dev/api/git-analysis/octocat/start"
+# 2次分析実行API
+curl -X POST "https://resume-api.your-account.workers.dev/api/git-analysis/octocat/analyze"
+```
 ```
 
 ## 12. トラブルシューティング
