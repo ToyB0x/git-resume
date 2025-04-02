@@ -181,7 +181,7 @@ sequenceDiagram
     participant DB as データベース<br>(Neon.tech)
     
     User->>FE: GitHub User名を入力
-    FE->>BE: 初期状態確認リクエスト
+    FE->>BE: GET /api/github/:username (状態確認&プロフィール取得)
     BE->>DB: ユーザー状態確認
     
     alt 既に2次調査結果がある場合
@@ -205,7 +205,7 @@ sequenceDiagram
         
         %% 2次調査の開始
         User->>FE: 調査実行ボタンをクリック
-        FE->>BE: 2次調査リクエスト
+        FE->>BE: POST /api/github/:username/analyze (2次分析開始)
         
         %% CloudFlare Workersが最初の進捗状態を記録
         BE->>DB: 2次調査タスク登録（リポジトリを検索中）
@@ -241,13 +241,13 @@ sequenceDiagram
     
     %% 進捗確認（Polling）- 統合版
     loop 進捗確認（Polling）
-        FE->>BE: 進捗状況リクエスト
+        FE->>BE: GET /api/github/:username (進捗確認)
         BE->>DB: 進捗確認
         DB->>BE: 現在の進捗返却
         BE->>FE: 進捗状況返却
         
         alt 2次調査が完了した場合
-            FE->>BE: 結果取得リクエスト
+            FE->>BE: GET /api/github/:username (結果確認)
             BE->>DB: 2次調査結果取得
             DB->>BE: 結果返却
             BE->>FE: 結果返却
