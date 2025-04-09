@@ -1,9 +1,9 @@
-import { db } from "@/clients";
 import { vValidator } from "@hono/valibot-validator";
 import { jobTbl } from "@resume/db";
 import { eq } from "drizzle-orm";
 import { createFactory } from "hono/factory";
 import * as v from "valibot";
+import { db } from "../../../clients";
 import { mockResumeMarkdown } from "./mock";
 
 const factory = createFactory();
