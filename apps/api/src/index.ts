@@ -29,7 +29,6 @@ serve(
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
-    console.log(`Environment: ${env.RESUME_ENV}`);
   },
 );
 

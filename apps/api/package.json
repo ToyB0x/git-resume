@@ -12,10 +12,12 @@
     "@hono/valibot-validator": "^0.5.2",
     "hono": "^4.7.4",
     "dotenv-cli": "8.0.0",
+    "@resume/db": "workspace:*",
     "@resume/models": "workspace:*",
     "@resume/services": "workspace:*",
-    "valibot": "1.0.0-rc.2",
-    "@supercharge/promise-pool": "3.2.0"
+    "@neondatabase/serverless": "^1.0.0",
+    "drizzle-orm": "0.40.1",
+    "valibot": "1.0.0-rc.2"
   },
   "devDependencies": {
     "@tsconfig/strictest": "2.0.5",
